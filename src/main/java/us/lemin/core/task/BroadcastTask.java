@@ -28,7 +28,7 @@ public class BroadcastTask implements Runnable {
         String message = broadcasts.get(currentIndex);
 
         server.broadcastMessage("");
-        server.broadcastMessage(CC.GRAY + "(" + CC.PRIMARY + "Lemin" + CC.GRAY + ")" + CC.PRIMARY + message);
+        server.broadcastMessage(CC.GRAY + "(" + CC.SECONDARY + "Lemin" + CC.GRAY + ") " + CC.PRIMARY + message);
         server.broadcastMessage("");
 
         if (++currentIndex >= broadcasts.size()) {
