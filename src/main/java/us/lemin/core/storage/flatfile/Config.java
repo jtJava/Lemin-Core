@@ -10,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.lemin.core.utils.structure.Cuboid;
 
 public class Config {
     private final File file;
@@ -79,10 +78,6 @@ public class Config {
 
     public Location getLocation(String path) {
         return (Location) delegate.get(path);
-    }
-
-    public Cuboid getCuboid(String path) {
-        return (Cuboid) delegate.get(path);
     }
 
     public ItemStack getItem(String path) {
