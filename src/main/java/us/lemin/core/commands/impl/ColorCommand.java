@@ -14,7 +14,7 @@ public class ColorCommand extends PlayerCommand {
     private final CorePlugin plugin;
 
     public ColorCommand(CorePlugin plugin) {
-        super("color", Rank.EXCLUSIVE);
+        super("color", Rank.PREMIUM);
         this.plugin = plugin;
 
         StringBuilder colors = new StringBuilder(CC.RED + "Usage: /color [primary|secondary] <color>\nValid colors are: ");

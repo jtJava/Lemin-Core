@@ -8,7 +8,7 @@ import us.lemin.core.utils.message.CC;
 
 public class GameModeCommand extends PlayerCommand {
     public GameModeCommand() {
-        super("gamemode", Rank.SENIOR_MOD);
+        super("gamemode", Rank.ADMIN);
         setAliases("gm");
         setUsage(CC.RED + "Usage: /gamemode <mode|id>");
     }

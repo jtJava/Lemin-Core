@@ -7,7 +7,7 @@ import us.lemin.core.utils.message.CC;
 
 public class FreezeCommand extends PlayerCommand {
     public FreezeCommand() {
-        super("freeze", Rank.SENIOR_MOD);
+        super("freeze", Rank.ADMIN);
         setAliases("screenshare", "ss");
     }
 

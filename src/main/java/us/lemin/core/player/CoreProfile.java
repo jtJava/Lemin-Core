@@ -203,11 +203,11 @@ public class CoreProfile {
     }
 
     public boolean hasDonor() {
-        return hasRank(Rank.EXCLUSIVE);
+        return hasRank(Rank.PREMIUM);
     }
 
     public boolean isDonor() {
-        return rank == Rank.EXCLUSIVE;
+        return rank == Rank.PREMIUM;
     }
 
     public void ignore(UUID id) {

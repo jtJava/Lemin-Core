@@ -5,6 +5,6 @@ import us.lemin.core.player.rank.Rank;
 
 public class UnbanCommand extends UnpunishCommand {
     public UnbanCommand(CorePlugin plugin) {
-        super(Rank.SENIOR_MOD, PunishType.BAN, plugin);
+        super(Rank.ADMIN, PunishType.BAN, plugin);
     }
 }
