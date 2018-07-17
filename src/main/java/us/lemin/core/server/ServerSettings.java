@@ -1,6 +1,7 @@
 package us.lemin.core.server;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
 import us.lemin.core.CorePlugin;
@@ -10,6 +11,7 @@ import us.lemin.core.utils.message.CC;
 
 @Getter
 public class ServerSettings {
+    public static final String SERVER_DOMAIN = "lemin.us";
     private final Config coreConfig;
     private final String whitelistMessage;
     @Setter
@@ -25,6 +27,7 @@ public class ServerSettings {
         this.coreConfig = new Config(plugin, "core");
 
         coreConfig.addDefaults(ImmutableMap.<String, Object>builder()
+                .put("broadcasts", Arrays.asList("1", "2", "3"))
                 .put("whitelist.mode", WhitelistMode.NONE.name())
                 .put("whitelist.message", CC.RED + "The server is whitelisted. Come back later!")
                 .build());

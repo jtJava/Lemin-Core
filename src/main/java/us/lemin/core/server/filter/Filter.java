@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
+import us.lemin.core.server.ServerSettings;
 
 import static us.lemin.core.utils.StringUtil.IP_REGEX;
 import static us.lemin.core.utils.StringUtil.URL_REGEX;
@@ -19,7 +20,7 @@ public class Filter {
     private static final List<NegativeWordPair> NEGATIVE_WORD_PAIRS;
     private static final String[] SINGLE_FILTERED_WORDS = {"L", "ez", "kb", "#"};
     private static final String[] WHITELISTED_LINKS = {
-            "pvp.land", "youtube.com", "youtu.be", "imgur.com", "prntscr.com", "prnt.sc", "gfycat.com", "gyazo.com",
+            ServerSettings.SERVER_DOMAIN, "youtube.com", "youtu.be", "imgur.com", "prntscr.com", "prnt.sc", "gfycat.com", "gyazo.com",
             "twitter.com", "spotify.com", "twitch.tv", "tinypic.com"
     };
 

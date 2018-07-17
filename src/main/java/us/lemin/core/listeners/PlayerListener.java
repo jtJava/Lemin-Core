@@ -123,27 +123,17 @@ public class PlayerListener implements Listener {
             plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " joined the server.");
         }
 
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            if (!player.isOnline()) {
-                return;
-            }
-
-            player.sendMessage("");
-            player.sendMessage(CC.RED + CC.B + "PvP Land is shutting down soon. Read here: https://twitter.com/PvP_Land/status/1015704134354460673");
-            player.sendMessage("");
-        }, 20L);
-
         Rank rank = profile.getRank();
 
         if (rank == Rank.MEMBER || rank == Rank.VOTER) {
-            WebUtil.getResponse(plugin, "https://api.namemc.com/server/pvp.land/votes?profile=" + player.getUniqueId(),
+            WebUtil.getResponse(plugin, "https://api.namemc.com/server/" + ServerSettings.SERVER_DOMAIN + "/votes?profile=" + player.getUniqueId(),
                     response -> {
                         switch (response) {
                             case "false":
                                 if (rank == Rank.MEMBER) {
                                     player.sendMessage("");
                                     player.sendMessage(CC.PRIMARY + "Looks like you haven't voted for PvP Land!");
-                                    player.sendMessage(CC.GREEN + "Vote here to get a free rank in-game: " + CC.SECONDARY + "https://namemc.com/server/pvp.land");
+                                    player.sendMessage(CC.GREEN + "Vote here to get a free rank in-game: " + CC.SECONDARY + "https://namemc.com/server/" + ServerSettings.SERVER_DOMAIN);
                                     player.sendMessage("");
                                 } else {
                                     Rank newRank = Rank.MEMBER;

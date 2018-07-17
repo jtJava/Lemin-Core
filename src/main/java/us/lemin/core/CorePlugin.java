@@ -114,7 +114,7 @@ public class CorePlugin extends JavaPlugin {
                 new InventoryListener(this)
         );
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new BroadcastTask(getServer()), 20 * 30L, 20 * 30L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new BroadcastTask(this), 20 * 30L, 20 * 30L);
     }
 
     @Override

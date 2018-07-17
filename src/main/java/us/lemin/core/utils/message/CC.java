@@ -23,8 +23,8 @@ public class CC {
     public static final String U = ChatColor.UNDERLINE.toString();
     public static final String S = ChatColor.STRIKETHROUGH.toString();
     public static final String R = ChatColor.RESET.toString();
-    public static final String PRIMARY = ChatColor.AQUA.toString();
-    public static final String SECONDARY = ChatColor.YELLOW.toString();
+    public static final String PRIMARY = ChatColor.YELLOW.toString();
+    public static final String SECONDARY = ChatColor.GOLD.toString();
     public static final String ACCENT = ChatColor.GOLD.toString();
     public static final String SPLITTER = "┃";
     public static final String BOARD_SEPARATOR = GRAY + S + "--------------------";
