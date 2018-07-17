@@ -60,7 +60,7 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean deploy</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
         <finalName>${project.name}</finalName>
 
         <resources>

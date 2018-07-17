@@ -57,7 +57,7 @@ public final class ProfileUtil {
             return cachedProfile;
         }
 
-        Player player = Bukkit.getPlayerExact(name);
+        Player player = Bukkit.getPlayer(name);
 
         if (player != null) {
             return cacheProfile(player.getName(), player.getUniqueId());
