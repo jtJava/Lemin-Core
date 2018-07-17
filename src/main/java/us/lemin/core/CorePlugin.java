@@ -3,8 +3,6 @@ package us.lemin.core;
 import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -51,7 +49,6 @@ import us.lemin.core.storage.database.MongoStorage;
 import us.lemin.core.storage.flatfile.Config;
 import us.lemin.core.task.BroadcastTask;
 import us.lemin.core.utils.message.CC;
-import us.lemin.core.utils.structure.Cuboid;
 
 @Getter
 public class CorePlugin extends JavaPlugin {
@@ -67,18 +64,9 @@ public class CorePlugin extends JavaPlugin {
     private PlayerManager playerManager;
     private MenuManager menuManager;
 
-    private static void registerSerializableClass(Class<?> clazz) {
-        if (ConfigurationSerializable.class.isAssignableFrom(clazz)) {
-            Class<? extends ConfigurationSerializable> serializable = clazz.asSubclass(ConfigurationSerializable.class);
-            ConfigurationSerialization.registerClass(serializable);
-        }
-    }
-
     @Override
     public void onEnable() {
         instance = this;
-
-        registerSerializableClass(Cuboid.class);
 
         serverSettings = new ServerSettings(this);
         filter = new Filter();

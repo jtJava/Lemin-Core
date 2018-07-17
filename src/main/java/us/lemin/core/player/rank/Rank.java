@@ -1,25 +1,20 @@
 package us.lemin.core.player.rank;
 
 import lombok.Getter;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.lemin.core.utils.message.CC;
 
 @Getter
 public enum Rank {
     OWNER("Owner", CC.D_RED),
-    MANAGER("Manager", CC.RED + CC.I),
-    DEV("Dev", CC.GRAY),
     ADMIN("Admin", CC.RED),
-    SENIOR_MOD("SeniorMod", CC.BLUE + CC.I),
-    MOD("Mod", CC.BLUE),
+    MOD("Mod", CC.PURPLE),
     TRIAL_MOD("TrialMod", CC.YELLOW),
     BUILDER("Builder", CC.GOLD),
-    FAMOUS("Famous", CC.PURPLE + CC.I),
-    YOUTUBER("YouTuber", CC.PURPLE),
-    EXCLUSIVE("Exclusive", "%s✸%s", CC.PINK),
-    VOTER("Voter", CC.PINK + "✔" + ChatColor.AQUA, CC.AQUA),
-    MEMBER("Member", CC.GREEN, CC.GREEN);
+    YOUTUBER("YouTuber", CC.PINK),
+    PREMIUM("Premium", "%s✸%s", CC.GREEN),
+    VOTER("Voter", CC.PRIMARY + "✔" + CC.SECONDARY, CC.AQUA),
+    MEMBER("Member", CC.WHITE, CC.WHITE);
 
     private final String name;
     private final String rawFormat;
