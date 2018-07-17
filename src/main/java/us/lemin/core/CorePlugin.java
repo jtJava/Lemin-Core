@@ -46,7 +46,6 @@ import us.lemin.core.managers.StaffManager;
 import us.lemin.core.server.ServerSettings;
 import us.lemin.core.server.filter.Filter;
 import us.lemin.core.storage.database.MongoStorage;
-import us.lemin.core.storage.flatfile.Config;
 import us.lemin.core.task.BroadcastTask;
 import us.lemin.core.utils.message.CC;
 
@@ -71,9 +70,7 @@ public class CorePlugin extends JavaPlugin {
         serverSettings = new ServerSettings(this);
         filter = new Filter();
 
-        Config coreConfig = serverSettings.getCoreConfig();
-
-        mongoStorage = new MongoStorage(coreConfig.getString("database.host"), coreConfig.getString("database.password"));
+        mongoStorage = new MongoStorage();
 
         profileManager = new ProfileManager();
         staffManager = new StaffManager(this);

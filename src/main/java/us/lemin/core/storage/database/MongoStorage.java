@@ -1,8 +1,5 @@
 package us.lemin.core.storage.database;
 
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -10,7 +7,6 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-import java.util.Collections;
 import java.util.Map;
 import org.bson.Document;
 import us.lemin.core.callback.DocumentCallback;
@@ -18,13 +14,8 @@ import us.lemin.core.callback.DocumentCallback;
 public class MongoStorage {
     private final MongoDatabase database;
 
-    public MongoStorage(String host, String password) {
-        MongoCredential credential = MongoCredential.createCredential("pvpland", "pvp_land", password.toCharArray());
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyToClusterSettings(builder -> builder.hosts(Collections.singletonList(new ServerAddress(host, 27017))))
-                .credential(credential)
-                .build();
-        MongoClient mongoClient = MongoClients.create(settings);
+    public MongoStorage() {
+        MongoClient mongoClient = MongoClients.create();
         database = mongoClient.getDatabase("pvp_land");
     }
 

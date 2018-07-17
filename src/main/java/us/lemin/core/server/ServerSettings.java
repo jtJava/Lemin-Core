@@ -25,8 +25,6 @@ public class ServerSettings {
         this.coreConfig = new Config(plugin, "core");
 
         coreConfig.addDefaults(ImmutableMap.<String, Object>builder()
-                .put("database.host", "localhost")
-                .put("database.password", "password")
                 .put("whitelist.mode", WhitelistMode.NONE.name())
                 .put("whitelist.message", CC.RED + "The server is whitelisted. Come back later!")
                 .build());
