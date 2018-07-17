@@ -39,6 +39,7 @@ import us.lemin.core.commands.impl.toggle.ToggleSoundsCommand;
 import us.lemin.core.listeners.InventoryListener;
 import us.lemin.core.listeners.MessageListener;
 import us.lemin.core.listeners.PlayerListener;
+import us.lemin.core.listeners.ServerListener;
 import us.lemin.core.managers.MenuManager;
 import us.lemin.core.managers.PlayerManager;
 import us.lemin.core.managers.ProfileManager;
@@ -111,7 +112,8 @@ public class CorePlugin extends JavaPlugin {
         registerListeners(
                 new PlayerListener(this),
                 new MessageListener(this),
-                new InventoryListener(this)
+                new InventoryListener(this),
+                new ServerListener(serverSettings.getCoreConfig())
         );
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new BroadcastTask(this), 20 * 30L, 20 * 30L);

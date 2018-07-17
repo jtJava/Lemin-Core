@@ -22,7 +22,7 @@ public enum Rank {
     private final String color;
 
     Rank(String name, String color) {
-        this(name, CC.D_GRAY + "[%s" + name + CC.D_GRAY + "]%s" + " ", color);
+        this(name, CC.GRAY + "[%s" + name + CC.GRAY + "]%s" + " ", color);
     }
 
     Rank(String name, String rawFormat, String color) {

@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import us.lemin.core.CorePlugin;
 import us.lemin.core.storage.flatfile.Config;
 import us.lemin.core.task.ShutdownTask;
-import us.lemin.core.utils.message.CC;
 
 @Getter
 public class ServerSettings {
@@ -27,14 +27,16 @@ public class ServerSettings {
         this.coreConfig = new Config(plugin, "core");
 
         coreConfig.addDefaults(ImmutableMap.<String, Object>builder()
-                .put("broadcasts", Arrays.asList("1", "2", "3"))
+                .put("server.motd", "Minecraft Server")
+                .put("server.max-players", 1000)
+                .put("server.broadcasts", Arrays.asList("1", "2", "3"))
                 .put("whitelist.mode", WhitelistMode.NONE.name())
-                .put("whitelist.message", CC.RED + "The server is whitelisted. Come back later!")
+                .put("whitelist.message", "&cThe server is whitelisted. Come back later!")
                 .build());
         coreConfig.copyDefaults();
 
         this.serverWhitelistMode = WhitelistMode.valueOf(coreConfig.getString("whitelist.mode"));
-        this.whitelistMessage = coreConfig.getString("whitelist.message");
+        this.whitelistMessage = ChatColor.translateAlternateColorCodes('&', coreConfig.getString("whitelist.message"));
     }
 
     public void saveConfig() {

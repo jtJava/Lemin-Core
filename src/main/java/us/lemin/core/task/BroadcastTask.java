@@ -1,6 +1,8 @@
 package us.lemin.core.task;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import us.lemin.core.CorePlugin;
 import us.lemin.core.utils.message.CC;
@@ -11,7 +13,9 @@ public class BroadcastTask implements Runnable {
     private int currentIndex = -1;
 
     public BroadcastTask(CorePlugin plugin) {
-        this.broadcasts = plugin.getServerSettings().getCoreConfig().getStringList("broadcasts");
+        List<String> broadcasts = new ArrayList<>();
+        plugin.getServerSettings().getCoreConfig().getStringList("server.broadcasts").forEach(s -> broadcasts.add(ChatColor.translateAlternateColorCodes('&', s)));
+        this.broadcasts = broadcasts;
         this.server = plugin.getServer();
     }
 
@@ -28,7 +32,7 @@ public class BroadcastTask implements Runnable {
         String message = broadcasts.get(currentIndex);
 
         server.broadcastMessage("");
-        server.broadcastMessage(CC.SECONDARY + "[LeminBot] " + CC.PRIMARY + message);
+        server.broadcastMessage(CC.GRAY + "(" + CC.PRIMARY + "Lemin" + CC.GRAY + ")" + CC.PRIMARY + message);
         server.broadcastMessage("");
     }
 }
