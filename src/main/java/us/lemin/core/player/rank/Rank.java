@@ -14,7 +14,7 @@ public enum Rank {
     BUILDER("Builder", CC.GOLD),
     YOUTUBER("YouTuber", CC.PINK),
     PREMIUM("Premium", "%s✸%s", CC.GREEN),
-    VOTER("Voter", CC.PRIMARY + "✔" + CC.SECONDARY, CC.WHITE),
+    VOTER("Voter", CC.D_GREEN + "✔" + CC.GREEN, CC.GREEN),
     MEMBER("Member", CC.WHITE, CC.WHITE);
 
     private final String name;

@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 public class CC {
     public static final String WHITE = ChatColor.WHITE.toString();
     public static final String GREEN = ChatColor.GREEN.toString();
+    public static final String D_GREEN = ChatColor.DARK_GREEN.toString();
     public static final String RED = ChatColor.RED.toString();
     public static final String D_RED = ChatColor.DARK_RED.toString();
     public static final String GRAY = ChatColor.GRAY.toString();
