@@ -42,10 +42,9 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-
         CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
-        if (profile.getReportingPlayerName() != null) {
+        if (profile != null && profile.getReportingPlayerName() != null) {
             profile.setReportingPlayerName(null);
         }
     }

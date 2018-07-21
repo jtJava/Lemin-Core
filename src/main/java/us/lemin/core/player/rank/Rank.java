@@ -7,13 +7,14 @@ import us.lemin.core.utils.message.CC;
 @Getter
 public enum Rank {
     OWNER("Owner", CC.D_RED),
+    DEV("Dev", CC.AQUA),
     ADMIN("Admin", CC.RED),
     MOD("Mod", CC.PURPLE),
     TRIAL_MOD("TrialMod", CC.YELLOW),
     BUILDER("Builder", CC.GOLD),
     YOUTUBER("YouTuber", CC.PINK),
     PREMIUM("Premium", "%s✸%s", CC.GREEN),
-    VOTER("Voter", CC.PRIMARY + "✔" + CC.SECONDARY, CC.AQUA),
+    VOTER("Voter", CC.PRIMARY + "✔" + CC.SECONDARY, CC.WHITE),
     MEMBER("Member", CC.WHITE, CC.WHITE);
 
     private final String name;
@@ -22,7 +23,7 @@ public enum Rank {
     private final String color;
 
     Rank(String name, String color) {
-        this(name, CC.GRAY + "[%s" + name + CC.GRAY + "]%s" + " ", color);
+        this(name, CC.GRAY + "(%s" + name + CC.GRAY + ")%s" + " ", color);
     }
 
     Rank(String name, String rawFormat, String color) {

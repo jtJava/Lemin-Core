@@ -2,6 +2,7 @@ package us.lemin.core.commands.impl;
 
 import org.bukkit.command.CommandSender;
 import us.lemin.core.commands.BaseCommand;
+import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.player.PlayerList;
 
 public class ListCommand extends BaseCommand {
@@ -14,7 +15,8 @@ public class ListCommand extends BaseCommand {
     protected void execute(CommandSender sender, String[] args) {
         PlayerList onlinePlayerList = PlayerList.newList().sortedByRank();
 
-        sender.sendMessage(onlinePlayerList.asColoredNames() + " (" + onlinePlayerList.size() + ")");
-        sender.sendMessage(PlayerList.ORDERED_RANKS);
+        sender.sendMessage(CC.PRIMARY + "Players online " + CC.SECONDARY + "(" + onlinePlayerList.size() + ")"
+                + CC.PRIMARY + ": " + onlinePlayerList.asColoredNames());
+        sender.sendMessage(CC.PRIMARY + "Ranks: " + PlayerList.ORDERED_RANKS);
     }
 }

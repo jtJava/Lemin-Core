@@ -1,7 +1,5 @@
 package us.lemin.core.utils.player;
 
-import java.util.UUID;
-import java.util.function.Consumer;
 import lombok.experimental.UtilityClass;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
@@ -39,19 +37,5 @@ public class PlayerUtil {
         player.getInventory().setArmorContents(null);
         player.setItemOnCursor(null);
         player.updateInventory();
-    }
-
-    public static void runActionIfPlayerExists(UUID id, Consumer<Player> playerConsumer) {
-        runPlayerAction(Bukkit.getPlayer(id), playerConsumer);
-    }
-
-    public static void runActionIfPlayerExists(String name, Consumer<Player> playerConsumer) {
-        runPlayerAction(Bukkit.getPlayer(name), playerConsumer);
-    }
-
-    private static void runPlayerAction(Player player, Consumer<Player> playerConsumer) {
-        if (player != null && player.isOnline()) {
-            playerConsumer.accept(player);
-        }
     }
 }

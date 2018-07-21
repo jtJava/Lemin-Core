@@ -28,5 +28,5 @@ public class CC {
     public static final String ACCENT = ChatColor.GOLD.toString();
     public static final String SPLITTER = "┃";
     public static final String BOARD_SEPARATOR = GRAY + S + "--------------------";
-    public static final String SEPARATOR = GRAY + S + "-------------------------------------";
+    public static final String SEPARATOR = GRAY + S + "------------------------------------";
 }
