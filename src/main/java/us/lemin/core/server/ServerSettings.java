@@ -24,7 +24,7 @@ public class ServerSettings {
     private int slowChatTime = -1;
 
     public ServerSettings(CorePlugin plugin) {
-        this.coreConfig = new Config(plugin, "core");
+        this.coreConfig = new Config(plugin, "config");
 
         coreConfig.addDefaults(ImmutableMap.<String, Object>builder()
                 .put("server.motd", "Minecraft Server")
