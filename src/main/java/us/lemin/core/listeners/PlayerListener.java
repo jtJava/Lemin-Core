@@ -2,7 +2,6 @@ package us.lemin.core.listeners;
 
 import java.util.Iterator;
 import lombok.RequiredArgsConstructor;
-import org.bson.Document;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +21,6 @@ import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.server.ServerSettings;
-import us.lemin.core.storage.database.MongoStorage;
 import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.time.TimeUtil;
@@ -37,40 +35,16 @@ public class PlayerListener implements Listener {
     };
     private final CorePlugin plugin;
 
-    private boolean isNotBanned(Document document, AsyncPlayerPreLoginEvent event) {
-        if (document != null && document.getBoolean("banned") != null && document.getBoolean("banned")) {
-            long expiry = document.getLong("ban_expiry");
-            long difference = expiry - System.currentTimeMillis();
-
-            if (expiry == -1L || difference > 0) {
-                String formattedDifference = TimeUtil.formatTimeMillis(difference);
-                String kickMessage = expiry == -1L ? Messages.BANNED_PERMANENTLY : String.format(Messages.BANNED_TEMPORARILY, formattedDifference);
-
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, kickMessage);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
         if (plugin.getPlayerManager().isNameOnline(event.getName()) || plugin.getPlayerManager().getOnlineByIp(event.getAddress()) > 3) {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, CC.RED + "You're already online!");
         } else if (event.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            MongoStorage storage = plugin.getMongoStorage();
+            CoreProfile profile = plugin.getProfileManager().createProfile(event.getName(), event.getUniqueId(), event.getAddress().getHostAddress());
+            ServerSettings serverSettings = plugin.getServerSettings();
 
-            boolean notBannedById = isNotBanned(storage.getDocument("punished_ids", event.getUniqueId()), event);
-            boolean notBannedByIp = isNotBanned(storage.getDocument("punished_addresses", event.getAddress().getHostAddress()), event);
-
-            if (notBannedById && notBannedByIp) {
-                CoreProfile profile = plugin.getProfileManager().createProfile(event.getName(), event.getUniqueId(), event.getAddress().getHostAddress());
-                ServerSettings serverSettings = plugin.getServerSettings();
-
-                if (serverSettings.getServerWhitelistMode().isProfileIneligible(profile)) {
-                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, serverSettings.getWhitelistMessage());
-                }
+            if (serverSettings.getServerWhitelistMode().isProfileIneligible(profile)) {
+                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, serverSettings.getWhitelistMessage());
             }
         }
     }

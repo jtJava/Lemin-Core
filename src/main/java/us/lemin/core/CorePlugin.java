@@ -27,12 +27,6 @@ import us.lemin.core.commands.impl.staff.StaffChatCommand;
 import us.lemin.core.commands.impl.staff.TeleportCommand;
 import us.lemin.core.commands.impl.staff.VanishCommand;
 import us.lemin.core.commands.impl.staff.WhitelistCommand;
-import us.lemin.core.commands.impl.staff.punish.BanCommand;
-import us.lemin.core.commands.impl.staff.punish.KickCommand;
-import us.lemin.core.commands.impl.staff.punish.MuteCommand;
-import us.lemin.core.commands.impl.staff.punish.PunishmentInfoCommand;
-import us.lemin.core.commands.impl.staff.punish.UnbanCommand;
-import us.lemin.core.commands.impl.staff.punish.UnmuteCommand;
 import us.lemin.core.commands.impl.toggle.ToggleGlobalChat;
 import us.lemin.core.commands.impl.toggle.ToggleMessagesCommand;
 import us.lemin.core.commands.impl.toggle.ToggleSoundsCommand;
@@ -95,12 +89,6 @@ public class CorePlugin extends JavaPlugin {
                 new ReportCommand(this),
                 new HelpOpCommand(this),
                 new PingCommand(),
-                new BanCommand(this),
-                new MuteCommand(this),
-                new UnbanCommand(this),
-                new UnmuteCommand(this),
-                new KickCommand(this),
-                new PunishmentInfoCommand(this),
                 new MuteChatCommand(this),
                 new SlowChatCommand(this),
                 new GameModeCommand(),
