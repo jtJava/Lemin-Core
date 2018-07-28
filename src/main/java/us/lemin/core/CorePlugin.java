@@ -106,7 +106,7 @@ public class CorePlugin extends JavaPlugin {
                 new ServerListener(serverSettings.getCoreConfig())
         );
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new BroadcastTask(this), 20 * 30L, 20 * 30L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new BroadcastTask(this), 20L * 60 * 2, 20L * 60L * 2);
     }
 
     @Override

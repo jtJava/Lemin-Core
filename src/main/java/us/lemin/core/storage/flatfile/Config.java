@@ -60,6 +60,10 @@ public class Config {
         return delegate.contains(path);
     }
 
+    public Object get(String path) {
+        return delegate.get(path);
+    }
+
     public int getInt(String path) {
         return delegate.getInt(path);
     }
