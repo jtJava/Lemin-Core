@@ -11,6 +11,7 @@ import us.lemin.core.commands.impl.ClearChatCommand;
 import us.lemin.core.commands.impl.ColorCommand;
 import us.lemin.core.commands.impl.HelpOpCommand;
 import us.lemin.core.commands.impl.IgnoreCommand;
+import us.lemin.core.commands.impl.LinksCommand;
 import us.lemin.core.commands.impl.ListCommand;
 import us.lemin.core.commands.impl.MessageCommand;
 import us.lemin.core.commands.impl.PingCommand;
@@ -95,7 +96,8 @@ public class CorePlugin extends JavaPlugin {
                 new ColorCommand(this),
                 new ShutdownCommand(this),
                 new FreezeCommand(),
-                new WhitelistCommand(this)
+                new WhitelistCommand(this),
+                new LinksCommand()
         );
         registerListeners(
                 new PlayerListener(this),

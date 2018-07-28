@@ -10,11 +10,11 @@ public enum Rank {
     DEV("Dev", CC.AQUA),
     ADMIN("Admin", CC.RED),
     MOD("Mod", CC.PURPLE),
-    TRIAL_MOD("TrialMod", CC.YELLOW),
+    TRIAL_MOD("Trial Mod", CC.YELLOW),
     BUILDER("Builder", CC.GOLD),
     YOUTUBER("YouTuber", CC.PINK),
     PREMIUM("Premium", "%s✸%s", CC.GREEN),
-    VOTER("Voter", CC.D_GREEN + "✔" + CC.GREEN, CC.GREEN),
+    VOTER("Voter", CC.D_GREEN + "✔" + CC.GREEN, CC.D_GREEN),
     MEMBER("Member", CC.WHITE, CC.WHITE);
 
     private final String name;
@@ -35,7 +35,7 @@ public enum Rank {
 
     public static Rank getByName(String name) {
         for (Rank rank : values()) {
-            if (rank.getName().equalsIgnoreCase(name)) {
+            if (rank.name().equalsIgnoreCase(name)) {
                 return rank;
             }
         }

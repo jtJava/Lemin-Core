@@ -64,7 +64,7 @@ public class CoreProfile {
                 this.messaging = document.getBoolean("messaging_enabled", messaging);
                 this.playingSounds = document.getBoolean("playing_sounds", playingSounds);
 
-                String rankName = document.get("rank_name", rank.getName());
+                String rankName = document.get("rank_name", rank.name());
                 Rank rank = Rank.getByName(rankName);
 
                 if (rank != null) {

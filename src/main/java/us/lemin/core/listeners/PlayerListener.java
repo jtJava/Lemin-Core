@@ -73,11 +73,10 @@ public class PlayerListener implements Listener {
         Rank rank = profile.getRank();
 
         rank.apply(player);
-
         profile.getColorPair().apply(player);
 
         if (profile.hasStaff()) {
-            plugin.getStaffManager().addCachedStaff(profile);
+            plugin.getStaffManager().addCachedStaff(player.getUniqueId());
         }
     }
 
@@ -100,14 +99,14 @@ public class PlayerListener implements Listener {
         Rank rank = profile.getRank();
 
         if (rank == Rank.MEMBER || rank == Rank.VOTER) {
-            WebUtil.getResponse(plugin, "https://api.namemc.com/server/" + ServerSettings.SERVER_DOMAIN + "/votes?profile=" + player.getUniqueId(),
+            WebUtil.getResponse(plugin, "https://api.namemc.com/server/lemin.us/votes?profile=" + player.getUniqueId(),
                     response -> {
                         switch (response) {
                             case "false":
                                 if (rank == Rank.MEMBER) {
                                     player.sendMessage("");
-                                    player.sendMessage(CC.PRIMARY + "Looks like you haven't voted for PvP Land!");
-                                    player.sendMessage(CC.GREEN + "Vote here to get a free rank in-game: " + CC.SECONDARY + "https://namemc.com/server/" + ServerSettings.SERVER_DOMAIN);
+                                    player.sendMessage(CC.PRIMARY + "Looks like you haven't voted for Lemin!");
+                                    player.sendMessage(CC.GREEN + "Vote here to get a free rank in-game: " + CC.YELLOW + "https://namemc.com/server/lemin.us");
                                     player.sendMessage("");
                                 } else {
                                     Rank newRank = Rank.MEMBER;
@@ -141,7 +140,7 @@ public class PlayerListener implements Listener {
         }
 
         if (profile.hasStaff()) {
-            plugin.getStaffManager().removeCachedStaff(profile);
+            plugin.getStaffManager().removeCachedStaff(player.getUniqueId());
             plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " left the server.");
         }
 
@@ -300,11 +299,11 @@ public class PlayerListener implements Listener {
         profile.setRank(newRank);
 
         if (profile.hasStaff()) {
-            if (!plugin.getStaffManager().isInStaffCache(profile)) {
-                plugin.getStaffManager().addCachedStaff(profile);
+            if (!plugin.getStaffManager().isInStaffCache(player.getUniqueId())) {
+                plugin.getStaffManager().addCachedStaff(player.getUniqueId());
             }
-        } else if (plugin.getStaffManager().isInStaffCache(profile)) {
-            plugin.getStaffManager().removeCachedStaff(profile);
+        } else if (plugin.getStaffManager().isInStaffCache(player.getUniqueId())) {
+            plugin.getStaffManager().removeCachedStaff(player.getUniqueId());
         }
 
         newRank.apply(player);

@@ -2,6 +2,7 @@ package us.lemin.core.managers;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
@@ -13,19 +14,19 @@ import us.lemin.core.utils.message.CC;
 @RequiredArgsConstructor
 public class StaffManager {
     @Getter
-    private final Set<CoreProfile> cachedStaff = new HashSet<>();
+    private final Set<UUID> staffIds = new HashSet<>();
     private final CorePlugin plugin;
 
-    public void addCachedStaff(CoreProfile profile) {
-        cachedStaff.add(profile);
+    public void addCachedStaff(UUID id) {
+        staffIds.add(id);
     }
 
-    public boolean isInStaffCache(CoreProfile profile) {
-        return cachedStaff.contains(profile);
+    public boolean isInStaffCache(UUID id) {
+        return staffIds.contains(id);
     }
 
-    public void removeCachedStaff(CoreProfile profile) {
-        cachedStaff.remove(profile);
+    public void removeCachedStaff(UUID id) {
+        staffIds.remove(id);
     }
 
     public void messageStaff(String displayName, String msg) {
@@ -34,8 +35,10 @@ public class StaffManager {
     }
 
     public void messageStaff(Rank requiredRank, String msg) {
-        for (CoreProfile profile : cachedStaff) {
-            if (profile.hasRank(requiredRank)) {
+        for (UUID id : staffIds) {
+            CoreProfile profile = plugin.getProfileManager().getProfile(id);
+
+            if (profile != null && profile.hasRank(requiredRank)) {
                 Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
 
                 if (loopPlayer != null && loopPlayer.isOnline()) {
@@ -45,32 +48,20 @@ public class StaffManager {
         }
     }
 
-    public void messageStaffWithPrefix(String msg) {
-        msg = CC.GREEN + "[Staff] " + msg;
-
-        for (CoreProfile profile : cachedStaff) {
-            Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
-
-            if (loopPlayer != null && loopPlayer.isOnline()) {
-                loopPlayer.sendMessage(msg);
-            }
-        }
+    public void messageStaff(String msg) {
+        messageStaff(Rank.MEMBER, msg);
     }
 
-    public void messageStaff(String msg) {
-        for (CoreProfile profile : cachedStaff) {
-            Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
-
-            if (loopPlayer != null && loopPlayer.isOnline()) {
-                loopPlayer.sendMessage(msg);
-            }
-        }
+    public void messageStaffWithPrefix(String msg) {
+        messageStaff(CC.GREEN + "[Staff] " + msg);
     }
 
     public void hideVanishedStaffFromPlayer(Player player) {
         if (!plugin.getProfileManager().getProfile(player.getUniqueId()).hasStaff()) {
-            for (CoreProfile profile : cachedStaff) {
-                if (profile.isVanished()) {
+            for (UUID id : staffIds) {
+                CoreProfile profile = plugin.getProfileManager().getProfile(id);
+
+                if (profile != null && profile.isVanished()) {
                     Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
 
                     if (loopPlayer != null && loopPlayer.isOnline()) {
