@@ -1,6 +1,9 @@
 package us.lemin.core;
 
 import lombok.Getter;
+import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDABuilder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
@@ -105,7 +108,7 @@ public class CorePlugin extends JavaPlugin {
                 new InventoryListener(this),
                 new ServerListener(serverSettings.getCoreConfig())
         );
-
+        registerDiscordBot();
         getServer().getScheduler().runTaskTimerAsynchronously(this, new BroadcastTask(this), 20L * 60 * 2, 20L * 60L * 2);
     }
 
@@ -132,6 +135,16 @@ public class CorePlugin extends JavaPlugin {
 
         for (Listener listener : listeners) {
             pluginManager.registerEvents(listener, this);
+        }
+    }
+
+    private void registerDiscordBot() {
+        try {
+            JDA jda = new JDABuilder(AccountType.BOT).setToken("NDc0ODQ2MTYzMjYzMDI5MjU3.DkWayw.UqdP3DwM5-FhvEfqfUPm5DEqhvM")
+                    .addEventListener(new us.lemin.core.discord.listeners.MessageListener())
+                    .buildBlocking();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }

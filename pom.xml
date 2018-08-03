@@ -36,9 +36,15 @@
             <id>lemin-snapshots</id>
             <url>${snapshot.url}</url>
         </repository>
+        <repository>
+            <id>jcenter</id>
+            <name>jcenter-bintray</name>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
     </repositories>
 
     <dependencies>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -56,6 +62,11 @@
             <artifactId>mongodb-driver-sync</artifactId>
             <version>3.8.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>3.7.1_387</version>
         </dependency>
     </dependencies>
 
