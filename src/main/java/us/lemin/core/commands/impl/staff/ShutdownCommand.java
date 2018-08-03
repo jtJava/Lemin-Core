@@ -37,6 +37,7 @@ public class ShutdownCommand extends BaseCommand {
                 plugin.getServer().getPluginManager().callEvent(new ServerShutdownCancelEvent());
 
                 task.cancel();
+
                 plugin.getServerSettings().setShutdownTask(null);
                 plugin.getServer().broadcastMessage(CC.GREEN + "The shutdown in progress has been cancelled by " + sender.getName() + ".");
             }
