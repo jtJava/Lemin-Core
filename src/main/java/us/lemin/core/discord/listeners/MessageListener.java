@@ -11,8 +11,6 @@ import java.util.HashMap;
 
 public class MessageListener extends ListenerAdapter {
 
-    private HashMap<String, Long> commandCooldowns = new HashMap<>();
-
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
@@ -20,8 +18,7 @@ public class MessageListener extends ListenerAdapter {
             String command = message[0];
             switch (command) {
                 case "ban":
-                    String bannedId = new StringBuilder(message[1]).delete(0, 1).deleteCharAt(message[1].length()).toString();
-                    String bannedIdMention = event.getJDA().getUserById(bannedId).getAsMention();
+                    String bannedId = event.getMessage().getMentionedUsers().get(0).getId();
                     String bannedReason = message[2];
                     event.getChannel().sendMessage(new BanEmbed(event.getJDA().getUserById(bannedId).getAsMention(),
                             event.getAuthor().getAsMention()).build()).queue();
@@ -34,7 +31,7 @@ public class MessageListener extends ListenerAdapter {
                     break;
                 case "mute":
                     Role muted = event.getGuild().getRoleById("474776391678689280");
-                    String mutedId = new StringBuilder(message[1]).delete(0, 1).deleteCharAt(message[1].length()).toString();
+                    String mutedId = event.getMessage().getMentionedUsers().get(0).getId();
                     String mutedReason = message[2];
                     event.getChannel().sendMessage(new BanEmbed(event.getJDA().getUserById(mutedId).getAsMention(),
                             event.getAuthor().getAsMention()).build()).queue();
@@ -42,9 +39,5 @@ public class MessageListener extends ListenerAdapter {
                     break;
             }
         }
-    }
-
-    private boolean onCooldown(String user) {
-        return System.currentTimeMillis() - commandCooldowns.get(user) > 2000;
     }
 }
