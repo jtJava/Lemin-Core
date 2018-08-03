@@ -87,12 +87,10 @@ public class ColorCommand extends PlayerCommand {
             switch (arg) {
                 case "primary":
                     customPair.setPrimary(matchedColor);
-                    customPair.apply(player);
                     player.sendMessage(CC.GREEN + "Set primary color to " + matchedColor + getColorName(matchedColor) + CC.GREEN + ".");
                     break;
                 case "secondary":
                     customPair.setSecondary(matchedColor);
-                    customPair.apply(player);
                     player.sendMessage(CC.GREEN + "Set secondary color to " + matchedColor + getColorName(matchedColor) + CC.GREEN + ".");
                     break;
                 default:
@@ -109,7 +107,6 @@ public class ColorCommand extends PlayerCommand {
 
             customPair.setPrimary(matchedPair.getPrimary());
             customPair.setSecondary(matchedPair.getSecondary());
-            customPair.apply(player);
 
             player.sendMessage(CC.GREEN + "Set your colors to " + customPair.getPrimary() + getColorName(customPair.getPrimary()) + " (primary)"
                     + CC.GREEN + " and " + customPair.getSecondary() + getColorName(customPair.getSecondary()) + " (secondary)" + CC.GREEN + ".");

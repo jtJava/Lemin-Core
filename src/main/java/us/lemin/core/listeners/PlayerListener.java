@@ -73,7 +73,6 @@ public class PlayerListener implements Listener {
         Rank rank = profile.getRank();
 
         rank.apply(player);
-        profile.getColorPair().apply(player);
 
         if (profile.hasStaff()) {
             plugin.getStaffManager().addCachedStaff(player.getUniqueId());
@@ -310,8 +309,6 @@ public class PlayerListener implements Listener {
 
         if (newRank == Rank.MEMBER) {
             profile.setColorPair(new CustomColorPair());
-        } else {
-            profile.getColorPair().apply(player);
         }
 
         player.sendMessage(CC.GREEN + "You now have the " + newRank.getColor() + newRank.getName() + CC.GREEN + " rank!");
