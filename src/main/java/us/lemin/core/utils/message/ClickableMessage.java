@@ -1,17 +1,14 @@
 package us.lemin.core.utils.message;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClickableMessage {
     private final List<TextComponent> components = new ArrayList<>();
@@ -89,7 +86,7 @@ public class ClickableMessage {
     }
 
     public void sendToPlayer(Player player) {
-        player.sendMessage(components.toArray(new BaseComponent[0]));
+        player.spigot().sendMessage(components.toArray(new BaseComponent[0]));
     }
 
     public void broadcast() {

@@ -15,7 +15,7 @@ public class LinksCommand extends BaseCommand {
         sender.sendMessage(CC.SEPARATOR);
         sender.sendMessage(CC.SECONDARY + "Server Links");
         sender.sendMessage(CC.PRIMARY + "Twitter: " + CC.SECONDARY + "https://twitter.com/LeminNetwork");
-        sender.sendMessage(CC.PRIMARY + "Discord: " + CC.SECONDARY + "https://discord.gg/4bTHT7D");
+        sender.sendMessage(CC.PRIMARY + "Discord: " + CC.SECONDARY + "https://discord.gg/xxNxyAy");
         sender.sendMessage(CC.SEPARATOR);
     }
 }

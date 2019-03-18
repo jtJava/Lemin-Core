@@ -15,7 +15,7 @@ public abstract class PlayerCommand extends BaseCommand {
     }
 
     @Override
-    protected final void execute(CommandSender sender, String[] args) {
+    protected void execute(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             execute((Player) sender, args);
         } else {

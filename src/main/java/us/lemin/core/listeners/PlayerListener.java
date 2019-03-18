@@ -1,19 +1,12 @@
 package us.lemin.core.listeners;
 
-import java.util.Iterator;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.permissions.PermissionAttachment;
 import us.lemin.core.CorePlugin;
 import us.lemin.core.event.player.PlayerRankChangeEvent;
@@ -27,11 +20,18 @@ import us.lemin.core.utils.time.TimeUtil;
 import us.lemin.core.utils.timer.Timer;
 import us.lemin.core.utils.web.WebUtil;
 
+import java.util.Iterator;
+
 @RequiredArgsConstructor
 public class PlayerListener implements Listener {
     private static final String[] DISALLOWED_PERMISSIONS = {
-            "bukkit.command.version", "bukkit.command.plugins", "bukkit.command.help", "bukkit.command.tps",
+            "bukkit.command.version", "bukkit.command.plugins", "bukkit.command.help",
             "minecraft.command.tell", "minecraft.command.me", "minecraft.command.help"
+    };
+    private static final String[] STAFF_PERMISSION = {
+            "litebans.ban", "litebans.tempban", "litebans.ipban", "litebans.mute",
+            "litebans.tempmute", "litebans.ipmute", "litebans.override", "litebans.group.unlimited", "litebans.unban",
+            "litebans.unmute", "litebans.kick", "litebans.checkban", "litebans.checkmute"
     };
     private final CorePlugin plugin;
 
@@ -70,9 +70,16 @@ public class PlayerListener implements Listener {
             }
         }
 
+        if (profile.getRank() == Rank.MEMBER) profile.setRank(Rank.PREMIUM);
         Rank rank = profile.getRank();
 
         rank.apply(player);
+
+        if (profile.hasRank(Rank.TRIAL_MOD)) {
+            for (String permission : STAFF_PERMISSION) {
+                attachment.setPermission(permission, true);
+            }
+        }
 
         if (profile.hasStaff()) {
             plugin.getStaffManager().addCachedStaff(player.getUniqueId());
@@ -84,6 +91,7 @@ public class PlayerListener implements Listener {
         event.setJoinMessage(null);
 
         Player player = event.getPlayer();
+
 
         plugin.getPlayerManager().addPlayer(player);
 
@@ -137,7 +145,7 @@ public class PlayerListener implements Listener {
         if (profile == null) {
             return;
         }
-
+        if (profile.getRank() == Rank.PREMIUM) profile.setRank(Rank.MEMBER);
         if (profile.hasStaff()) {
             plugin.getStaffManager().removeCachedStaff(player.getUniqueId());
             plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " left the server.");

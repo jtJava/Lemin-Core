@@ -1,19 +1,21 @@
-package us.lemin.core.utils;
+package us.lemin.core.utils.profile;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @UtilityClass
 public final class ProfileUtil {
@@ -49,7 +51,18 @@ public final class ProfileUtil {
 
         return null;
     }
-
+    public static void lookupProfileAsync(JavaPlugin plugin, UUID uuid, ProfileLookupCallback callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            MojangProfile profile = lookupProfile(uuid);
+            callback.callBack(profile, profile != null);
+        });
+    }
+    public static void lookupProfileAsync(JavaPlugin plugin, String name, ProfileLookupCallback callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            MojangProfile profile = lookupProfile(name);
+            callback.callBack(profile, profile != null);
+        });
+    }
     public static MojangProfile lookupProfile(String name) {
         MojangProfile cachedProfile = ID_CACHE.getIfPresent(name.toLowerCase());
 

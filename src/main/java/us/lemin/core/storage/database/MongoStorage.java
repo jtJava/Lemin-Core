@@ -1,15 +1,12 @@
 package us.lemin.core.storage.database;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-import java.util.Map;
 import org.bson.Document;
 import us.lemin.core.callback.DocumentCallback;
+
+import java.util.Map;
 
 public class MongoStorage {
     private final MongoDatabase database;
@@ -46,6 +43,11 @@ public class MongoStorage {
     public Document getDocument(String collectionName, Object documentObject) {
         MongoCollection<Document> collection = database.getCollection(collectionName);
         return collection.find(Filters.eq("_id", documentObject)).first();
+    }
+
+    public void deleteDocument(String collectionName, Object documentObject) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        collection.findOneAndDelete(Filters.eq("_id", documentObject));
     }
 
     public void updateDocument(String collectionName, Object documentObject, String key, Object newValue) {

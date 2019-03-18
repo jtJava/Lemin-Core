@@ -12,7 +12,7 @@ public enum Rank {
     MOD("Mod", CC.PURPLE),
     TRIAL_MOD("Trial Mod", CC.YELLOW),
     BUILDER("Builder", CC.GOLD),
-    YOUTUBER("YouTuber", CC.PINK),
+    YOUTUBER("YouTuber", CC.PINK + CC.I),
     PREMIUM("Premium", "%s✸%s", CC.GREEN),
     VOTER("Voter", CC.D_GREEN + "✔" + CC.GREEN, CC.D_GREEN),
     MEMBER("Member", CC.WHITE, CC.WHITE);
@@ -21,6 +21,7 @@ public enum Rank {
     private final String rawFormat;
     private final String format;
     private final String color;
+
 
     Rank(String name, String color) {
         this(name, CC.GRAY + "(%s" + name + CC.GRAY + ")%s" + " ", color);
@@ -45,8 +46,7 @@ public enum Rank {
 
     public void apply(Player player) {
         String coloredName = color + player.getName();
-
-        player.setPlayerListName(coloredName);
         player.setDisplayName(coloredName);
     }
+
 }

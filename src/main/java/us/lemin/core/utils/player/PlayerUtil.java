@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 @UtilityClass
 public class PlayerUtil {
@@ -27,6 +28,7 @@ public class PlayerUtil {
         player.setHealth(player.getMaxHealth());
         player.setMaximumNoDamageTicks(20);
         player.setFallDistance(0.0F);
+        player.setWalkSpeed(.2F);
         player.setFoodLevel(20);
         player.setSaturation(5.0F);
         player.setFireTicks(0);
@@ -37,5 +39,13 @@ public class PlayerUtil {
         player.getInventory().setArmorContents(null);
         player.setItemOnCursor(null);
         player.updateInventory();
+    }
+
+    public static int getPing(Player player) {
+        return ((CraftPlayer) player).getHandle().ping;
+    }
+
+    public static boolean hasEffect(Player player, PotionEffectType type) {
+        return player.getActivePotionEffects().stream().anyMatch(effect -> effect.getType().equals(type));
     }
 }

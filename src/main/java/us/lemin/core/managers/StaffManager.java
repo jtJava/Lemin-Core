@@ -1,8 +1,5 @@
 package us.lemin.core.managers;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
@@ -10,6 +7,10 @@ import us.lemin.core.CorePlugin;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class StaffManager {
@@ -60,13 +61,17 @@ public class StaffManager {
         if (!plugin.getProfileManager().getProfile(player.getUniqueId()).hasStaff()) {
             for (UUID id : staffIds) {
                 CoreProfile profile = plugin.getProfileManager().getProfile(id);
-
-                if (profile != null && profile.isVanished()) {
+                if (profile == null) {
+                    return;
+                }
+                if (profile.isVanished()) {
                     Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
-
                     if (loopPlayer != null && loopPlayer.isOnline()) {
                         player.hidePlayer(loopPlayer);
                     }
+                } else {
+                    Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
+
                 }
             }
         }

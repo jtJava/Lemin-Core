@@ -25,7 +25,7 @@ public class BroadcastCommand extends BaseCommand {
             return;
         }
 
-        String message = CC.SECONDARY + "[Alert] " + CC.PRIMARY
+        String message = CC.SECONDARY + "(Alert) " + CC.PRIMARY
                 + ChatColor.translateAlternateColorCodes('&', StringUtil.buildString(args, 0)).trim();
 
         if (message.endsWith(" -god")) {

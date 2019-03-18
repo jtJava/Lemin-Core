@@ -16,35 +16,18 @@
         <full.version>${project.version}-${maven.build.timestamp}</full.version>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>lemin-releases</id>
-            <url>${release.url}</url>
-        </repository>
-        <snapshotRepository>
-            <id>lemin-snapshots</id>
-            <url>${snapshot.url}</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <repositories>
         <repository>
-            <id>lemin-releases</id>
-            <url>${release.url}</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
         </repository>
         <repository>
-            <id>lemin-snapshots</id>
-            <url>${snapshot.url}</url>
-        </repository>
-        <repository>
-            <id>jcenter</id>
-            <name>jcenter-bintray</name>
-            <url>http://jcenter.bintray.com</url>
+            <id>spigotmc-public</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
     <dependencies>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -52,21 +35,25 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>us.lemin.leminspigot</groupId>
-            <artifactId>leminspigot</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>
+                C:/Users/Jaden/IdeaProjects/PaperSpigot/PaperSpigot-Server/target/paperspigot-1.8.8-R0.1-SNAPSHOT.jar
+            </systemPath>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>3.8.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>3.7.1_387</version>
         </dependency>
     </dependencies>
 

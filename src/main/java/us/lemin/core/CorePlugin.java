@@ -1,36 +1,14 @@
 package us.lemin.core;
 
 import lombok.Getter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.lemin.core.commands.impl.ClearChatCommand;
-import us.lemin.core.commands.impl.ColorCommand;
-import us.lemin.core.commands.impl.HelpOpCommand;
-import us.lemin.core.commands.impl.IgnoreCommand;
-import us.lemin.core.commands.impl.LinksCommand;
-import us.lemin.core.commands.impl.ListCommand;
-import us.lemin.core.commands.impl.MessageCommand;
-import us.lemin.core.commands.impl.PingCommand;
-import us.lemin.core.commands.impl.ReplyCommand;
-import us.lemin.core.commands.impl.ReportCommand;
-import us.lemin.core.commands.impl.staff.BroadcastCommand;
-import us.lemin.core.commands.impl.staff.FreezeCommand;
-import us.lemin.core.commands.impl.staff.GameModeCommand;
-import us.lemin.core.commands.impl.staff.MuteChatCommand;
-import us.lemin.core.commands.impl.staff.RankCommand;
-import us.lemin.core.commands.impl.staff.ShutdownCommand;
-import us.lemin.core.commands.impl.staff.SlowChatCommand;
-import us.lemin.core.commands.impl.staff.StaffChatCommand;
-import us.lemin.core.commands.impl.staff.TeleportCommand;
-import us.lemin.core.commands.impl.staff.VanishCommand;
-import us.lemin.core.commands.impl.staff.WhitelistCommand;
+import us.lemin.core.commands.impl.*;
+import us.lemin.core.commands.impl.staff.*;
 import us.lemin.core.commands.impl.toggle.ToggleGlobalChat;
 import us.lemin.core.commands.impl.toggle.ToggleMessagesCommand;
 import us.lemin.core.commands.impl.toggle.ToggleSoundsCommand;
@@ -47,6 +25,8 @@ import us.lemin.core.server.filter.Filter;
 import us.lemin.core.storage.database.MongoStorage;
 import us.lemin.core.task.BroadcastTask;
 import us.lemin.core.utils.message.CC;
+
+import java.lang.reflect.Field;
 
 @Getter
 public class CorePlugin extends JavaPlugin {
@@ -108,7 +88,6 @@ public class CorePlugin extends JavaPlugin {
                 new InventoryListener(this),
                 new ServerListener(serverSettings.getCoreConfig())
         );
-        registerDiscordBot();
         getServer().getScheduler().runTaskTimerAsynchronously(this, new BroadcastTask(this), 20L * 60 * 2, 20L * 60L * 2);
     }
 
@@ -123,10 +102,21 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void registerCommands(Command... commands) {
-        CommandMap commandMap = getServer().getCommandMap();
+        try {
+            Field commandMapField = getServer().getClass().getDeclaredField("commandMap");
+            final boolean accessible = commandMapField.isAccessible();
 
-        for (Command command : commands) {
-            commandMap.register(getName(), command);
+            commandMapField.setAccessible(true);
+
+            CommandMap commandMap = (CommandMap) commandMapField.get(getServer());
+
+            for (Command command : commands) {
+                commandMap.register(command.getName(), getName(), command);
+            }
+
+            commandMapField.setAccessible(accessible);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("An error occurred while registering commands", e);
         }
     }
 
@@ -135,16 +125,6 @@ public class CorePlugin extends JavaPlugin {
 
         for (Listener listener : listeners) {
             pluginManager.registerEvents(listener, this);
-        }
-    }
-
-    private void registerDiscordBot() {
-        try {
-            JDA jda = new JDABuilder(AccountType.BOT).setToken("NDc0ODQ2MTYzMjYzMDI5MjU3.DkWayw.UqdP3DwM5-FhvEfqfUPm5DEqhvM")
-                    .addEventListener(new us.lemin.core.discord.listeners.MessageListener())
-                    .buildBlocking();
-        } catch (Exception exception) {
-            exception.printStackTrace();
         }
     }
 }

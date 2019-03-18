@@ -1,9 +1,5 @@
 package us.lemin.core.player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
@@ -16,6 +12,11 @@ import us.lemin.core.utils.time.TimeUtil;
 import us.lemin.core.utils.timer.Timer;
 import us.lemin.core.utils.timer.impl.DoubleTimer;
 import us.lemin.core.utils.timer.impl.IntegerTimer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Setter
 public class CoreProfile {
@@ -51,6 +52,7 @@ public class CoreProfile {
     private boolean vanished;
     @Getter
     private long lastChatTime;
+
 
     @SuppressWarnings("unchecked")
     public CoreProfile(String name, UUID id, String address) {
@@ -101,7 +103,7 @@ public class CoreProfile {
                 }
             }
 
-            save(false);
+            save(true);
         });
 
         Document punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_ids", id);
