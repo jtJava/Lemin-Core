@@ -3,6 +3,8 @@ package us.lemin.core.managers;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import us.lemin.core.CorePlugin;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
@@ -74,9 +76,20 @@ public class StaffManager {
                     if (loopPlayer != null && loopPlayer.isOnline()) {
                         loopPlayer.showPlayer(player);
                     }
-
                 }
             }
+        }
+    }
+
+    public void vanishPlayer(Player player) {
+        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        if (profile.isVanished()) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+        } else {
+            player.getActivePotionEffects().stream()
+                    .filter(potionEffect -> potionEffect.getType().equals(PotionEffectType.INVISIBILITY))
+                    .map(PotionEffect::getType)
+                    .forEach(player::removePotionEffect);
         }
     }
 }

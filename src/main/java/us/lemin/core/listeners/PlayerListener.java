@@ -8,6 +8,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import us.lemin.core.CorePlugin;
 import us.lemin.core.event.player.PlayerRankChangeEvent;
 import us.lemin.core.player.CoreProfile;
@@ -21,6 +23,8 @@ import us.lemin.core.utils.timer.Timer;
 import us.lemin.core.utils.web.WebUtil;
 
 import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class PlayerListener implements Listener {
@@ -70,7 +74,6 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if (profile.getRank() == Rank.MEMBER) profile.setRank(Rank.PREMIUM);
         Rank rank = profile.getRank();
 
         rank.apply(player);
@@ -86,7 +89,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
 
@@ -99,9 +102,33 @@ public class PlayerListener implements Listener {
 
         plugin.getStaffManager().hideVanishedStaffFromPlayer(player);
 
+        Scoreboard scoreboard = player.getScoreboard();
+        if (scoreboard != null) {
+            Team seeInvisStaff = scoreboard.getTeam("SeeInvisStaff");
+            if (seeInvisStaff == null) {
+                seeInvisStaff = scoreboard.registerNewTeam("SeeInvisStaff");
+            }
+            seeInvisStaff.setCanSeeFriendlyInvisibles(true);
+        }
+
         if (profile.hasStaff()) {
             plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " joined the server.");
+            Set<UUID> staffSet = plugin.getStaffManager().getStaffIds();
+            staffSet.forEach(uuid -> {
+                Player players = plugin.getServer().getPlayer(uuid);
+                if (scoreboard != null) {
+                    Team seeInvisStaff = scoreboard.getTeam("SeeInvisStaff");
+                    seeInvisStaff.addEntry(players.getName());
+                }
+                Scoreboard playersScoreboard = players.getScoreboard();
+                if (playersScoreboard != null) {
+                    Team seeInvisStaff = playersScoreboard.getTeam("SeeInvisStaff");
+                    seeInvisStaff.addEntry(player.getName());
+                }
+            });
         }
+
+
 
         Rank rank = profile.getRank();
 
@@ -145,8 +172,16 @@ public class PlayerListener implements Listener {
         if (profile == null) {
             return;
         }
-        if (profile.getRank() == Rank.PREMIUM) profile.setRank(Rank.MEMBER);
         if (profile.hasStaff()) {
+            Set<UUID> staffSet = plugin.getStaffManager().getStaffIds();
+            staffSet.forEach(uuid -> {
+                Player players = plugin.getServer().getPlayer(uuid);
+                Scoreboard playersScoreboard = players.getScoreboard();
+                if (playersScoreboard != null) {
+                    Team seeInvisStaff = playersScoreboard.getTeam("SeeInvisStaff");
+                    seeInvisStaff.removeEntry(player.getName());
+                }
+            });
             plugin.getStaffManager().removeCachedStaff(player.getUniqueId());
             plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " left the server.");
         }

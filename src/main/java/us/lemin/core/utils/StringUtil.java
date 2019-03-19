@@ -1,8 +1,11 @@
 package us.lemin.core.utils;
 
-import java.util.Arrays;
-import java.util.regex.Pattern;
+import com.google.common.base.Joiner;
 import lombok.experimental.UtilityClass;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @UtilityClass
 public class StringUtil {
@@ -11,5 +14,27 @@ public class StringUtil {
 
     public static String buildString(String[] args, int start) {
         return String.join(" ", Arrays.copyOfRange(args, start, args.length));
+    }
+
+    public static String joinListGrammaticallyWithJava(final List<String> list) {
+        if (list == null) {
+            return "";
+        }
+        return list.size() > 1
+                ? String.join(", ", list.subList(0, list.size() - 1))
+                .concat(String.format("%s and ", list.size() > 2 ? "," : ""))
+                .concat(list.get(list.size() - 1))
+                : list.get(0);
+    }
+
+    public static String joinListGrammaticallyWithGuava(final List<String> list) {
+        if (list == null) {
+            return "";
+        }
+        return list.size() > 1
+                ? Joiner.on(", ").join(list.subList(0, list.size() - 1))
+                .concat(String.format("%s and ", list.size() > 2 ? "," : ""))
+                .concat(list.get(list.size() - 1))
+                : list.get(0);
     }
 }
