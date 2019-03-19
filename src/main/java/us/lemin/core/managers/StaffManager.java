@@ -74,7 +74,7 @@ public class StaffManager {
                 } else {
                     Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
                     if (loopPlayer != null && loopPlayer.isOnline()) {
-                        loopPlayer.showPlayer(player);
+                        player.showPlayer(loopPlayer);
                     }
                 }
             }
