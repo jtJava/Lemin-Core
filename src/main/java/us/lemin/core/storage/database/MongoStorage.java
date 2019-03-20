@@ -13,7 +13,7 @@ public class MongoStorage {
 
     public MongoStorage() {
         MongoClient mongoClient = MongoClients.create();
-        database = mongoClient.getDatabase("pvp_land");
+        database = mongoClient.getDatabase("lemin");
     }
 
     public void getOrCreateDocument(String collectionName, Object documentObject, DocumentCallback callback) {

@@ -2,7 +2,6 @@ package us.lemin.core.utils.player;
 
 import lombok.experimental.UtilityClass;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -34,7 +33,7 @@ public class PlayerUtil {
         player.setFireTicks(0);
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(false);
-        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        /*player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());*/
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
         player.setItemOnCursor(null);
