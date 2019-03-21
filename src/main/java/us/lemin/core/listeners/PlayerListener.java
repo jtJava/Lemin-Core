@@ -104,10 +104,7 @@ public class PlayerListener implements Listener {
 
         Scoreboard scoreboard = player.getScoreboard();
         if (scoreboard != null) {
-            Team seeInvisStaff = scoreboard.getTeam("SeeInvisStaff");
-            if (seeInvisStaff == null) {
-                seeInvisStaff = scoreboard.registerNewTeam("SeeInvisStaff");
-            }
+            Team seeInvisStaff = scoreboard.getTeam("SeeInvisStaff") == null ? scoreboard.registerNewTeam("SeeInvisStaff") : scoreboard.getTeam("SeeInvisStaff");
             seeInvisStaff.setCanSeeFriendlyInvisibles(true);
         }
 
@@ -116,11 +113,11 @@ public class PlayerListener implements Listener {
             Set<UUID> staffSet = plugin.getStaffManager().getStaffIds();
             staffSet.forEach(uuid -> {
                 Player players = plugin.getServer().getPlayer(uuid);
+                Scoreboard playersScoreboard = players.getScoreboard();
                 if (scoreboard != null) {
                     Team seeInvisStaff = scoreboard.getTeam("SeeInvisStaff");
                     seeInvisStaff.addEntry(players.getName());
                 }
-                Scoreboard playersScoreboard = players.getScoreboard();
                 if (playersScoreboard != null) {
                     Team seeInvisStaff = playersScoreboard.getTeam("SeeInvisStaff");
                     seeInvisStaff.addEntry(player.getName());
