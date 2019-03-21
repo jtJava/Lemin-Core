@@ -26,9 +26,7 @@ public class VanishCommand extends BaseCommand {
 
         plugin.getStaffManager().vanishPlayer(player);
 
-        for (Player online : plugin.getServer().getOnlinePlayers()) {
-            plugin.getStaffManager().hideVanishedStaffFromPlayer(online);
-        }
+        plugin.getServer().getOnlinePlayers().forEach(online -> plugin.getStaffManager().hideVanishedStaffFromPlayer(online));
 
         player.sendMessage(vanished ? CC.GREEN + "Poof, you vanished." : CC.RED + "You're visible again.");
     }

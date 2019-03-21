@@ -7,5 +7,7 @@ public interface Timer {
 
     String formattedExpiration();
 
+    String formattedClock();
+
     void reset();
 }
