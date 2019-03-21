@@ -130,7 +130,7 @@ public class ScoreboardApi implements Listener, Runnable {
         adapter.onUpdate(event);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.setScoreboard(plugin.getServer().getScoreboardManager().getNewScoreboard());

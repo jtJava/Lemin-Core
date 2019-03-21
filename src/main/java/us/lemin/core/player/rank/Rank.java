@@ -49,8 +49,4 @@ public enum Rank {
         player.setDisplayName(coloredName);
     }
 
-    public static boolean hasStaff(Rank rank) {
-        return rank.ordinal() <= TRIAL_MOD.ordinal();
-    }
-
 }

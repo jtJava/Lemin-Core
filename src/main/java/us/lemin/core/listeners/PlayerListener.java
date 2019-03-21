@@ -104,28 +104,14 @@ public class PlayerListener implements Listener {
 
         Scoreboard scoreboard = player.getScoreboard();
         if (scoreboard != null) {
-            Team seeInvisStaff = scoreboard.getTeam("SeeInvisStaff") == null ? scoreboard.registerNewTeam("SeeInvisStaff") : scoreboard.getTeam("SeeInvisStaff");
-            seeInvisStaff.setCanSeeFriendlyInvisibles(true);
+            Team seeInvis = scoreboard.registerNewTeam("seeInvis");
+            seeInvis.setCanSeeFriendlyInvisibles(true);
+            seeInvis.setPrefix(CC.GOLD);
         }
 
         if (profile.hasStaff()) {
             plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " joined the server.");
-            Set<UUID> staffSet = plugin.getStaffManager().getStaffIds();
-            staffSet.forEach(uuid -> {
-                Player players = plugin.getServer().getPlayer(uuid);
-                Scoreboard playersScoreboard = players.getScoreboard();
-                if (scoreboard != null) {
-                    Team seeInvisStaff = scoreboard.getTeam("SeeInvisStaff");
-                    seeInvisStaff.addEntry(players.getName());
-                }
-                if (playersScoreboard != null) {
-                    Team seeInvisStaff = playersScoreboard.getTeam("SeeInvisStaff");
-                    seeInvisStaff.addEntry(player.getName());
-                }
-            });
         }
-
-
 
         Rank rank = profile.getRank();
 
@@ -175,7 +161,7 @@ public class PlayerListener implements Listener {
                 Player players = plugin.getServer().getPlayer(uuid);
                 Scoreboard playersScoreboard = players.getScoreboard();
                 if (playersScoreboard != null) {
-                    Team seeInvisStaff = playersScoreboard.getTeam("SeeInvisStaff");
+                    Team seeInvisStaff = playersScoreboard.getTeam("seeInvis");
                     seeInvisStaff.removeEntry(player.getName());
                 }
             });

@@ -17,7 +17,7 @@ public class StringUtil {
     }
 
     public static String joinListGrammaticallyWithJava(final List<String> list) {
-        if (list == null) {
+        if (list == null || list.isEmpty()) {
             return "";
         }
         return list.size() > 1
@@ -28,7 +28,7 @@ public class StringUtil {
     }
 
     public static String joinListGrammaticallyWithGuava(final List<String> list) {
-        if (list == null) {
+        if (list == null || list.isEmpty()) {
             return "";
         }
         return list.size() > 1
