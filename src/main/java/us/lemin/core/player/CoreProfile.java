@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.ChatColor;
-import us.lemin.core.CorePlugin;
 import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.storage.database.MongoRequest;
@@ -19,146 +18,94 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Setter
-public class CoreProfile {
+@Getter
+public class CoreProfile extends PlayerProfile {
     private final List<UUID> ignored = new ArrayList<>();
     private final List<String> knownAddresses = new ArrayList<>();
-    @Getter
     private final String name;
-    @Getter
     private final UUID id;
-    @Getter
     private final Timer commandCooldownTimer = new DoubleTimer(1);
-    @Getter
     private final Timer reportCooldownTimer = new IntegerTimer(TimeUnit.SECONDS, 60);
     private Timer chatCooldownTimer;
-    @Getter
     private Rank rank = Rank.MEMBER;
-    @Getter
     private CustomColorPair colorPair = new CustomColorPair();
-    @Getter
     private UUID converser;
-    @Getter
     private String reportingPlayerName;
     private long muteExpiryTime = -2;
-    @Getter
     private boolean playingSounds = true;
-    @Getter
     private boolean messaging = true;
-    @Getter
     private boolean globalChatEnabled = true;
-    @Getter
     private boolean inStaffChat;
-    @Getter
     private boolean vanished;
-    @Getter
     private long lastChatTime;
 
-
+    // TODO: optimize loading and saving
     @SuppressWarnings("unchecked")
     public CoreProfile(String name, UUID id, String address) {
+        super(id, "players");
         this.name = name;
         this.id = id;
         this.knownAddresses.add(address);
+        load();
+    }
 
-        CorePlugin.getInstance().getMongoStorage().getOrCreateDocument("players", id, (document, exists) -> {
-            if (exists) {
-                this.inStaffChat = document.getBoolean("staff_chat_enabled", inStaffChat);
-                this.messaging = document.getBoolean("messaging_enabled", messaging);
-                this.playingSounds = document.getBoolean("playing_sounds", playingSounds);
+    @Override
+    public void deserialize(Document document) {
+        this.inStaffChat = document.getBoolean("staff_chat_enabled", inStaffChat);
+        this.messaging = document.getBoolean("messaging_enabled", messaging);
+        this.playingSounds = document.getBoolean("playing_sounds", playingSounds);
 
-                String rankName = document.get("rank_name", rank.name());
-                Rank rank = Rank.getByName(rankName);
+        String rankName = document.get("rank_name", rank.name());
+        Rank rank = Rank.getByName(rankName);
 
-                if (rank != null) {
-                    this.rank = rank;
-                }
+        if (rank != null) {
+            this.rank = rank;
+        }
 
-                String colorPrimaryName = document.getString("color_primary");
-                String colorSecondaryName = document.getString("color_secondary");
+        String colorPrimaryName = document.getString("color_primary");
+        String colorSecondaryName = document.getString("color_secondary");
 
-                if (colorPrimaryName != null) {
-                    this.colorPair.setPrimary(ChatColor.valueOf(colorPrimaryName));
-                }
+        if (colorPrimaryName != null) {
+            this.colorPair.setPrimary(ChatColor.valueOf(colorPrimaryName));
+        }
 
-                if (colorSecondaryName != null) {
-                    this.colorPair.setSecondary(ChatColor.valueOf(colorSecondaryName));
-                }
+        if (colorSecondaryName != null) {
+            this.colorPair.setSecondary(ChatColor.valueOf(colorSecondaryName));
+        }
 
-                List<UUID> ignored = (List<UUID>) document.get("ignored_ids");
+        List<UUID> ignored = (List<UUID>) document.get("ignored_ids");
 
-                if (ignored != null) {
-                    this.ignored.addAll(ignored);
-                }
+        if (ignored != null) {
+            this.ignored.addAll(ignored);
+        }
 
-                List<String> knownAddresses = (List<String>) document.get("known_addresses");
+        List<String> knownAddresses = (List<String>) document.get("known_addresses");
 
-                if (knownAddresses != null) {
-                    for (String knownAddress : knownAddresses) {
-                        if (knownAddress.equals(address)) {
-                            continue;
-                        }
-
-                        this.knownAddresses.add(knownAddress);
-                    }
-                }
-            }
-
-            save(true);
-        });
-
-        Document punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_ids", id);
-
-        if (!loadMuteData(punishDoc)) {
-            for (String knownAddress : knownAddresses) {
-                punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_addresses", knownAddress);
-                loadMuteData(punishDoc);
-            }
+        if (knownAddresses != null) {
+            this.knownAddresses.addAll(knownAddresses);
         }
     }
 
-    private boolean loadMuteData(Document document) {
-        if (document != null) {
-            Boolean muted = document.getBoolean("muted");
-
-            if (muted != null) {
-                long muteExpiryTime = document.getLong("mute_expiry");
-
-                if (muted && (muteExpiryTime == -1 || System.currentTimeMillis() < muteExpiryTime)) {
-                    this.muteExpiryTime = muteExpiryTime;
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public void save(boolean async) {
-        MongoRequest request = MongoRequest.newRequest("players", id)
+    @Override
+    public MongoRequest serialize() {
+        MongoRequest request = MongoRequest.newRequest("players", id);
+        return MongoRequest.newRequest("players", id)
                 .put("name", name)
+                .put("lowername", name.toLowerCase())
                 .put("staff_chat_enabled", inStaffChat)
                 .put("messaging_enabled", messaging)
                 .put("playing_sounds", playingSounds)
-                .put("rank_name", rank.getName())
+                .put("rank_name", rank.name())
                 .put("ignored_ids", ignored)
-                .put("known_addresses", knownAddresses);
+                .put("known_addresses", knownAddresses)
+                .put("color_primary", colorPair.getPrimary() == null ? null : colorPair.getPrimary().name())
+                .put("color_secondary", colorPair.getSecondary() == null ? null : colorPair.getSecondary().name());
 
-        ChatColor primary = colorPair.getPrimary();
-        ChatColor secondary = colorPair.getSecondary();
-
-        request.put("color_primary", primary == null ? null : primary.name());
-        request.put("color_secondary", secondary == null ? null : secondary.name());
-
-        if (async) {
-            CorePlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), request::run);
-        } else {
-            request.run();
-        }
     }
 
     public Timer getChatCooldownTimer() {
         if (chatCooldownTimer == null) {
-            if (isDonor()) {
+            if (hasDonor()) {
                 chatCooldownTimer = new DoubleTimer(1);
             } else {
                 chatCooldownTimer = new DoubleTimer(3);

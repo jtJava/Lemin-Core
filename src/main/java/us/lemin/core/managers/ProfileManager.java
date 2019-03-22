@@ -1,9 +1,11 @@
 package us.lemin.core.managers;
 
+import org.bukkit.entity.Player;
+import us.lemin.core.player.CoreProfile;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import us.lemin.core.player.CoreProfile;
 
 public class ProfileManager {
     private final Map<UUID, CoreProfile> profiles = new HashMap<>();
@@ -16,6 +18,10 @@ public class ProfileManager {
 
     public CoreProfile getProfile(UUID id) {
         return profiles.get(id);
+    }
+
+    public CoreProfile getProfile(Player player) {
+        return getProfile(player.getUniqueId());
     }
 
     public void removeProfile(UUID id) {
