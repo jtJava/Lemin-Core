@@ -13,7 +13,6 @@ public class ScoreboardUpdateEvent extends PlayerEvent {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final List<ScoreboardLine> lines = new LinkedList<>();
     private String title, header = "", footer = "";
-    private int belowScore;
 
     ScoreboardUpdateEvent(Player player, String title) {
         super(player);
@@ -76,10 +75,6 @@ public class ScoreboardUpdateEvent extends PlayerEvent {
         }
 
         lines.add(position, new ScoreboardLine(text));
-    }
-
-    public void setUnderName(int score) {
-        this.belowScore = score;
     }
 
     public ScoreboardLine getLine(int index) {
