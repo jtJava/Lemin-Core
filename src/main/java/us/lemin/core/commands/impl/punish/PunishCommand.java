@@ -1,8 +1,6 @@
 package us.lemin.core.commands.impl.punish;
 
 
-import java.util.List;
-import java.util.UUID;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,14 +9,15 @@ import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.event.BanEvent;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
-import us.lemin.core.punishment.PunishmentMessages;
-import us.lemin.core.punishment.PunishmentType;
 import us.lemin.core.storage.database.MongoRequest;
 import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.profile.ProfileUtil;
 import us.lemin.core.utils.time.TimeUtil;
+
+import java.util.List;
+import java.util.UUID;
 
 public class PunishCommand extends BaseCommand {
 	private final PunishType type;
@@ -135,8 +134,8 @@ public class PunishCommand extends BaseCommand {
 
 			if (type == PunishType.BAN && targetPlayer != null && targetPlayer.isOnline()) {
 				plugin.getServer().getScheduler().runTask(plugin, () -> targetPlayer.kickPlayer(permanent
-						? PunishmentType.BAN.getMessage()
-						: String.format(PunishmentType.TEMPBAN.getMessage(), diff)));
+						? Messages.BANNED_PERMANENTLY
+						: String.format(Messages.BANNED_PERMANENTLY, diff)));
 			}
 		});
 	}
@@ -153,9 +152,9 @@ public class PunishCommand extends BaseCommand {
 					plugin.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
 							MongoRequest.newRequest("punished_addresses", address)
 									.put(type.getPastTense(), true)
-									.put(type.getName() + "_expiry", expiry)
-									.put(type.getName() + "_reason", reason)
-									.put(type.getName() + "_punisher", punisher)
+									.put(expiry + "_expiry", expiry)
+									.put(reason + "_reason", reason)
+									.put(punisher + "_punisher", punisher)
 									.run());
 				}
 			}
@@ -164,9 +163,9 @@ public class PunishCommand extends BaseCommand {
 		plugin.getMongoStorage().getOrCreateDocument("punished_ids", punished, (doc, found) ->
 				MongoRequest.newRequest("punished_ids", punished)
 						.put(type.getPastTense(), true)
-						.put(type.getName() + "_expiry", expiry)
-						.put(type.getName() + "_reason", reason)
-						.put(type.getName() + "_punisher", punisher)
+						.put(expiry + "_expiry", expiry)
+						.put(reason + "_reason", reason)
+						.put(punisher + "_punisher", punisher)
 						.run());
 	}
 }

@@ -1,12 +1,15 @@
 package us.lemin.core.utils.item;
 
-import java.util.Arrays;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.Arrays;
 
 public class ItemBuilder {
     private final ItemStack item;
@@ -68,6 +71,17 @@ public class ItemBuilder {
         meta.setOwner(playerName);
         item.setItemMeta(meta);
         return this;
+    }
+
+    public ItemBuilder color(Color color) {
+        if (item.getType() == Material.LEATHER_BOOTS || item.getType() == Material.LEATHER_CHESTPLATE || item.getType() == Material.LEATHER_HELMET || item.getType() == Material.LEATHER_LEGGINGS) {
+            LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+            meta.setColor(color);
+            item.setItemMeta(meta);
+            return this;
+        } else {
+            throw new IllegalArgumentException("color() only applicable for leather armor!");
+        }
     }
 
     public ItemStack build() {

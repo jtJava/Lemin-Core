@@ -16,7 +16,6 @@ import us.lemin.core.event.player.PlayerRankChangeEvent;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
-import us.lemin.core.punishment.PunishmentType;
 import us.lemin.core.server.ServerSettings;
 import us.lemin.core.storage.database.MongoStorage;
 import us.lemin.core.utils.message.CC;
@@ -32,8 +31,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PlayerListener implements Listener {
     private static final String[] DISALLOWED_PERMISSIONS = {
-            "bukkit.command.version", "bukkit.command.plugins", "bukkit.command.help",
-            "minecraft.command.tell", "minecraft.command.me", "minecraft.command.help"
+            "bukkit.command.help", "minecraft.command.tell", "minecraft.command.me", "minecraft.command.help"
     };
     private static final String[] STAFF_PERMISSION = {
             "litebans.ban", "litebans.tempban", "litebans.ipban", "litebans.mute",
@@ -49,7 +47,7 @@ public class PlayerListener implements Listener {
 
             if (expiry == -1L || difference > 0) {
                 String formattedDifference = TimeUtil.formatTimeMillis(difference);
-                String kickMessage = expiry == -1L ? PunishmentType.BAN.getMessage() : String.format(PunishmentType.TEMPBAN.getMessage(), formattedDifference);
+                String kickMessage = expiry == -1L ? Messages.BANNED_PERMANENTLY : String.format(Messages.BANNED_TEMPORARILY, formattedDifference);
 
                 event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, kickMessage);
                 return false;
@@ -365,5 +363,6 @@ public class PlayerListener implements Listener {
         }
 
         player.sendMessage(CC.GREEN + "You now have the " + newRank.getColor() + newRank.getName() + CC.GREEN + " rank!");
+
     }
 }

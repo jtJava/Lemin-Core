@@ -35,6 +35,8 @@ public class MongoStorage {
         return collection.find().iterator();
     }
 
+
+
     public Document getDocumentByFilter(String collectionName, String filter, Object documentObject) {
         MongoCollection<Document> collection = database.getCollection(collectionName);
         return collection.find(Filters.eq(filter, documentObject)).first();
@@ -44,6 +46,13 @@ public class MongoStorage {
         MongoCollection<Document> collection = database.getCollection(collectionName);
         return collection.find(Filters.eq("_id", documentObject)).first();
     }
+
+
+    public FindIterable<Document> getDocumentsByFilter(String collectionName, Object documentObject) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        return collection.find(Filters.eq("_id", documentObject));
+    }
+
 
     public void deleteDocument(String collectionName, Object documentObject) {
         MongoCollection<Document> collection = database.getCollection(collectionName);
@@ -61,5 +70,9 @@ public class MongoStorage {
         for (Map.Entry<String, Object> entry : updates.entrySet()) {
             collection.updateOne(Filters.eq(documentObject), Updates.set(entry.getKey(), entry.getValue()));
         }
+    }
+
+    public MongoDatabase getDatabase() {
+        return database;
     }
 }

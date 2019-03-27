@@ -78,7 +78,6 @@ public class CorePlugin extends JavaPlugin {
                 new GameModeCommand(),
                 new ColorCommand(this),
                 new ShutdownCommand(this),
-                new FreezeCommand(),
                 new WhitelistCommand(this),
                 new LinksCommand()
         );

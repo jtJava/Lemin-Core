@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.ChatColor;
+import us.lemin.core.CorePlugin;
 import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.storage.database.MongoRequest;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class CoreProfile extends PlayerProfile {
     private final List<UUID> ignored = new ArrayList<>();
     private final List<String> knownAddresses = new ArrayList<>();
+    private final String currentAddress;
     private final String name;
     private final UUID id;
     private final Timer commandCooldownTimer = new DoubleTimer(1);
@@ -45,6 +47,7 @@ public class CoreProfile extends PlayerProfile {
         super(id, "players");
         this.name = name;
         this.id = id;
+        this.currentAddress = address;
         this.knownAddresses.add(address);
         load();
     }
@@ -84,6 +87,22 @@ public class CoreProfile extends PlayerProfile {
         if (knownAddresses != null) {
             this.knownAddresses.addAll(knownAddresses);
         }
+
+        Document punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_ids", id);
+
+        if (!loadMuteData(punishDoc)) {
+            for (String knownAddress : knownAddresses) {
+                punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_addresses", knownAddress);
+                loadMuteData(punishDoc);
+            }
+        }
+
+        CorePlugin.getInstance().getMongoStorage().getOrCreateDocument("alts", currentAddress, (doc, exists) -> {
+                List<String> knownPlayers = (List<String>) doc.get("known_players");
+                MongoRequest request = MongoRequest.newRequest("alts", currentAddress);
+                request.put("known_players", knownPlayers.contains(name) ? knownPlayers : knownPlayers.add(name));
+            save(false);
+        });
     }
 
     @Override
@@ -101,6 +120,23 @@ public class CoreProfile extends PlayerProfile {
                 .put("color_primary", colorPair.getPrimary() == null ? null : colorPair.getPrimary().name())
                 .put("color_secondary", colorPair.getSecondary() == null ? null : colorPair.getSecondary().name());
 
+    }
+
+    private boolean loadMuteData(Document document) {
+        if (document != null) {
+            Boolean muted = document.getBoolean("muted");
+
+            if (muted != null) {
+                long muteExpiryTime = document.getLong("mute_expiry");
+
+                if (muted && (muteExpiryTime == -1 || System.currentTimeMillis() < muteExpiryTime)) {
+                    this.muteExpiryTime = muteExpiryTime;
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public Timer getChatCooldownTimer() {
