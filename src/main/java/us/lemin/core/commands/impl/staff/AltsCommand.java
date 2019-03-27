@@ -12,10 +12,7 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.profile.ProfileUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class AltsCommand extends PlayerCommand {
@@ -55,10 +52,13 @@ public class AltsCommand extends PlayerCommand {
             }
 
             LinkedHashSet<String> alts = retrieveAlts(targetProfile);
+            LinkedHashSet<String> testingAlts = retrieveFullAlts(targetProfile);
             String altsString = StringUtil.joinListGrammaticallyWithGuava(new ArrayList<>(alts));
+            String altsStringTest = StringUtil.joinListGrammaticallyWithGuava(new ArrayList<>(testingAlts));
 
 
             player.sendMessage(CC.GREEN + "Alts of " + targetName + " are: " + altsString);
+            player.sendMessage(CC.GREEN + "Alts of " + targetName + " are: " + altsStringTest);
 
         });
 
@@ -79,5 +79,32 @@ public class AltsCommand extends PlayerCommand {
 
         });
         return alts;
+    }
+
+    //TODO: test please, or atleast fix the logic i wrote this at 3 am and
+    // i dont have much experience with mongo, function is supposed to get all
+    // alts related to the initial target, and then all alts related to the ips
+    // of those alts until it runs out of relations.
+    public LinkedHashSet<String> retrieveFullAlts(CoreProfile coreProfile) {
+        LinkedHashSet<String> alts = new LinkedHashSet<>();
+
+        List<String> knownAddresses = coreProfile.getKnownAddresses();
+        ListIterator<String> iterator = knownAddresses.listIterator();
+
+        while (iterator.hasNext()) {
+            String knownAddress = iterator.next();
+            FindIterable<Document> foundDocuments = plugin.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
+            foundDocuments.forEach((Consumer<? super Document>) document -> {
+                List<String> altsOfInitialAddress = (List<String>) document.get("known_players");
+                alts.addAll(altsOfInitialAddress);
+                altsOfInitialAddress.forEach(altPlayer -> {
+                    Document altDocument = plugin.getMongoStorage().getDocumentByFilter("players", "name", altPlayer);
+                    List<String> altsKnownAddresses = (List<String>) altDocument.get("known_addresses");
+                    altsKnownAddresses.forEach(address -> iterator.add(address));
+                });
+            });
+        }
+        return alts;
+
     }
 }
