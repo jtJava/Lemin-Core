@@ -18,6 +18,10 @@ public class VanishCommand extends BaseCommand {
 
     @Override
     protected void execute(CommandSender sender, String[] args) {
+        if (plugin.getServer().getCommandMap().getCommand("staffmode") != null) {
+            sender.sendMessage(CC.RED + "Please use /staffmode.");
+            return;
+        }
         Player player = (Player) sender;
         CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
         boolean vanished = !profile.isVanished();
