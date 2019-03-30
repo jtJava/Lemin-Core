@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import us.lemin.core.CorePlugin;
 import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
@@ -14,6 +15,7 @@ import us.lemin.core.utils.timer.impl.DoubleTimer;
 import us.lemin.core.utils.timer.impl.IntegerTimer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +42,7 @@ public class CoreProfile extends PlayerProfile {
     private boolean inStaffChat;
     private boolean vanished;
     private long lastChatTime;
+    private Location lastLocation;
 
     // TODO: optimize loading and saving
     @SuppressWarnings("unchecked")
@@ -58,7 +61,7 @@ public class CoreProfile extends PlayerProfile {
         this.messaging = document.getBoolean("messaging_enabled", messaging);
         this.playingSounds = document.getBoolean("playing_sounds", playingSounds);
 
-        String rankName = document.get("rank_name", rank.name());
+        String rankName = document.get("rank_name", rank.getName());
         Rank rank = Rank.getByName(rankName);
 
         if (rank != null) {
@@ -98,7 +101,7 @@ public class CoreProfile extends PlayerProfile {
         }
 
         CorePlugin.getInstance().getMongoStorage().getOrCreateDocument("alts", currentAddress, (doc, exists) -> {
-                List<String> knownPlayers = (List<String>) doc.get("known_players");
+                List<String> knownPlayers = doc.get("known_players", Arrays.asList(name));
                 MongoRequest request = MongoRequest.newRequest("alts", currentAddress);
                 request.put("known_players", knownPlayers.contains(name) ? knownPlayers : knownPlayers.add(name));
             save(false);
@@ -114,7 +117,7 @@ public class CoreProfile extends PlayerProfile {
                 .put("staff_chat_enabled", inStaffChat)
                 .put("messaging_enabled", messaging)
                 .put("playing_sounds", playingSounds)
-                .put("rank_name", rank.name())
+                .put("rank_name", rank.getName())
                 .put("ignored_ids", ignored)
                 .put("known_addresses", knownAddresses)
                 .put("color_primary", colorPair.getPrimary() == null ? null : colorPair.getPrimary().name())

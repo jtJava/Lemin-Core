@@ -1,4 +1,4 @@
-package us.lemin.core.commands.impl.punish;
+package us.lemin.core.commands.impl.staff.punish;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

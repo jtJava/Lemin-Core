@@ -1,4 +1,4 @@
-package us.lemin.core.commands.impl.punish;
+package us.lemin.core.commands.impl.staff.punish;
 
 
 import org.bson.Document;
@@ -119,8 +119,8 @@ public class PunishCommand extends BaseCommand {
 			punish(sender.getName(), targetId, reason, expiryTime);
 
 			String diff = TimeUtil.formatTimeMillis(expiryTime - System.currentTimeMillis());
-			String msg = permanent ? CC.GREEN + targetName + " was permanently " + type.getPastTense() + " by " + sender.getName() + "."
-					: CC.GREEN + targetName + " was temporarily " + type.getPastTense() + " by " + sender.getName()
+			String msg = permanent ? CC.GREEN + targetName + " was permanently " + type.getPastTense() + " by " + getSenderName(sender) + "."
+					: CC.GREEN + targetName + " was temporarily " + type.getPastTense() + " by " + getSenderName(sender)
 					+ " for " + diff + ".";
 
 			if (silent) {
@@ -152,9 +152,9 @@ public class PunishCommand extends BaseCommand {
 					plugin.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
 							MongoRequest.newRequest("punished_addresses", address)
 									.put(type.getPastTense(), true)
-									.put(expiry + "_expiry", expiry)
-									.put(reason + "_reason", reason)
-									.put(punisher + "_punisher", punisher)
+									.put(type.getName() + "_expiry", expiry)
+									.put(type.getName() + "_reason", reason)
+									.put(type.getName() + "_punisher", punisher)
 									.run());
 				}
 			}
@@ -163,9 +163,9 @@ public class PunishCommand extends BaseCommand {
 		plugin.getMongoStorage().getOrCreateDocument("punished_ids", punished, (doc, found) ->
 				MongoRequest.newRequest("punished_ids", punished)
 						.put(type.getPastTense(), true)
-						.put(expiry + "_expiry", expiry)
-						.put(reason + "_reason", reason)
-						.put(punisher + "_punisher", punisher)
+						.put(type.getName() + "_expiry", expiry)
+						.put(type.getName() + "_reason", reason)
+						.put(type.getName() + "_punisher", punisher)
 						.run());
 	}
 }

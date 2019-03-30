@@ -1,8 +1,6 @@
-package us.lemin.core.commands.impl.punish;
+package us.lemin.core.commands.impl.staff.punish;
 
 
-import java.util.List;
-import java.util.UUID;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +12,9 @@ import us.lemin.core.storage.database.MongoRequest;
 import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.profile.ProfileUtil;
+
+import java.util.List;
+import java.util.UUID;
 
 import static us.lemin.core.utils.StringUtil.IP_REGEX;
 
@@ -85,7 +86,7 @@ public class UnpunishCommand extends BaseCommand {
 	}
 
 	private void sendUnpunishMessage(CommandSender sender, String arg) {
-		String msg = CC.GRAY + "[Silent] " + CC.GREEN + arg + " was un" + type.getPastTense() + " by " + sender.getName() + ".";
+		String msg = CC.GRAY + "[Silent] " + CC.GREEN + arg + " was un" + type.getPastTense() + " by " + getSenderName(sender) + ".";
 
 		plugin.getStaffManager().messageStaff(msg);
 		plugin.getLogger().info(msg);

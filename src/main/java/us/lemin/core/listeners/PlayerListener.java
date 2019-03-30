@@ -365,4 +365,12 @@ public class PlayerListener implements Listener {
         player.sendMessage(CC.GREEN + "You now have the " + newRank.getColor() + newRank.getName() + CC.GREEN + " rank!");
 
     }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        CoreProfile profile = plugin.getProfileManager().getProfile(player);
+
+        profile.setLastLocation(event.getFrom());
+    }
 }

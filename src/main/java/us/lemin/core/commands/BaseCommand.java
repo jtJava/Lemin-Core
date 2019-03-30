@@ -1,7 +1,5 @@
 package us.lemin.core.commands;
 
-import java.util.Arrays;
-import java.util.Collections;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -9,6 +7,9 @@ import us.lemin.core.CorePlugin;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 public abstract class BaseCommand extends Command {
     private static final String LINE_SEPARATOR = System.lineSeparator();
@@ -21,6 +22,10 @@ public abstract class BaseCommand extends Command {
 
     protected BaseCommand(String name) {
         this(name, Rank.MEMBER);
+    }
+
+    protected String getSenderName(CommandSender sender) {
+        return sender instanceof Player ? ((Player) sender).getDisplayName() : CC.D_RED + "Console";
     }
 
     @Override

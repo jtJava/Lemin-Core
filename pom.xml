@@ -41,15 +41,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>
-                C:/Users/Jaden/IdeaProjects/PaperSpigot/PaperSpigot-Server/target/paperspigot-1.8.8-R0.1-SNAPSHOT.jar
-            </systemPath>
-        </dependency>
-        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>3.8.0</version>

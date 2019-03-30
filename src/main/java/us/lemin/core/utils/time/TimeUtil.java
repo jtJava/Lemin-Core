@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 @UtilityClass
 public class TimeUtil {
-    public String formatTimeMillis(long millis) {
+    public static String formatTimeMillis(long millis) {
         long seconds = millis / 1000L;
 
         if (seconds <= 0) {
@@ -20,31 +20,31 @@ public class TimeUtil {
         seconds = seconds % 60;
         long hours = minutes / 60;
         minutes = minutes % 60;
-        long days = hours / 24;
+        long day = hours / 24;
         hours = hours % 24;
-        long years = days / 365;
-        days = days % 365;
+        long years = day / 365;
+        day = day % 365;
 
         StringBuilder time = new StringBuilder();
 
         if (years != 0) {
-            time.append(parseTimeSpec(years, "year"));
+            time.append(years).append(years == 1 ? " year " : " years ");
         }
 
-        if (days != 0) {
-            time.append(parseTimeSpec(days, "day"));
+        if (day != 0) {
+            time.append(day).append(day == 1 ? " day " : " days ");
         }
 
         if (hours != 0) {
-            time.append(parseTimeSpec(hours, "hour"));
+            time.append(hours).append(hours == 1 ? " hour " : " hours ");
         }
 
         if (minutes != 0) {
-            time.append(parseTimeSpec(minutes, "minute"));
+            time.append(minutes).append(minutes == 1 ? " minute " : " minutes ");
         }
 
         if (seconds != 0) {
-            time.append(parseTimeSpec(seconds, "second"));
+            time.append(seconds).append(seconds == 1 ? " second " : " seconds ");
         }
 
         return time.toString().trim();
@@ -68,7 +68,57 @@ public class TimeUtil {
         return formatTimeMillisToClock(seconds * 1000);
     }
 
-    public int parseTime(String time) {
+    public static long parseTime(String time) {
+        long totalTime = 0L;
+        boolean found = false;
+        Matcher matcher = Pattern.compile("\\d+\\D+").matcher(time);
+
+        while (matcher.find()) {
+            String s = matcher.group();
+            Long value = Long.parseLong(s.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")[0]);
+            String type = s.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")[1];
+
+            switch (type) {
+                case "s": {
+                    totalTime += value;
+                    found = true;
+                    continue;
+                }
+                case "m": {
+                    totalTime += value * 60L;
+                    found = true;
+                    continue;
+                }
+                case "h": {
+                    totalTime += value * 60L * 60L;
+                    found = true;
+                    continue;
+                }
+                case "d": {
+                    totalTime += value * 60L * 60L * 24L;
+                    found = true;
+                    continue;
+                }
+                case "w": {
+                    totalTime += value * 60L * 60L * 24L * 7L;
+                    found = true;
+                    continue;
+                }
+                case "mo": {
+                    totalTime += value * 60L * 60L * 24L * 30L;
+                    found = true;
+                    continue;
+                }
+                case "y": {
+                    totalTime += value * 60L * 60L * 24L * 365L;
+                    found = true;
+                }
+            }
+        }
+
+        return found ? (totalTime * 1000L) + 1000L : -1L;
+    }
+    /*public int parseTime(String time) {
         if (time.equals("0") || time.equals("")) {
             return 0;
         }
@@ -86,7 +136,7 @@ public class TimeUtil {
         }
 
         return seconds;
-    }
+    }*/
 
     public String formatDateDiff(Calendar fromDate, Calendar toDate) {
         boolean future = false;

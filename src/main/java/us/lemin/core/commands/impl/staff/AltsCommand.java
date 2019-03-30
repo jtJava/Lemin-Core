@@ -2,9 +2,10 @@ package us.lemin.core.commands.impl.staff;
 
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import us.lemin.core.CorePlugin;
-import us.lemin.core.commands.PlayerCommand;
+import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.StringUtil;
@@ -15,7 +16,7 @@ import us.lemin.core.utils.profile.ProfileUtil;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class AltsCommand extends PlayerCommand {
+public class AltsCommand extends BaseCommand {
     private final CorePlugin plugin;
 
     public AltsCommand(CorePlugin plugin) {
@@ -26,7 +27,7 @@ public class AltsCommand extends PlayerCommand {
     }
 
     @Override
-    public void execute(Player player, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
 
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -39,7 +40,7 @@ public class AltsCommand extends PlayerCommand {
                 ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
 
                 if (profile == null) {
-                    player.sendMessage(Messages.PLAYER_NOT_FOUND);
+                    sender.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return;
                 } else {
                     targetId = profile.getId();
@@ -57,8 +58,8 @@ public class AltsCommand extends PlayerCommand {
             String altsStringTest = StringUtil.joinListGrammaticallyWithGuava(new ArrayList<>(testingAlts));
 
 
-            player.sendMessage(CC.GREEN + "Alts of " + targetName + " are: " + altsString);
-            player.sendMessage(CC.GREEN + "Alts of " + targetName + " are: " + altsStringTest);
+            sender.sendMessage(CC.GREEN + "Alts of " + targetName + " are: " + altsString);
+            sender.sendMessage(CC.GREEN + "Alts of " + targetName + " are: " + altsStringTest);
 
         });
 

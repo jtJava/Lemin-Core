@@ -9,6 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.lemin.core.commands.impl.*;
 import us.lemin.core.commands.impl.staff.*;
+import us.lemin.core.commands.impl.staff.punish.*;
 import us.lemin.core.commands.impl.toggle.ToggleGlobalChat;
 import us.lemin.core.commands.impl.toggle.ToggleMessagesCommand;
 import us.lemin.core.commands.impl.toggle.ToggleSoundsCommand;
@@ -79,7 +80,15 @@ public class CorePlugin extends JavaPlugin {
                 new ColorCommand(this),
                 new ShutdownCommand(this),
                 new WhitelistCommand(this),
-                new LinksCommand()
+                new LinksCommand(),
+                new BanCommand(this),
+                new MuteCommand(this),
+                new UnbanCommand(this),
+                new UnmuteCommand(this),
+                new MuteCommand(this),
+                new KickCommand(this),
+                new PunishmentInfoCommand(this)
+
         );
         registerListeners(
                 new PlayerListener(this),
