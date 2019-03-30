@@ -87,7 +87,14 @@ public class CorePlugin extends JavaPlugin {
                 new UnmuteCommand(this),
                 new MuteCommand(this),
                 new KickCommand(this),
-                new PunishmentInfoCommand(this)
+                new PunishmentInfoCommand(this),
+                new AltsCommand(this),
+                new BackCommand(this),
+                new HealCommand(),
+                new FeedCommand(),
+                new SpeedCommand(),
+                new InvSeeCommand(),
+                new TpPosCommand()
 
         );
         registerListeners(

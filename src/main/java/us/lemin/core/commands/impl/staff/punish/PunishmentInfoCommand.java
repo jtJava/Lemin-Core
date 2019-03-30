@@ -21,7 +21,7 @@ public class PunishmentInfoCommand extends BaseCommand {
 	private final CorePlugin plugin;
 
 	public PunishmentInfoCommand(CorePlugin plugin) {
-		super("punishmentinfo", Rank.MOD);
+		super("punishmentinfo", Rank.ADMIN);
 		this.plugin = plugin;
 		this.setAliases("baninfo", "muteinfo", "playerinfo", "checkban", "checkmute");
 		this.setUsage(CC.RED + "/punishmentinfo <player|ip>");
@@ -84,6 +84,7 @@ public class PunishmentInfoCommand extends BaseCommand {
 						+ (expiry == -1L ? "never" : TimeUtil.formatTimeMillis(expiry - System.currentTimeMillis())));
 				sender.sendMessage(CC.PRIMARY + "Punisher: " + CC.SECONDARY + punisher);
 				sender.sendMessage(CC.PRIMARY + "Reason: " + CC.SECONDARY + reason);
+
 			}
 
 			sender.sendMessage("");
