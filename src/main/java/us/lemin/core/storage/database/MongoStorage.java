@@ -67,9 +67,7 @@ public class MongoStorage {
     public void massUpdate(String collectionName, Object documentObject, Map<String, Object> updates) {
         MongoCollection<Document> collection = database.getCollection(collectionName);
 
-        for (Map.Entry<String, Object> entry : updates.entrySet()) {
-            collection.updateOne(Filters.eq(documentObject), Updates.set(entry.getKey(), entry.getValue()));
-        }
+        updates.forEach((key, value) -> collection.updateOne(Filters.eq(documentObject), Updates.set(key, value)));
     }
 
     public MongoDatabase getDatabase() {

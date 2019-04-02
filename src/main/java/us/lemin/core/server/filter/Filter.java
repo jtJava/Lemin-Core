@@ -1,10 +1,11 @@
 package us.lemin.core.server.filter;
 
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.regex.Matcher;
+import java.util.stream.*;
+
 import us.lemin.core.server.ServerSettings;
 
 import static us.lemin.core.utils.StringUtil.IP_REGEX;
@@ -28,11 +29,7 @@ public class Filter {
         String[] words = new String[]{"fuck", "shit", "ass", "trash", "garbage", "horrible", "sv"};
         String[] matches = new String[]{"kb", "server", "staff", "sv", "pots"};
 
-        List<NegativeWordPair> pairs = new ArrayList<>();
-
-        for (String word : words) {
-            pairs.add(new NegativeWordPair(word, matches));
-        }
+        List<NegativeWordPair> pairs = Arrays.stream(words).map(word -> new NegativeWordPair(word, matches)).collect(Collectors.toList());
 
         pairs.add(new NegativeWordPair("pots", "work", "splash"));
         pairs.add(new NegativeWordPair("server", "ass", "trash", "horrible", "garbage", "terrible", "awful"));
@@ -43,12 +40,8 @@ public class Filter {
     public boolean isFiltered(String msg) {
         msg = msg.toLowerCase().trim();
 
-        for (String word : msg.split(" ")) {
-            Matcher matcher = IP_REGEX.matcher(word);
-
-            if (matcher.matches()) {
-                return true;
-            }
+        if (Arrays.stream(msg.split(" ")).map(IP_REGEX::matcher).anyMatch(Matcher::matches)) {
+            return true;
         }
 
         for (String word : msg
@@ -72,13 +65,7 @@ public class Filter {
             boolean filtered = false;
 
             if (matcher.matches()) {
-                int matches = 0;
-
-                for (String link : WHITELISTED_LINKS) {
-                    if (word.contains(link)) {
-                        matches++;
-                    }
-                }
+                int matches = (int) Arrays.stream(WHITELISTED_LINKS).filter(word::contains).count();
 
                 filtered = matches == 0;
             }
@@ -110,13 +97,7 @@ public class Filter {
             boolean filtered = false;
 
             if (matcher.matches()) {
-                int matches = 0;
-
-                for (String link : WHITELISTED_LINKS) {
-                    if (word.contains(link)) {
-                        matches++;
-                    }
-                }
+                int matches = (int) Arrays.stream(WHITELISTED_LINKS).filter(word::contains).count();
 
                 filtered = matches == 0;
             }
@@ -147,13 +128,7 @@ public class Filter {
             boolean filtered = false;
 
             if (matcher.matches()) {
-                int matches = 0;
-
-                for (String link : WHITELISTED_LINKS) {
-                    if (word.contains(link)) {
-                        matches++;
-                    }
-                }
+                int matches = (int) Arrays.stream(WHITELISTED_LINKS).filter(word::contains).count();
 
                 filtered = matches == 0;
             }
@@ -186,13 +161,7 @@ public class Filter {
             boolean filtered = false;
 
             if (matcher.matches()) {
-                int matches = 0;
-
-                for (String link : WHITELISTED_LINKS) {
-                    if (word.contains(link)) {
-                        matches++;
-                    }
-                }
+                int matches = (int) Arrays.stream(WHITELISTED_LINKS).filter(word::contains).count();
 
                 filtered = matches == 0;
             }
@@ -250,12 +219,6 @@ public class Filter {
 
         String[] split = parsed.trim().split(" ");
 
-        for (String word : split) {
-            if (FILTERED_PHRASES.contains(word)) {
-                return true;
-            }
-        }
-
-        return false;
+        return Arrays.stream(split).anyMatch(FILTERED_PHRASES::contains);
     }
 }

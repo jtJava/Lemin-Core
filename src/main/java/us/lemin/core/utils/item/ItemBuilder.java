@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
+import java.util.stream.*;
 
 public class ItemBuilder {
     private final ItemStack item;
@@ -74,7 +75,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder color(Color color) {
-        if (item.getType() == Material.LEATHER_BOOTS || item.getType() == Material.LEATHER_CHESTPLATE || item.getType() == Material.LEATHER_HELMET || item.getType() == Material.LEATHER_LEGGINGS) {
+        if (Stream.of(Material.LEATHER_BOOTS, Material.LEATHER_CHESTPLATE, Material.LEATHER_HELMET, Material.LEATHER_LEGGINGS).anyMatch(material -> item.getType() == material)) {
             LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
             meta.setColor(color);
             item.setItemMeta(meta);

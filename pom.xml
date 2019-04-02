@@ -38,10 +38,13 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>
-                C:/Users/Jaden/IdeaProjects/PaperSpigot/PaperSpigot-Server/target/paperspigot-1.8.8-R0.1-SNAPSHOT.jar
-            </systemPath>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -50,11 +53,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>10.0.1</version>
-        </dependency>
-    </dependencies>
+            <groupId>us.lemin.kitpvp</groupId>
+            <artifactId>kitpvp</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency></dependencies>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -71,7 +74,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

@@ -3,6 +3,8 @@ package us.lemin.core.player;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 
+import java.util.*;
+
 @Getter
 public enum ColorPair {
     BLACK(ChatColor.DARK_GRAY, ChatColor.BLACK),
@@ -33,12 +35,7 @@ public enum ColorPair {
     }
 
     public static ColorPair getByName(String name) {
-        for (ColorPair pair : values()) {
-            if (name.equalsIgnoreCase(pair.name)) {
-                return pair;
-            }
-        }
+        return Arrays.stream(values()).filter(pair -> name.equalsIgnoreCase(pair.name)).findFirst().orElse(null);
 
-        return null;
     }
 }

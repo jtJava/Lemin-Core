@@ -35,9 +35,7 @@ public class ClickableMessage {
     }
 
     public ClickableMessage hoverAll(String msg) {
-        for (TextComponent component : components) {
-            hover(component, msg);
-        }
+        components.forEach(component -> hover(component, msg));
         return this;
     }
 
@@ -51,9 +49,7 @@ public class ClickableMessage {
     }
 
     public ClickableMessage commandAll(String command) {
-        for (TextComponent component : components) {
-            command(component, command);
-        }
+        components.forEach(component -> command(component, command));
         return this;
     }
 

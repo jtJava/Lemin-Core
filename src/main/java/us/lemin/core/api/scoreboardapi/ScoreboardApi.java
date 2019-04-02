@@ -16,6 +16,7 @@ import us.lemin.core.api.scoreboardapi.api.ScoreboardAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.*;
 
 public class ScoreboardApi implements Listener, Runnable {
     private static final String OBJECTIVE_ID = "objective";
@@ -70,13 +71,12 @@ public class ScoreboardApi implements Listener, Runnable {
 
         List<Team> teams = new ArrayList<>();
 
-        for (int i = 0; i < ChatColor.values().length; i++) {
+        IntStream.range(0, ChatColor.values().length).forEach(i -> {
             if (board.getTeam("#line-" + i) == null) {
                 board.registerNewTeam("#line-" + i);
             }
-
             teams.add(board.getTeam("#line-" + i));
-        }
+        });
 
         for (int i = 0; i < lines.size(); i++) {
             Team team = teams.get(i);
@@ -112,17 +112,15 @@ public class ScoreboardApi implements Listener, Runnable {
             }
         }
 
-        for (int i = lines.size(); i < ChatColor.values().length; i++) {
-            Team team = teams.get(i);
+        IntStream.range(lines.size(), ChatColor.values().length).mapToObj(teams::get).forEach(team -> {
             Set<String> entries = team.getEntries();
-
             if (entries.size() > 0) {
-                for (String entry : entries) {
+                entries.forEach(entry -> {
                     board.resetScores(entry);
                     team.removeEntry(entry);
-                }
+                });
             }
-        }
+        });
     }
 
     @EventHandler

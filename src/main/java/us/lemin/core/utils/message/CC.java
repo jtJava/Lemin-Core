@@ -1,6 +1,7 @@
 package us.lemin.core.utils.message;
 
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang.*;
 import org.bukkit.ChatColor;
 
 @UtilityClass
@@ -28,6 +29,6 @@ public class CC {
     public static final String SECONDARY = ChatColor.GOLD.toString();
     public static final String ACCENT = ChatColor.GOLD.toString();
     public static final String SPLITTER = "┃";
-    public static final String BOARD_SEPARATOR = GRAY + S + "------------------";
-    public static final String SEPARATOR = GRAY + S + "------------------------------------";
+    public static final String BOARD_SEPARATOR = GRAY + S + StringUtils.repeat("-", 18); //18
+    public static final String SEPARATOR = GRAY + S + StringUtils.repeat("-", 36); //36
 }

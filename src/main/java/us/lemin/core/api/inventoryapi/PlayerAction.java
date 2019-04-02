@@ -17,7 +17,7 @@ public class PlayerAction implements Action {
 
     @Override
     public void onClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
+        final Player player = (Player) event.getWhoClicked();
         consumer.accept(player);
 
         if (autoClose) {

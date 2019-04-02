@@ -4,6 +4,8 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 import us.lemin.core.utils.message.CC;
 
+import java.util.*;
+
 @Getter
 public enum Rank {
     OWNER("Owner", CC.D_RED),
@@ -35,13 +37,8 @@ public enum Rank {
     }
 
     public static Rank getByName(String name) {
-        for (Rank rank : values()) {
-            if (rank.name().equalsIgnoreCase(name)) {
-                return rank;
-            }
-        }
+        return Arrays.stream(values()).filter(rank -> rank.name().equalsIgnoreCase(name)).findFirst().orElse(null);
 
-        return null;
     }
 
     public void apply(Player player) {

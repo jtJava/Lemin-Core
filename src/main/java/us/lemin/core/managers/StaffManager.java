@@ -38,17 +38,11 @@ public class StaffManager {
     }
 
     public void messageStaff(Rank requiredRank, String msg) {
-        for (UUID id : staffIds) {
-            CoreProfile profile = plugin.getProfileManager().getProfile(id);
-
-            if (profile != null && profile.hasRank(requiredRank)) {
-                Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
-
-                if (loopPlayer != null && loopPlayer.isOnline()) {
-                    loopPlayer.sendMessage(msg);
-                }
-            }
-        }
+        staffIds.stream().map(id -> plugin.getProfileManager().getProfile(id))
+                .filter(profile -> profile != null && profile.hasRank(requiredRank))
+                .map(profile -> plugin.getServer().getPlayer(profile.getId()))
+                .filter(loopPlayer -> loopPlayer != null && loopPlayer.isOnline())
+                .forEach(loopPlayer -> loopPlayer.sendMessage(msg));
     }
 
     public void messageStaff(String msg) {

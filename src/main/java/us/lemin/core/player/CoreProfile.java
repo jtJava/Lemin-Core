@@ -14,10 +14,7 @@ import us.lemin.core.utils.timer.Timer;
 import us.lemin.core.utils.timer.impl.DoubleTimer;
 import us.lemin.core.utils.timer.impl.IntegerTimer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Setter
@@ -94,7 +91,7 @@ public class CoreProfile extends PlayerProfile {
         Document punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_ids", id);
 
         if (!loadMuteData(punishDoc)) {
-            for (String knownAddress : knownAddresses) {
+            for (String knownAddress : Objects.requireNonNull(knownAddresses)) {
                 punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_addresses", knownAddress);
                 loadMuteData(punishDoc);
             }

@@ -60,7 +60,7 @@ public class InventoryManager implements Listener {
 
     @EventHandler
     public void onWrapperClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
+        final Player player = (Player) event.getWhoClicked();
 
         if (event.getClickedInventory() == null
                 || event.getClickedInventory() == player.getInventory()) {
@@ -72,8 +72,8 @@ public class InventoryManager implements Listener {
         InventoryWrapper wrapper = getMatchingInventory(event.getClickedInventory());
 
         if (wrapper == null) {
-            for (PlayerInventoryWrapper playerWrapper : playerWrapperClasses.values()) {
-                InventoryWrapper foundWrapper = playerWrapper.getOpenPlayerWrappers().get(player.getUniqueId());
+            for (final PlayerInventoryWrapper playerWrapper : playerWrapperClasses.values()) {
+                final InventoryWrapper foundWrapper = playerWrapper.getOpenPlayerWrappers().get(player.getUniqueId());
 
                 if (foundWrapper != null) {
                     wrapper = foundWrapper;
@@ -95,7 +95,7 @@ public class InventoryManager implements Listener {
             return;
         }
 
-        Action action = wrapper.getAction(event.getSlot());
+        final Action action = wrapper.getAction(event.getSlot());
 
         if (action != null) {
             event.setCancelled(true);
@@ -105,27 +105,25 @@ public class InventoryManager implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
+        final Player player = (Player) event.getPlayer();
 
-        for (PlayerInventoryWrapper playerWrapper : playerWrapperClasses.values()) {
-            InventoryWrapper foundWrapper = playerWrapper.getOpenPlayerWrappers().get(player.getUniqueId());
-
+        playerWrapperClasses.values().forEach(playerWrapper -> {
+            final InventoryWrapper foundWrapper = playerWrapper.getOpenPlayerWrappers().get(player.getUniqueId());
             if (foundWrapper != null) {
                 playerWrapper.close(player);
             }
-        }
+        });
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-        for (PlayerInventoryWrapper playerWrapper : playerWrapperClasses.values()) {
-            InventoryWrapper foundWrapper = playerWrapper.getOpenPlayerWrappers().get(player.getUniqueId());
-
+        playerWrapperClasses.values().forEach(playerWrapper -> {
+            final InventoryWrapper foundWrapper = playerWrapper.getOpenPlayerWrappers().get(player.getUniqueId());
             if (foundWrapper != null) {
                 playerWrapper.close(player);
             }
-        }
+        });
     }
 }

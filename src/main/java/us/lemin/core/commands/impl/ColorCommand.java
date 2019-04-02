@@ -10,6 +10,8 @@ import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
+import java.util.*;
+
 public class ColorCommand extends PlayerCommand {
     private final CorePlugin plugin;
 
@@ -48,13 +50,8 @@ public class ColorCommand extends PlayerCommand {
     }
 
     private static ChatColor getMatchingChatColor(String name) {
-        for (ChatColor color : ChatColor.values()) {
-            if (name.equalsIgnoreCase(color.name())) {
-                return color;
-            }
-        }
+        return Arrays.stream(ChatColor.values()).filter(color -> name.equalsIgnoreCase(color.name())).findFirst().orElse(null);
 
-        return null;
     }
 
     @Override

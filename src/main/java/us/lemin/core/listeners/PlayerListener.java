@@ -24,9 +24,7 @@ import us.lemin.core.utils.time.TimeUtil;
 import us.lemin.core.utils.timer.Timer;
 import us.lemin.core.utils.web.WebUtil;
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class PlayerListener implements Listener {
@@ -94,9 +92,7 @@ public class PlayerListener implements Listener {
         PermissionAttachment attachment = player.addAttachment(plugin);
 
         if (!profile.hasRank(Rank.ADMIN)) {
-            for (String permission : DISALLOWED_PERMISSIONS) {
-                attachment.setPermission(permission, false);
-            }
+            Arrays.stream(DISALLOWED_PERMISSIONS).forEach(permission -> attachment.setPermission(permission, false));
         }
 
         Rank rank = profile.getRank();
@@ -104,9 +100,7 @@ public class PlayerListener implements Listener {
         rank.apply(player);
 
         if (profile.hasRank(Rank.TRIAL_MOD)) {
-            for (String permission : STAFF_PERMISSION) {
-                attachment.setPermission(permission, true);
-            }
+            Arrays.stream(STAFF_PERMISSION).forEach(permission -> attachment.setPermission(permission, true));
         }
 
         if (profile.hasStaff()) {

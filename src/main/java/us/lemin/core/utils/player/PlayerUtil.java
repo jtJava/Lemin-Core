@@ -13,9 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 @UtilityClass
 public class PlayerUtil {
     public static void clearPlayer(Player player) {
-        for (PotionEffect effect : player.getActivePotionEffects()) {
-            player.removePotionEffect(effect.getType());
-        }
+        player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
 
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         Inventory craftingInventory = entityPlayer.activeContainer.getBukkitView().getTopInventory();

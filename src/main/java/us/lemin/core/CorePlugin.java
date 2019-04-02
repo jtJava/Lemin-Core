@@ -28,6 +28,7 @@ import us.lemin.core.task.BroadcastTask;
 import us.lemin.core.utils.message.CC;
 
 import java.lang.reflect.Field;
+import java.util.*;
 
 @Getter
 public class CorePlugin extends JavaPlugin {
@@ -111,23 +112,19 @@ public class CorePlugin extends JavaPlugin {
         profileManager.saveProfiles();
         serverSettings.saveConfig();
 
-        for (Player player : getServer().getOnlinePlayers()) {
-            player.kickPlayer(CC.RED + "The server is restarting.");
-        }
+        getServer().getOnlinePlayers().forEach(player -> player.kickPlayer(CC.RED + "The server is restarting."));
     }
 
     private void registerCommands(Command... commands) {
         try {
-            Field commandMapField = getServer().getClass().getDeclaredField("commandMap");
+            final Field commandMapField = getServer().getClass().getDeclaredField("commandMap");
             final boolean accessible = commandMapField.isAccessible();
 
             commandMapField.setAccessible(true);
 
-            CommandMap commandMap = (CommandMap) commandMapField.get(getServer());
+            final CommandMap commandMap = (CommandMap) commandMapField.get(getServer());
 
-            for (Command command : commands) {
-                commandMap.register(command.getName(), getName(), command);
-            }
+            Arrays.stream(commands).forEach(command -> commandMap.register(command.getName(), getName(), command));
 
             commandMapField.setAccessible(accessible);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -136,10 +133,8 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private void registerListeners(Listener... listeners) {
-        PluginManager pluginManager = getServer().getPluginManager();
+        final PluginManager pluginManager = getServer().getPluginManager();
 
-        for (Listener listener : listeners) {
-            pluginManager.registerEvents(listener, this);
-        }
+        Arrays.stream(listeners).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 }

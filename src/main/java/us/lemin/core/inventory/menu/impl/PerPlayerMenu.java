@@ -1,8 +1,7 @@
 package us.lemin.core.inventory.menu.impl;
 
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import us.lemin.core.inventory.menu.Menu;
+import org.bukkit.entity.*;
+import us.lemin.core.inventory.menu.*;
 
 public abstract class PerPlayerMenu extends Menu {
     protected PerPlayerMenu(int rows, String name) {
@@ -11,11 +10,10 @@ public abstract class PerPlayerMenu extends Menu {
 
     @Override
     public final void update() {
-        for (HumanEntity entity : getInventory().getViewers()) {
-            Player player = (Player) entity;
+        getInventory().getViewers().stream().map(entity -> (Player) entity).forEach(player -> {
             updatePlayer(player);
             player.updateInventory();
-        }
+        });
     }
 
     @Override

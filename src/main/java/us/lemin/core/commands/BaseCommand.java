@@ -10,6 +10,7 @@ import us.lemin.core.utils.message.CC;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.*;
 
 public abstract class BaseCommand extends Command {
     private static final String LINE_SEPARATOR = System.lineSeparator();
@@ -53,15 +54,13 @@ public abstract class BaseCommand extends Command {
     protected final void setUsage(String... uses) {
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < uses.length; i++) {
-            String use = uses[i];
-
+        IntStream.range(0, uses.length).forEach(i -> {
+            final String use = uses[i];
             builder.append(use);
-
             if (i + 1 != uses.length) {
                 builder.append(LINE_SEPARATOR);
             }
-        }
+        });
 
         setUsage(builder.toString());
     }

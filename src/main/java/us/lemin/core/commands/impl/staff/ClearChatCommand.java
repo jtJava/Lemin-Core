@@ -22,13 +22,12 @@ public class ClearChatCommand extends BaseCommand {
 
     @Override
     protected void execute(CommandSender sender, String[] args) {
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
+        plugin.getServer().getOnlinePlayers().forEach(player -> {
             CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
-
             if (!profile.hasStaff()) {
                 player.sendMessage(BLANK_MESSAGE);
             }
-        }
+        });
 
         plugin.getServer().broadcastMessage(CC.GREEN + "The chat was cleared by " + getSenderName(sender) + ".");
         sender.sendMessage(CC.YELLOW + "Don't worry, staff can still see cleared messages.");

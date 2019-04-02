@@ -29,13 +29,12 @@ public enum WhitelistMode {
     private static final String WHITELIST_MESSAGE = CC.RED + "The server has been whitelisted. Come back later!";
 
     public void activate() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            CoreProfile profile = CorePlugin.getInstance().getProfileManager().getProfile(player.getUniqueId());
-
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            final CoreProfile profile = CorePlugin.getInstance().getProfileManager().getProfile(player.getUniqueId());
             if (isProfileIneligible(profile)) {
                 player.kickPlayer(WHITELIST_MESSAGE);
             }
-        }
+        });
     }
 
     public abstract boolean isProfileIneligible(CoreProfile profile);

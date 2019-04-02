@@ -29,8 +29,6 @@ public class ProfileManager {
     }
 
     public void saveProfiles() {
-        for (CoreProfile profile : profiles.values()) {
-            profile.save(false);
-        }
+        profiles.values().forEach(profile -> profile.save(false));
     }
 }

@@ -111,12 +111,10 @@ public class UnpunishCommand extends BaseCommand {
 			List<String> knownAddresses = (List<String>) document.get("known_addresses");
 
 			if (knownAddresses != null) {
-				for (String address : knownAddresses) {
-					plugin.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
-							MongoRequest.newRequest("punished_addresses", address)
-									.put(type.getPastTense(), false)
-									.run());
-				}
+				knownAddresses.forEach(address -> plugin.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
+						MongoRequest.newRequest("punished_addresses", address)
+								.put(type.getPastTense(), false)
+								.run()));
 			}
 		}
 
