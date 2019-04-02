@@ -99,8 +99,9 @@ public class CoreProfile extends PlayerProfile {
 
         CorePlugin.getInstance().getMongoStorage().getOrCreateDocument("alts", currentAddress, (doc, exists) -> {
                 List<String> knownPlayers = doc.get("known_players", Arrays.asList(name));
+                if (!knownPlayers.contains(name)) knownPlayers.add(name);
                 MongoRequest request = MongoRequest.newRequest("alts", currentAddress);
-                request.put("known_players", knownPlayers.contains(name) ? knownPlayers : knownPlayers.add(name));
+                request.put("known_players", knownPlayers);
             save(false);
         });
     }

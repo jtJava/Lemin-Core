@@ -3,7 +3,6 @@ package us.lemin.core;
 import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,7 +27,7 @@ import us.lemin.core.task.BroadcastTask;
 import us.lemin.core.utils.message.CC;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
 
 @Getter
 public class CorePlugin extends JavaPlugin {
@@ -71,7 +70,6 @@ public class CorePlugin extends JavaPlugin {
                 new ToggleMessagesCommand(this),
                 new ToggleGlobalChat(this),
                 new ToggleSoundsCommand(this),
-                new VanishCommand(this),
                 new ReportCommand(this),
                 new HelpOpCommand(this),
                 new PingCommand(),

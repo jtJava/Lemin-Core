@@ -69,8 +69,4 @@ public class MongoStorage {
 
         updates.forEach((key, value) -> collection.updateOne(Filters.eq(documentObject), Updates.set(key, value)));
     }
-
-    public MongoDatabase getDatabase() {
-        return database;
-    }
 }

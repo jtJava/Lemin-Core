@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 import us.lemin.core.utils.message.CC;
 
-import java.util.*;
+import java.util.Arrays;
 
 @Getter
 public enum Rank {
@@ -14,7 +14,7 @@ public enum Rank {
     MOD("Mod", CC.PURPLE),
     TRIAL_MOD("Trial Mod", CC.YELLOW),
     BUILDER("Builder", CC.GOLD),
-    YOUTUBER("YouTuber", CC.PINK + CC.I),
+    YOUTUBER("YouTuber", CC.PINK),
     PREMIUM("Premium", "%s✸%s", CC.GREEN),
     VOTER("Voter", CC.D_GREEN + "✔" + CC.GREEN, CC.D_GREEN),
     MEMBER("Member", CC.WHITE, CC.WHITE);
