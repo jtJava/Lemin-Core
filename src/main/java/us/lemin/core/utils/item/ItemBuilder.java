@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
-import java.util.stream.*;
+import java.util.stream.Stream;
 
 public class ItemBuilder {
     private final ItemStack item;
@@ -83,6 +83,13 @@ public class ItemBuilder {
         } else {
             throw new IllegalArgumentException("color() only applicable for leather armor!");
         }
+    }
+
+    public ItemBuilder unbreakable(boolean unbreakable) {
+        ItemMeta meta = item.getItemMeta();
+        meta.spigot().setUnbreakable(unbreakable);
+        item.setItemMeta(meta);
+        return this;
     }
 
     public ItemStack build() {
