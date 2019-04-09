@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class CoreProfile extends PlayerProfile {
     private final List<UUID> ignored = new ArrayList<>();
     private final List<String> knownAddresses = new ArrayList<>();
+    private final List<Object> notes = new ArrayList<>();
     private final String currentAddress;
     private final String name;
     private final UUID id;
@@ -58,15 +59,15 @@ public class CoreProfile extends PlayerProfile {
         this.messaging = document.getBoolean("messaging_enabled", messaging);
         this.playingSounds = document.getBoolean("playing_sounds", playingSounds);
 
-        String rankName = document.get("rank_name", rank.getName());
-        Rank rank = Rank.getByName(rankName);
+        final String rankName = document.get("rank_name", rank.getName());
+        final Rank rank = Rank.getByName(rankName);
 
         if (rank != null) {
             this.rank = rank;
         }
 
-        String colorPrimaryName = document.getString("color_primary");
-        String colorSecondaryName = document.getString("color_secondary");
+        final String colorPrimaryName = document.getString("color_primary");
+        final String colorSecondaryName = document.getString("color_secondary");
 
         if (colorPrimaryName != null) {
             this.colorPair.setPrimary(ChatColor.valueOf(colorPrimaryName));
@@ -76,31 +77,37 @@ public class CoreProfile extends PlayerProfile {
             this.colorPair.setSecondary(ChatColor.valueOf(colorSecondaryName));
         }
 
-        List<UUID> ignored = (List<UUID>) document.get("ignored_ids");
+        final List<UUID> ignored = (List<UUID>) document.get("ignored_ids");
 
         if (ignored != null) {
             this.ignored.addAll(ignored);
         }
 
-        List<String> knownAddresses = (List<String>) document.get("known_addresses");
+        final List<String> knownAddresses = (List<String>) document.get("known_addresses");
 
         if (knownAddresses != null) {
             this.knownAddresses.addAll(knownAddresses);
         }
 
+        final List<Object> notes = (List<Object>) document.get("notes");
+
+        if (notes != null) {
+            this.notes.addAll(notes);
+        }
+
         Document punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_ids", id);
 
         if (!loadMuteData(punishDoc)) {
-            for (String knownAddress : Objects.requireNonNull(knownAddresses)) {
+            for (final String knownAddress : Objects.requireNonNull(knownAddresses)) {
                 punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_addresses", knownAddress);
                 loadMuteData(punishDoc);
             }
         }
 
         CorePlugin.getInstance().getMongoStorage().getOrCreateDocument("alts", currentAddress, (doc, exists) -> {
-                List<String> knownPlayers = doc.get("known_players", Arrays.asList(name));
+                final List<String> knownPlayers = doc.get("known_players", Arrays.asList(name));
                 if (!knownPlayers.contains(name)) knownPlayers.add(name);
-                MongoRequest request = MongoRequest.newRequest("alts", currentAddress);
+                final MongoRequest request = MongoRequest.newRequest("alts", currentAddress);
                 request.put("known_players", knownPlayers);
             save(false);
         });
@@ -108,7 +115,6 @@ public class CoreProfile extends PlayerProfile {
 
     @Override
     public MongoRequest serialize() {
-        MongoRequest request = MongoRequest.newRequest("players", id);
         return MongoRequest.newRequest("players", id)
                 .put("name", name)
                 .put("lowername", name.toLowerCase())
@@ -120,20 +126,20 @@ public class CoreProfile extends PlayerProfile {
                 .put("known_addresses", knownAddresses)
                 .put("color_primary", colorPair.getPrimary() == null ? null : colorPair.getPrimary().name())
                 .put("color_secondary", colorPair.getSecondary() == null ? null : colorPair.getSecondary().name());
-
     }
 
     private boolean loadMuteData(Document document) {
         if (document != null) {
-            Boolean muted = document.getBoolean("muted");
+            final Boolean muted = document.getBoolean("muted");
 
-            if (muted != null) {
-                long muteExpiryTime = document.getLong("mute_expiry");
+            if (muted == null) {
+                return false;
+            }
+            final long muteExpiryTime = document.getLong("mute_expiry");
 
-                if (muted && (muteExpiryTime == -1 || System.currentTimeMillis() < muteExpiryTime)) {
-                    this.muteExpiryTime = muteExpiryTime;
-                    return true;
-                }
+            if (muted && (muteExpiryTime == -1 || System.currentTimeMillis() < muteExpiryTime)) {
+                this.muteExpiryTime = muteExpiryTime;
+                return true;
             }
         }
 
@@ -142,20 +148,16 @@ public class CoreProfile extends PlayerProfile {
 
     public Timer getChatCooldownTimer() {
         if (chatCooldownTimer == null) {
-            if (hasDonor()) {
-                chatCooldownTimer = new DoubleTimer(1);
-            } else {
-                chatCooldownTimer = new DoubleTimer(3);
-            }
+            chatCooldownTimer = hasDonor() ? new DoubleTimer(1) : new DoubleTimer(3);
         }
 
         return chatCooldownTimer;
     }
 
     public String getChatFormat() {
-        String rankColor = rank.getColor();
-        String primary = colorPair.getPrimary() == null ? rankColor : colorPair.getPrimary().toString();
-        String secondary = colorPair.getSecondary() == null ? rankColor : colorPair.getSecondary().toString();
+        final String rankColor = rank.getColor();
+        final String primary = colorPair.getPrimary() == null ? rankColor : colorPair.getPrimary().toString();
+        final String secondary = colorPair.getSecondary() == null ? rankColor : colorPair.getSecondary().toString();
 
         return String.format(rank.getRawFormat(), primary, secondary) + name;
     }
