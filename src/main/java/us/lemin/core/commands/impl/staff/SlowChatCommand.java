@@ -1,23 +1,25 @@
 package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.command.CommandSender;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class SlowChatCommand extends BaseCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public SlowChatCommand(CorePlugin plugin) {
         super("slowchat", Rank.TRIAL_MOD);
         this.plugin = plugin;
+        init = new Init(plugin);
         setUsage(CC.RED + "Usage: /slowchat <seconds|disable>");
     }
 
     private static Integer getInt(String arg) {
         try {
-            int i = Integer.parseInt(arg);
+            final int i = Integer.parseInt(arg);
 
             if (i < 4 || i > 60) {
                 return null;
@@ -36,28 +38,28 @@ public class SlowChatCommand extends BaseCommand {
             return;
         }
 
-        String arg = args[0];
+        final String arg = args[0];
 
         switch (arg.toLowerCase()) {
             case "off":
             case "toggle":
             case "disable":
-                int slowChatTime = plugin.getServerSettings().getSlowChatTime();
+                final int slowChatTime = init.getServerSettings().getSlowChatTime();
 
                 if (slowChatTime == -1) {
                     sender.sendMessage(CC.RED + "Slow chat is already disabled!");
                 } else {
-                    plugin.getServerSettings().setSlowChatTime(-1);
+                    init.getServerSettings().setSlowChatTime(-1);
                     plugin.getServer().broadcastMessage(CC.RED + "Slow chat has been disabled by " + sender.getName() + ".");
                 }
                 break;
             default:
-                Integer time = getInt(arg);
+                final Integer time = getInt(arg);
 
                 if (time == null) {
                     sender.sendMessage(CC.RED + "You must enter a valid time between 4 and 60 seconds.");
                 } else {
-                    plugin.getServerSettings().setSlowChatTime(time);
+                    init.getServerSettings().setSlowChatTime(time);
                     plugin.getServer().broadcastMessage(CC.YELLOW + "Slow chat has been enabled and set to " + time
                             + " seconds by " + sender.getName() + ".");
                 }

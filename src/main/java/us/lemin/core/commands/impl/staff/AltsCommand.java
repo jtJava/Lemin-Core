@@ -4,7 +4,8 @@ import com.mongodb.client.FindIterable;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import org.bukkit.event.block.*;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
@@ -18,10 +19,12 @@ import java.util.function.Consumer;
 
 public class AltsCommand extends BaseCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public AltsCommand(CorePlugin plugin) {
         super("alts", Rank.ADMIN);
         this.plugin = plugin;
+        init = new Init(plugin);
         setAliases("dupeip");
         setUsage(CC.RED + "Usage: /alts <name:ip>");
     }
@@ -31,13 +34,13 @@ public class AltsCommand extends BaseCommand {
 
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            UUID targetId;
-            String targetName;
-            Player targetPlayer = plugin.getServer().getPlayer(args[0]);
+            final UUID targetId;
+            final String targetName;
+            final Player targetPlayer = plugin.getServer().getPlayer(args[0]);
             CoreProfile targetProfile = null;
 
             if (targetPlayer == null) {
-                ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
+                final ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
 
                 if (profile == null) {
                     sender.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -49,13 +52,13 @@ public class AltsCommand extends BaseCommand {
             } else {
                 targetId = targetPlayer.getUniqueId();
                 targetName = targetPlayer.getName();
-                targetProfile = plugin.getProfileManager().getProfile(targetId);
+                targetProfile = init.getProfileManager().getProfile(targetId);
             }
 
-            LinkedHashSet<String> alts = retrieveAlts(targetProfile);
-            LinkedHashSet<String> testingAlts = retrieveFullAlts(targetProfile);
-            String altsString = StringUtil.joinListGrammaticallyWithGuava(new ArrayList<>(alts));
-            String altsStringTest = StringUtil.joinListGrammaticallyWithGuava(new ArrayList<>(testingAlts));
+            final LinkedHashSet<String> alts = retrieveAlts(targetProfile);
+            final LinkedHashSet<String> testingAlts = retrieveFullAlts(targetProfile);
+            final String altsString = StringUtil.joinListGrammaticallyWithGuava(new ArrayList<>(alts));
+            final String altsStringTest = StringUtil.joinListGrammaticallyWithGuava(new ArrayList<>(testingAlts));
 
 
             sender.sendMessage(CC.GREEN + "Alts of " + targetName + " are: " + altsString);
@@ -68,14 +71,14 @@ public class AltsCommand extends BaseCommand {
 
 
     //TODO: cleanup
-    public LinkedHashSet<String> retrieveAlts(CoreProfile coreProfile) {
-        LinkedHashSet<String> alts = new LinkedHashSet<>();
+    private LinkedHashSet<String> retrieveAlts(CoreProfile coreProfile) {
+        final LinkedHashSet<String> alts = new LinkedHashSet<>();
 
-        List<String> knownAddresses = coreProfile.getKnownAddresses();
+        final List<String> knownAddresses = coreProfile.getKnownAddresses();
 
 
         knownAddresses.forEach(knownAddress -> {
-            FindIterable<Document> foundDocuments = plugin.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
+            final FindIterable<Document> foundDocuments = init.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
             foundDocuments.forEach((Consumer<? super Document>) document -> alts.addAll((List<String>) document.get("known_players")));
 
         });
@@ -86,22 +89,22 @@ public class AltsCommand extends BaseCommand {
     // i dont have much experience with mongo, function is supposed to get all
     // alts related to the initial target, and then all alts related to the ips
     // of those alts until it runs out of relations.
-    public LinkedHashSet<String> retrieveFullAlts(CoreProfile coreProfile) {
-        LinkedHashSet<String> alts = new LinkedHashSet<>();
+    private LinkedHashSet<String> retrieveFullAlts(CoreProfile coreProfile) {
+        final LinkedHashSet<String> alts = new LinkedHashSet<>();
 
-        List<String> knownAddresses = coreProfile.getKnownAddresses();
-        ListIterator<String> iterator = knownAddresses.listIterator();
+        final List<String> knownAddresses = coreProfile.getKnownAddresses();
+        final ListIterator<String> iterator = knownAddresses.listIterator();
 
         while (iterator.hasNext()) {
-            String knownAddress = iterator.next();
-            FindIterable<Document> foundDocuments = plugin.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
+            final String knownAddress = iterator.next();
+            final FindIterable<Document> foundDocuments = init.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
             foundDocuments.forEach((Consumer<? super Document>) document -> {
-                List<String> altsOfInitialAddress = (List<String>) document.get("known_players");
+                final List<String> altsOfInitialAddress = (List<String>) document.get("known_players");
                 alts.addAll(altsOfInitialAddress);
                 altsOfInitialAddress.forEach(altPlayer -> {
-                    Document altDocument = plugin.getMongoStorage().getDocumentByFilter("players", "name", altPlayer);
-                    List<String> altsKnownAddresses = (List<String>) altDocument.get("known_addresses");
-                    altsKnownAddresses.forEach(address -> iterator.add(address));
+                    final Document altDocument = init.getMongoStorage().getDocumentByFilter("players", "name", altPlayer);
+                    final List<String> altsKnownAddresses = (List<String>) altDocument.get("known_addresses");
+                    altsKnownAddresses.forEach(iterator::add);
                 });
             });
         }

@@ -22,8 +22,8 @@ public class TpPosCommand extends PlayerCommand {
         }
 
         if (args.length == 2) {
-            Double x = NumberUtil.getDouble(args[0]);
-            Double z = NumberUtil.getDouble(args[1]);
+            final Double x = NumberUtil.getDouble(args[0]);
+            final Double z = NumberUtil.getDouble(args[1]);
 
             if (x == null || z == null) {
                 player.sendMessage(CC.RED + "You must provide valid coordinates.");
@@ -32,9 +32,9 @@ public class TpPosCommand extends PlayerCommand {
 
             player.teleport(new Location(player.getWorld(), x, 100, z));
         } else if (args.length == 3) {
-            Double x = NumberUtil.getDouble(args[0]);
-            Double y = NumberUtil.getDouble(args[1]);
-            Double z = NumberUtil.getDouble(args[2]);
+            final Double x = NumberUtil.getDouble(args[0]);
+            final Double y = NumberUtil.getDouble(args[1]);
+            final Double z = NumberUtil.getDouble(args[2]);
 
             if (x == null || y == null || z == null) {
                 player.sendMessage(CC.RED + "You must provide valid coordinates.");

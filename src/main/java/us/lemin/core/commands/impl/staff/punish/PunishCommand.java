@@ -1,10 +1,9 @@
 package us.lemin.core.commands.impl.staff.punish;
 
-
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.event.BanEvent;
 import us.lemin.core.player.CoreProfile;
@@ -22,11 +21,13 @@ import java.util.UUID;
 public class PunishCommand extends BaseCommand {
 	private final PunishType type;
 	private final CorePlugin plugin;
+	private final Init init;
 
 	PunishCommand(Rank requiredRank, PunishType type, CorePlugin plugin) {
 		super(type.getName(), requiredRank);
 		this.type = type;
 		this.plugin = plugin;
+		init = new Init(plugin);
 		this.setUsage(CC.RED + "Usage: /" + getName() + " <player> [time] [reason] [-s]");
 	}
 
@@ -37,9 +38,9 @@ public class PunishCommand extends BaseCommand {
 			return;
 		}
 
-		boolean silent;
-		String reason;
-		long time;
+		final boolean silent;
+		final String reason;
+		final long time;
 
 		if (args.length < 2) {
 			reason = type.getDefaultMessage();
@@ -57,27 +58,23 @@ public class PunishCommand extends BaseCommand {
 			silent = builtArgs.endsWith("-s");
 
 			if (silent) {
-				if (builtArgs.equals("-s")) {
-					reason = type.getDefaultMessage();
-				} else {
-					reason = builtArgs.substring(0, builtArgs.length() - 2).trim();
-				}
+				reason = builtArgs.equals("-s") ? type.getDefaultMessage() : builtArgs.substring(0, builtArgs.length() - 2).trim();
 			} else {
 				reason = builtArgs;
 			}
 		}
 
-		boolean permanent = time == -1L;
-		long expiryTime = permanent ? -1L : System.currentTimeMillis() + time;
+		final boolean permanent = time == -1L;
+		final long expiryTime = permanent ? -1L : System.currentTimeMillis() + time;
 
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-			UUID targetId;
-			String targetName;
-			Player targetPlayer = plugin.getServer().getPlayer(args[0]);
+			final UUID targetId;
+			final String targetName;
+			final Player targetPlayer = plugin.getServer().getPlayer(args[0]);
 			CoreProfile targetProfile = null;
 
 			if (targetPlayer == null) {
-				ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
+				final ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
 
 				if (profile == null) {
 					sender.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -89,7 +86,7 @@ public class PunishCommand extends BaseCommand {
 			} else {
 				targetId = targetPlayer.getUniqueId();
 				targetName = targetPlayer.getName();
-				targetProfile = plugin.getProfileManager().getProfile(targetId);
+				targetProfile = init.getProfileManager().getProfile(targetId);
 
 				if (type == PunishType.MUTE) {
 					targetProfile.setMuteExpiryTime(expiryTime);
@@ -97,8 +94,8 @@ public class PunishCommand extends BaseCommand {
 			}
 
 			if (sender instanceof Player && targetProfile != null) {
-				Player player = (Player) sender;
-				CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+				final Player player = (Player) sender;
+				final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
 
 				if (!profile.hasRank(targetProfile.getRank())) {
 					player.sendMessage(CC.RED + "You can't punish someone with a higher rank than your own.");
@@ -107,7 +104,7 @@ public class PunishCommand extends BaseCommand {
 			}
 
 			if (type == PunishType.BAN) {
-				BanEvent event = new BanEvent(sender, targetId);
+				final BanEvent event = new BanEvent(sender, targetId);
 
 				plugin.getServer().getPluginManager().callEvent(event);
 
@@ -118,15 +115,15 @@ public class PunishCommand extends BaseCommand {
 
 			punish(sender.getName(), targetId, reason, expiryTime);
 
-			String diff = TimeUtil.formatTimeMillis(expiryTime - System.currentTimeMillis());
-			String msg = permanent ? CC.GREEN + targetName + " was permanently " + type.getPastTense() + " by " + getSenderName(sender) + "."
+			final String diff = TimeUtil.formatTimeMillis(expiryTime - System.currentTimeMillis());
+			final String msg = permanent ? CC.GREEN + targetName + " was permanently " + type.getPastTense() + " by " + getSenderName(sender) + "."
 					: CC.GREEN + targetName + " was temporarily " + type.getPastTense() + " by " + getSenderName(sender)
 					+ " for " + diff + ".";
 
 			if (silent) {
-				String silentMsg = CC.GRAY + "(Silent) " + msg;
+				final String silentMsg = CC.GRAY + "(Silent) " + msg;
 
-				plugin.getStaffManager().messageStaff(silentMsg);
+				init.getStaffManager().messageStaff(silentMsg);
 				plugin.getLogger().info(silentMsg);
 			} else {
 				plugin.getServer().broadcastMessage(msg);
@@ -142,25 +139,23 @@ public class PunishCommand extends BaseCommand {
 
 	@SuppressWarnings("unchecked")
 	private void punish(String punisher, UUID punished, String reason, long expiry) {
-		Document document = plugin.getMongoStorage().getDocument("players", punished);
+		final Document document = init.getMongoStorage().getDocument("players", punished);
 
 		if (document != null) {
-			List<String> knownAddresses = (List<String>) document.get("known_addresses");
+			final List<String> knownAddresses = (List<String>) document.get("known_addresses");
 
 			if (knownAddresses != null) {
-				for (String address : knownAddresses) {
-					plugin.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
-							MongoRequest.newRequest("punished_addresses", address)
-									.put(type.getPastTense(), true)
-									.put(type.getName() + "_expiry", expiry)
-									.put(type.getName() + "_reason", reason)
-									.put(type.getName() + "_punisher", punisher)
-									.run());
-				}
+				knownAddresses.forEach(address -> init.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
+						MongoRequest.newRequest("punished_addresses", address)
+								.put(type.getPastTense(), true)
+								.put(type.getName() + "_expiry", expiry)
+								.put(type.getName() + "_reason", reason)
+								.put(type.getName() + "_punisher", punisher)
+								.run()));
 			}
 		}
 
-		plugin.getMongoStorage().getOrCreateDocument("punished_ids", punished, (doc, found) ->
+		init.getMongoStorage().getOrCreateDocument("punished_ids", punished, (doc, found) ->
 				MongoRequest.newRequest("punished_ids", punished)
 						.put(type.getPastTense(), true)
 						.put(type.getName() + "_expiry", expiry)

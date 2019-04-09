@@ -2,7 +2,7 @@ package us.lemin.core.commands.impl;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.ColorPair;
 import us.lemin.core.player.CoreProfile;
@@ -14,26 +14,28 @@ import java.util.*;
 
 public class ColorCommand extends PlayerCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public ColorCommand(CorePlugin plugin) {
         super("color", Rank.PREMIUM);
         this.plugin = plugin;
+        init = new Init(plugin);
 
-        StringBuilder colors = new StringBuilder(CC.RED + "Usage: /color [primary|secondary] <color>\nValid colors are: ");
+        final StringBuilder colors = new StringBuilder(CC.RED + "Usage: /color [primary|secondary] <color>\nValid colors are: ");
 
         int colorCount = ColorPair.values().length;
-        int currentCount = 0;
+        final int currentCount = 0;
 
         for (ColorPair pair : ColorPair.values()) {
             colorCount++;
 
-            String name = pair.getName();
+            final String name = pair.getName();
 
             if (name == null) {
                 continue;
             }
 
-            ChatColor color = ChatColor.valueOf(name);
+            final ChatColor color = ChatColor.valueOf(name);
 
             colors.append(color.toString()).append(color.name().toLowerCase());
 
@@ -61,8 +63,8 @@ public class ColorCommand extends PlayerCommand {
             return;
         }
 
-        String arg = args[0].toLowerCase();
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        final String arg = args[0].toLowerCase();
+        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
 
         if (arg.equals("reset")) {
             profile.setColorPair(new CustomColorPair());
@@ -71,10 +73,10 @@ public class ColorCommand extends PlayerCommand {
             return;
         }
 
-        CustomColorPair customPair = profile.getColorPair();
+        final CustomColorPair customPair = profile.getColorPair();
 
         if (args.length > 1) {
-            ChatColor matchedColor = getMatchingChatColor(args[1]);
+            final ChatColor matchedColor = getMatchingChatColor(args[1]);
 
             if (matchedColor == null) {
                 player.sendMessage(usageMessage);
@@ -95,7 +97,7 @@ public class ColorCommand extends PlayerCommand {
                     break;
             }
         } else {
-            ColorPair matchedPair = ColorPair.getByName(arg);
+            final ColorPair matchedPair = ColorPair.getByName(arg);
 
             if (matchedPair == null) {
                 player.sendMessage(usageMessage);

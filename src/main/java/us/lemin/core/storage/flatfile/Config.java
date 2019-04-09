@@ -9,13 +9,14 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config {
     private final File file;
     private YamlConfiguration delegate;
 
-    public Config(JavaPlugin plugin, String name) {
+    public Config(Plugin plugin, String name) {
         file = new File(plugin.getDataFolder() + "/" + name + ".yml");
         reload();
     }

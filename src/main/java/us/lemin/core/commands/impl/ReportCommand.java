@@ -1,7 +1,7 @@
 package us.lemin.core.commands.impl;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.inventory.menu.impl.ReportMenu;
 import us.lemin.core.player.CoreProfile;
@@ -12,10 +12,12 @@ import us.lemin.core.utils.timer.Timer;
 
 public class ReportCommand extends PlayerCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public ReportCommand(CorePlugin plugin) {
         super("report");
         this.plugin = plugin;
+        init = new Init(plugin);
         setUsage(CC.RED + "Usage: /report <player> <reason>");
     }
 
@@ -26,7 +28,7 @@ public class ReportCommand extends PlayerCommand {
             return;
         }
 
-        Player target = plugin.getServer().getPlayer(args[0]);
+        final Player target = plugin.getServer().getPlayer(args[0]);
 
         if (target == null) {
             player.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -38,7 +40,7 @@ public class ReportCommand extends PlayerCommand {
             return;
         }
 
-        CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
+        final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
 
         if (targetProfile.hasStaff()) {
             player.sendMessage(CC.RED + "You can't report a staff member. If this staff member is harassing you or" +
@@ -46,25 +48,25 @@ public class ReportCommand extends PlayerCommand {
             return;
         }
 
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.isMuted()) {
             profile.setReportingPlayerName(target.getName());
-            plugin.getMenuManager().getMenu(ReportMenu.class).open(player);
+            init.getMenuManager().getMenu(ReportMenu.class).open(player);
         } else {
-            Timer cooldownTimer = profile.getReportCooldownTimer();
+            final Timer cooldownTimer = profile.getReportCooldownTimer();
 
             if (cooldownTimer.isActive()) {
                 player.sendMessage(CC.RED + "You can't report a player for another " + cooldownTimer.formattedExpiration() + ".");
                 return;
             }
 
-            String report = StringUtil.buildString(args, 1);
+            final String report = StringUtil.buildString(args, 1);
 
-            plugin.getStaffManager().messageStaff("");
-            plugin.getStaffManager().messageStaff(CC.RED + "(Report) " + CC.SECONDARY + player.getName() + CC.PRIMARY
+            init.getStaffManager().messageStaff("");
+            init.getStaffManager().messageStaff(CC.RED + "(Report) " + CC.SECONDARY + player.getName() + CC.PRIMARY
                     + " reported " + CC.SECONDARY + target.getName() + CC.PRIMARY + " for " + CC.SECONDARY + report + CC.PRIMARY + ".");
-            plugin.getStaffManager().messageStaff("");
+            init.getStaffManager().messageStaff("");
 
             player.sendMessage(CC.GREEN + "Report sent for " + target.getDisplayName() + CC.GREEN + ": " + CC.R + report);
         }

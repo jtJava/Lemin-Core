@@ -1,13 +1,13 @@
 package us.lemin.core.server;
 
-import com.google.common.collect.ImmutableMap;
-import java.util.Arrays;
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.ChatColor;
-import us.lemin.core.CorePlugin;
-import us.lemin.core.storage.flatfile.Config;
-import us.lemin.core.task.ShutdownTask;
+import com.google.common.collect.*;
+import lombok.*;
+import org.bukkit.*;
+import org.bukkit.plugin.*;
+import us.lemin.core.storage.flatfile.*;
+import us.lemin.core.task.*;
+
+import java.util.*;
 
 @Getter
 public class ServerSettings {
@@ -23,7 +23,7 @@ public class ServerSettings {
     @Setter
     private int slowChatTime = -1;
 
-    public ServerSettings(CorePlugin plugin) {
+    public ServerSettings(Plugin plugin) {
         this.coreConfig = new Config(plugin, "config");
 
         coreConfig.addDefaults(ImmutableMap.<String, Object>builder()

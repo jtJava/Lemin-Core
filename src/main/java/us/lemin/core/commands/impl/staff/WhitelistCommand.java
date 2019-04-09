@@ -2,7 +2,7 @@ package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.server.ServerSettings;
@@ -11,10 +11,12 @@ import us.lemin.core.utils.message.CC;
 
 public class WhitelistCommand extends BaseCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public WhitelistCommand(CorePlugin plugin) {
         super("whitelist", Rank.ADMIN);
         this.plugin = plugin;
+        init = new Init(plugin);
         setAliases("wl");
         setUsage(CC.RED + "Usage: /whitelist <none|ranks|staff>");
     }
@@ -26,7 +28,7 @@ public class WhitelistCommand extends BaseCommand {
             return;
         }
 
-        ServerSettings settings = plugin.getServerSettings();
+        final ServerSettings settings = init.getServerSettings();
 
         switch (args[0].toLowerCase()) {
             case "none":
@@ -46,8 +48,8 @@ public class WhitelistCommand extends BaseCommand {
                 return;
         }
 
-        WhitelistMode whitelistMode = settings.getServerWhitelistMode();
-        Server server = plugin.getServer();
+        final WhitelistMode whitelistMode = settings.getServerWhitelistMode();
+        final Server server = plugin.getServer();
 
         if (whitelistMode == WhitelistMode.NONE) {
             server.broadcastMessage(CC.GREEN + "The server is no longer whitelisted!");

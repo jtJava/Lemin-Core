@@ -4,7 +4,7 @@ package us.lemin.core.commands.impl.staff.punish;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
@@ -18,11 +18,14 @@ import static us.lemin.core.utils.StringUtil.IP_REGEX;
 
 // TODO: cleanup
 public class PunishmentInfoCommand extends BaseCommand {
+
 	private final CorePlugin plugin;
+	private final Init init;
 
 	public PunishmentInfoCommand(CorePlugin plugin) {
 		super("punishmentinfo", Rank.ADMIN);
 		this.plugin = plugin;
+		init = new Init(plugin);
 		this.setAliases("baninfo", "muteinfo", "playerinfo", "checkban", "checkmute");
 		this.setUsage(CC.RED + "/punishmentinfo <player|ip>");
 	}
@@ -36,17 +39,17 @@ public class PunishmentInfoCommand extends BaseCommand {
 
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
 			String arg = args[0];
-			Document document;
+			final Document document;
 
 			if (IP_REGEX.matcher(arg).matches()) {
-				document = plugin.getMongoStorage().getDocument("punished_addresses", arg);
+				document = init.getMongoStorage().getDocument("punished_addresses", arg);
 			} else {
-				UUID id;
-				String name;
-				Player player = plugin.getServer().getPlayer(arg);
+				final UUID id;
+				final String name;
+				final Player player = plugin.getServer().getPlayer(arg);
 
 				if (player == null) {
-					ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(arg);
+					final ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(arg);
 
 					if (profile == null) {
 						sender.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -61,7 +64,7 @@ public class PunishmentInfoCommand extends BaseCommand {
 				}
 
 				arg = name;
-				document = plugin.getMongoStorage().getDocument("punished_ids", id);
+				document = init.getMongoStorage().getDocument("punished_ids", id);
 			}
 
 			if (document == null) {
@@ -76,9 +79,9 @@ public class PunishmentInfoCommand extends BaseCommand {
 			sender.sendMessage(CC.PRIMARY + "Banned: " + CC.SECONDARY + actuallyPunished);
 
 			if (actuallyPunished) {
-				long expiry = document.getLong("ban_expiry");
-				String punisher = document.getString("ban_punisher");
-				String reason = document.getString("ban_reason");
+				final long expiry = document.getLong("ban_expiry");
+				final String punisher = document.getString("ban_punisher");
+				final String reason = document.getString("ban_reason");
 
 				sender.sendMessage(CC.PRIMARY + "Expiry: " + CC.SECONDARY
 						+ (expiry == -1L ? "never" : TimeUtil.formatTimeMillis(expiry - System.currentTimeMillis())));
@@ -95,9 +98,9 @@ public class PunishmentInfoCommand extends BaseCommand {
 			sender.sendMessage(CC.PRIMARY + "Muted: " + CC.SECONDARY + actuallyPunished);
 
 			if (actuallyPunished) {
-				long expiry = document.getLong("mute_expiry");
-				String punisher = document.getString("mute_punisher");
-				String reason = document.getString("mute_reason");
+				final long expiry = document.getLong("mute_expiry");
+				final String punisher = document.getString("mute_punisher");
+				final String reason = document.getString("mute_reason");
 
 				sender.sendMessage(CC.PRIMARY + "Expiry: " + CC.SECONDARY
 						+ (expiry == -1L ? "never" : TimeUtil.formatTimeMillis(expiry - System.currentTimeMillis())));

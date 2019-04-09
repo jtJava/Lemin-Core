@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
@@ -22,8 +22,8 @@ public class PlayerList {
             .map(rank -> rank.getColor() + rank.getName() + CC.R)
             .collect(Collectors.toList()));
     private static final Comparator<Player> RANK_ORDER = (a, b) -> {
-        CoreProfile profileA = CorePlugin.getInstance().getProfileManager().getProfile(a.getUniqueId());
-        CoreProfile profileB = CorePlugin.getInstance().getProfileManager().getProfile(b.getUniqueId());
+        CoreProfile profileA = Init.getInstance().getProfileManager().getProfile(a.getUniqueId());
+        CoreProfile profileB = Init.getInstance().getProfileManager().getProfile(b.getUniqueId());
         return profileB.getRank().compareTo(profileA.getRank());
     };
 
@@ -46,7 +46,7 @@ public class PlayerList {
     public String asColoredNames() {
         List<String> namesList = onlinePlayers.stream()
                 .map(Player::getUniqueId)
-                .map(CorePlugin.getInstance().getProfileManager()::getProfile)
+                .map(Init.getInstance().getProfileManager()::getProfile)
                 .map(profile -> profile.getRank().getColor() + profile.getName() + CC.R)
                 .collect(Collectors.toList());
         return String.join(", ", namesList);

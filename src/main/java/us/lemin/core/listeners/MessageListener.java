@@ -5,7 +5,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.event.player.PlayerMessageEvent;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
@@ -22,7 +22,7 @@ public class MessageListener implements Listener {
     @EventHandler
     public void onMessage(PlayerMessageEvent event) {
         Player sender = event.getPlayer();
-        CoreProfile senderProfile = plugin.getProfileManager().getProfile(sender.getUniqueId());
+        CoreProfile senderProfile = Init.getInstance().getProfileManager().getProfile(sender.getUniqueId());
 
         if (!senderProfile.isMessaging() && !senderProfile.hasStaff()) {
             sender.sendMessage(CC.RED + "You have messaging disabled.");
@@ -30,7 +30,7 @@ public class MessageListener implements Listener {
         }
 
         Player receiver = event.getReceiver();
-        CoreProfile receiverProfile = plugin.getProfileManager().getProfile(receiver.getUniqueId());
+        CoreProfile receiverProfile = Init.getInstance().getProfileManager().getProfile(receiver.getUniqueId());
 
         if (senderProfile.hasStaff()) {
             // NO-OP

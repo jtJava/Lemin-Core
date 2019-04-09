@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import us.lemin.core.CorePlugin;
+import org.bukkit.plugin.*;
+import us.lemin.core.*;
 import us.lemin.core.utils.message.CC;
 
 public class BroadcastTask implements Runnable {
@@ -12,9 +13,9 @@ public class BroadcastTask implements Runnable {
     private final Server server;
     private int currentIndex;
 
-    public BroadcastTask(CorePlugin plugin) {
+    public BroadcastTask(Plugin plugin) {
         List<String> broadcasts = new ArrayList<>();
-        plugin.getServerSettings().getCoreConfig().getStringList("server.broadcasts").forEach(s -> broadcasts.add(ChatColor.translateAlternateColorCodes('&', s)));
+        Init.getInstance().getServerSettings().getCoreConfig().getStringList("server.broadcasts").forEach(s -> broadcasts.add(ChatColor.translateAlternateColorCodes('&', s)));
         this.broadcasts = broadcasts;
         this.server = plugin.getServer();
     }

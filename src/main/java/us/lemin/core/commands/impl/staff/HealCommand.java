@@ -13,7 +13,7 @@ public class HealCommand extends PlayerCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-        Player target = args.length < 1 || Bukkit.getPlayer(args[0]) == null ? player : Bukkit.getPlayer(args[0]);
+        final Player target = args.length < 1 || Bukkit.getPlayer(args[0]) == null ? player : Bukkit.getPlayer(args[0]);
 
         if (target.isDead()) {
             player.sendMessage(CC.RED + "You can't heal a dead player.");

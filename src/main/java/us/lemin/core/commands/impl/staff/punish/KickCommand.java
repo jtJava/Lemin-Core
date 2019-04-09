@@ -1,9 +1,9 @@
 package us.lemin.core.commands.impl.staff.punish;
 
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import org.bukkit.plugin.*;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.StringUtil;
@@ -11,11 +11,14 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class KickCommand extends BaseCommand {
-	private final CorePlugin plugin;
 
-	public KickCommand(CorePlugin plugin) {
+	private final Plugin plugin;
+	private Init init;
+
+	public KickCommand(final CorePlugin plugin) {
 		super("kick", Rank.TRIAL_MOD);
 		this.plugin = plugin;
+		init = new Init(plugin);
 		this.setUsage(CC.RED + "/kick <player> [reason] [-s]");
 	}
 
@@ -26,29 +29,25 @@ public class KickCommand extends BaseCommand {
 			return;
 		}
 
-		Player target = plugin.getServer().getPlayer(args[0]);
+		final Player target = plugin.getServer().getPlayer(args[0]);
 
 		if (target == null) {
 			sender.sendMessage(Messages.PLAYER_NOT_FOUND);
 			return;
 		}
 
-		boolean silent;
-		String reason;
+		final boolean silent;
+		final String reason;
 
 		if (args.length < 2) {
 			reason = "Misconduct";
 			silent = false;
 		} else {
-			String builtArgs = StringUtil.buildString(args, 1).trim();
+			final String builtArgs = StringUtil.buildString(args, 1).trim();
 			silent = builtArgs.contains("-s");
 
 			if (silent) {
-				if (builtArgs.equals("-s")) {
-					reason = "Misconduct";
-				} else {
-					reason = builtArgs.replace("-s", "");
-				}
+				reason = builtArgs.equals("-s") ? "Misconduct" : builtArgs.replace("-s", "");
 			} else {
 				reason = builtArgs;
 			}
@@ -56,12 +55,12 @@ public class KickCommand extends BaseCommand {
 
 		target.kickPlayer(CC.RED + "You were kicked: " + reason);
 
-		String msg = CC.GREEN + target.getName() + " was kicked by " + sender.getName() + ".";
+		final String msg = CC.GREEN + target.getName() + " was kicked by " + sender.getName() + ".";
 
 		if (silent) {
-			String silentMsg = CC.GRAY + "(Silent) " + msg;
+			final String silentMsg = CC.GRAY + "(Silent) " + msg;
 
-			plugin.getStaffManager().messageStaff(silentMsg);
+			init.getStaffManager().messageStaff(silentMsg);
 			plugin.getLogger().info(silentMsg);
 		} else {
 			plugin.getServer().broadcastMessage(msg);

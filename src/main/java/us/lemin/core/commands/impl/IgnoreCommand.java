@@ -1,7 +1,7 @@
 package us.lemin.core.commands.impl;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
@@ -9,10 +9,12 @@ import us.lemin.core.utils.message.Messages;
 
 public class IgnoreCommand extends PlayerCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public IgnoreCommand(CorePlugin plugin) {
         super("ignore");
         this.plugin = plugin;
+        init = new Init(plugin);
         setAliases("unignore");
         setUsage(CC.RED + "Usage: /ignore <player>");
     }
@@ -24,7 +26,7 @@ public class IgnoreCommand extends PlayerCommand {
             return;
         }
 
-        Player target = plugin.getServer().getPlayer(args[0]);
+        final Player target = plugin.getServer().getPlayer(args[0]);
 
         if (target == null) {
             player.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -36,7 +38,7 @@ public class IgnoreCommand extends PlayerCommand {
             return;
         }
 
-        CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
+        final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
 
         if (targetProfile.hasStaff()) {
             player.sendMessage(CC.RED + "You can't ignore a staff member. If this staff member is harrassing you " +
@@ -44,7 +46,7 @@ public class IgnoreCommand extends PlayerCommand {
             return;
         }
 
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.hasPlayerIgnored(target.getUniqueId())) {
             profile.unignore(target.getUniqueId());

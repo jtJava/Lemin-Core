@@ -14,14 +14,14 @@ public class PingCommand extends PlayerCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-        Player target = args.length < 1 || Bukkit.getPlayer(args[0]) == null ? player : Bukkit.getPlayer(args[0]);
-        int targetPing = PlayerUtil.getPing(target);
+        final Player target = args.length < 1 || Bukkit.getPlayer(args[0]) == null ? player : Bukkit.getPlayer(args[0]);
+        final int targetPing = PlayerUtil.getPing(target);
 
         if (target == player) {
             player.sendMessage(CC.PRIMARY + "Your ping is " + CC.SECONDARY + targetPing + CC.PRIMARY + " ms.");
         } else {
-            int difference = targetPing - PlayerUtil.getPing(player);
-            String name = target.getDisplayName();
+            final int difference = targetPing - PlayerUtil.getPing(player);
+            final String name = target.getDisplayName();
 
             player.sendMessage(name + CC.PRIMARY + "'s ping is " + CC.SECONDARY + targetPing + CC.PRIMARY + " ms "
                     + CC.ACCENT + "(" + (difference > 0 ? "+" : "") + difference + " difference)" + CC.PRIMARY + ".");

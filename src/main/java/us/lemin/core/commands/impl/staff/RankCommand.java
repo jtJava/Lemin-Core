@@ -2,7 +2,7 @@ package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.event.player.PlayerRankChangeEvent;
 import us.lemin.core.player.CoreProfile;
@@ -14,10 +14,12 @@ import us.lemin.core.utils.profile.ProfileUtil;
 
 public class RankCommand extends BaseCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public RankCommand(CorePlugin plugin) {
         super("rank", Rank.ADMIN);
         this.plugin = plugin;
+        init = new Init(plugin);
         setUsage(CC.RED + "Usage: /rank <player> <rank>");
     }
 
@@ -28,7 +30,7 @@ public class RankCommand extends BaseCommand {
             return;
         }
 
-        Rank rank = Rank.getByName(args[1]);
+        final Rank rank = Rank.getByName(args[1]);
 
         if (rank == null) {
             sender.sendMessage(CC.RED + "Rank not found.");
@@ -36,7 +38,7 @@ public class RankCommand extends BaseCommand {
         }
 
         if (sender instanceof Player) {
-            CoreProfile playerProfile = plugin.getProfileManager().getProfile(((Player) sender).getUniqueId());
+            final CoreProfile playerProfile = init.getProfileManager().getProfile(((Player) sender).getUniqueId());
 
             if (!playerProfile.hasRank(rank)) {
                 sender.sendMessage(CC.RED + "You can't give ranks higher than your own.");
@@ -44,13 +46,13 @@ public class RankCommand extends BaseCommand {
             }
         }
 
-        Player target = plugin.getServer().getPlayer(args[0]);
+        final Player target = plugin.getServer().getPlayer(args[0]);
 
         if (target == null) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
+                final ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
 
-                if (profile != null && plugin.getMongoStorage().getDocument("players", profile.getId()) != null) {
+                if (profile != null && init.getMongoStorage().getDocument("players", profile.getId()) != null) {
                     MongoRequest.newRequest("players", profile.getId())
                             .put("rank_name", rank.getName())
                             .run();
@@ -62,7 +64,7 @@ public class RankCommand extends BaseCommand {
                 }
             });
         } else {
-            CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
+            final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
 
             plugin.getServer().getPluginManager().callEvent(new PlayerRankChangeEvent(target, targetProfile, rank));
             sender.sendMessage(CC.GREEN + "Set " + target.getName() + "'s rank to "

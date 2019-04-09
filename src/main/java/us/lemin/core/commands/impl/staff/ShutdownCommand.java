@@ -1,7 +1,7 @@
 package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.command.CommandSender;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.event.server.ServerShutdownCancelEvent;
 import us.lemin.core.event.server.ServerShutdownScheduleEvent;
@@ -12,10 +12,12 @@ import us.lemin.core.utils.message.CC;
 
 public class ShutdownCommand extends BaseCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public ShutdownCommand(CorePlugin plugin) {
         super("shutdown", Rank.ADMIN);
         this.plugin = plugin;
+        init = new Init(plugin);
         setUsage(CC.RED + "Usage: /shutdown <seconds|cancel>");
     }
 
@@ -26,10 +28,10 @@ public class ShutdownCommand extends BaseCommand {
             return;
         }
 
-        String arg = args[0];
+        final String arg = args[0];
 
         if (arg.equals("cancel")) {
-            ShutdownTask task = plugin.getServerSettings().getShutdownTask();
+            final ShutdownTask task = init.getServerSettings().getShutdownTask();
 
             if (task == null) {
                 sender.sendMessage(CC.RED + "There is no shutdown in progress.");
@@ -38,13 +40,13 @@ public class ShutdownCommand extends BaseCommand {
 
                 task.cancel();
 
-                plugin.getServerSettings().setShutdownTask(null);
+                init.getServerSettings().setShutdownTask(null);
                 plugin.getServer().broadcastMessage(CC.GREEN + "The shutdown in progress has been cancelled by " + sender.getName() + ".");
             }
             return;
         }
 
-        Integer seconds = NumberUtil.getInteger(arg);
+        final Integer seconds = NumberUtil.getInteger(arg);
 
         if (seconds == null) {
             sender.sendMessage(usageMessage);
@@ -52,9 +54,9 @@ public class ShutdownCommand extends BaseCommand {
             if (seconds >= 5 && seconds <= 300) {
                 plugin.getServer().getPluginManager().callEvent(new ServerShutdownScheduleEvent());
 
-                ShutdownTask task = new ShutdownTask(seconds);
+                final ShutdownTask task = new ShutdownTask(seconds);
 
-                plugin.getServerSettings().setShutdownTask(task);
+                init.getServerSettings().setShutdownTask(task);
                 task.runTaskTimer(plugin, 0L, 20L);
             } else {
                 sender.sendMessage(CC.RED + "Please enter a time between 5 and 300 seconds.");

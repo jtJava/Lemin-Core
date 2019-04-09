@@ -2,7 +2,7 @@ package us.lemin.core.server;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
@@ -30,7 +30,7 @@ public enum WhitelistMode {
 
     public void activate() {
         Bukkit.getOnlinePlayers().forEach(player -> {
-            final CoreProfile profile = CorePlugin.getInstance().getProfileManager().getProfile(player.getUniqueId());
+            final CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
             if (isProfileIneligible(profile)) {
                 player.kickPlayer(WHITELIST_MESSAGE);
             }

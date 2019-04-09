@@ -1,7 +1,7 @@
 package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
@@ -10,10 +10,12 @@ import us.lemin.core.utils.message.Messages;
 
 public class TeleportCommand extends PlayerCommand {
     private final CorePlugin plugin;
+    private final Init init;
 
     public TeleportCommand(CorePlugin plugin) {
         super("tp", Rank.TRIAL_MOD);
         this.plugin = plugin;
+        init = new Init(plugin);
         setAliases("teleport");
         setUsage(CC.RED + "Usage: /teleport <player> [player]");
     }
@@ -31,7 +33,7 @@ public class TeleportCommand extends PlayerCommand {
         to.teleport(from);
         to.sendMessage(CC.GREEN + "You have been teleported to " + from.getName() + ".");
 
-        CoreProfile fromProfile = plugin.getProfileManager().getProfile(from.getUniqueId());
+        final CoreProfile fromProfile = init.getProfileManager().getProfile(from.getUniqueId());
 
         if (fromProfile.hasStaff()) {
             from.sendMessage(CC.GREEN + to.getName() + " has been teleported to you.");
@@ -45,7 +47,7 @@ public class TeleportCommand extends PlayerCommand {
             return;
         }
 
-        Player target = plugin.getServer().getPlayer(args[0]);
+        final Player target = plugin.getServer().getPlayer(args[0]);
 
         if (isOffline(player, target)) {
             return;
@@ -54,7 +56,7 @@ public class TeleportCommand extends PlayerCommand {
         if (args.length < 2) {
             teleport(player, target);
         } else {
-            Player target2 = plugin.getServer().getPlayer(args[1]);
+            final Player target2 = plugin.getServer().getPlayer(args[1]);
 
             if (isOffline(player, target2)) {
                 return;

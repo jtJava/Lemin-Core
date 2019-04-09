@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class StaffManager {
     @Getter
     private final Set<UUID> staffIds = new HashSet<>();
-    private final CorePlugin plugin;
+    private final Init plugin;
 
     public void addCachedStaff(UUID id) {
         staffIds.add(id);
@@ -40,7 +40,7 @@ public class StaffManager {
     public void messageStaff(Rank requiredRank, String msg) {
         staffIds.stream().map(id -> plugin.getProfileManager().getProfile(id))
                 .filter(profile -> profile != null && profile.hasRank(requiredRank))
-                .map(profile -> plugin.getServer().getPlayer(profile.getId()))
+                .map(profile -> CorePlugin.getInstance().getServer().getPlayer(profile.getId()))
                 .filter(loopPlayer -> loopPlayer != null && loopPlayer.isOnline())
                 .forEach(loopPlayer -> loopPlayer.sendMessage(msg));
     }
@@ -61,12 +61,12 @@ public class StaffManager {
                     return;
                 }
                 if (profile.isVanished()) {
-                    Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
+                    Player loopPlayer = CorePlugin.getInstance().getServer().getPlayer(profile.getId());
                     if (loopPlayer != null && loopPlayer.isOnline()) {
                         player.hidePlayer(loopPlayer);
                     }
                 } else {
-                    Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
+                    Player loopPlayer = CorePlugin.getInstance().getServer().getPlayer(profile.getId());
                     if (loopPlayer != null && loopPlayer.isOnline()) {
                         player.showPlayer(loopPlayer);
                     }

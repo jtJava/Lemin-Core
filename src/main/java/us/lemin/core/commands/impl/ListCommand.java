@@ -13,7 +13,7 @@ public class ListCommand extends BaseCommand {
 
     @Override
     protected void execute(CommandSender sender, String[] args) {
-        PlayerList onlinePlayerList = PlayerList.newList().sortedByRank();
+        final PlayerList onlinePlayerList = PlayerList.newList().sortedByRank();
 
         sender.sendMessage(CC.PRIMARY + "Players online " + CC.SECONDARY + "(" + onlinePlayerList.size() + ")"
                 + CC.PRIMARY + ": " + onlinePlayerList.asColoredNames());

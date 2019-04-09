@@ -15,7 +15,7 @@ public class SpeedCommand extends PlayerCommand {
     }
 
     private static int parseSpeed(boolean flying, String arg) {
-        int defaultSpeed = flying ? 1 : 2;
+        final int defaultSpeed = flying ? 1 : 2;
 
         if (arg.toLowerCase().equals("reset")) {
             return defaultSpeed;
@@ -31,16 +31,16 @@ public class SpeedCommand extends PlayerCommand {
             return;
         }
 
-        Player target = args.length < 2 || Bukkit.getPlayer(args[1]) == null ? player : Bukkit.getPlayer(args[1]);
-        boolean flying = target.getAllowFlight();
-        int speed = parseSpeed(flying, args[0]);
+        final Player target = args.length < 2 || Bukkit.getPlayer(args[1]) == null ? player : Bukkit.getPlayer(args[1]);
+        final boolean flying = target.getAllowFlight();
+        final int speed = parseSpeed(flying, args[0]);
 
         if (speed < 0 || speed > 10) {
             player.sendMessage(CC.RED + "You must enter a valid speed from 0 to 10!");
             return;
         }
 
-        float actualSpeed = 0.1F * speed;
+        final float actualSpeed = 0.1F * speed;
 
         if (flying) {
             target.setFlySpeed(actualSpeed);

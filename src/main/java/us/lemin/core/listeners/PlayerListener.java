@@ -11,7 +11,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.event.player.PlayerRankChangeEvent;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.CustomColorPair;
@@ -57,17 +57,17 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
-        if (plugin.getPlayerManager().isNameOnline(event.getName()) || plugin.getPlayerManager().getOnlineByIp(event.getAddress()) > 3) {
+        if (Init.getInstance().getPlayerManager().isNameOnline(event.getName()) || Init.getInstance().getPlayerManager().getOnlineByIp(event.getAddress()) > 3) {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, CC.RED + "You're already online!");
         } else if (event.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            MongoStorage storage = plugin.getMongoStorage();
+            MongoStorage storage = Init.getInstance().getMongoStorage();
 
             boolean notBannedById = isNotBanned(storage.getDocument("punished_ids", event.getUniqueId()), event);
             boolean notBannedByIp = isNotBanned(storage.getDocument("punished_addresses", event.getAddress().getHostAddress()), event);
 
             if (notBannedById && notBannedByIp) {
-                CoreProfile profile = plugin.getProfileManager().createProfile(event.getName(), event.getUniqueId(), event.getAddress().getHostAddress());
-                ServerSettings serverSettings = plugin.getServerSettings();
+                CoreProfile profile = Init.getInstance().getProfileManager().createProfile(event.getName(), event.getUniqueId(), event.getAddress().getHostAddress());
+                ServerSettings serverSettings = Init.getInstance().getServerSettings();
 
                 if (serverSettings.getServerWhitelistMode().isProfileIneligible(profile)) {
                     event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, serverSettings.getWhitelistMessage());
@@ -79,13 +79,13 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
         if (profile == null) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Messages.DATA_LOAD_FAIL);
             return;
         } else if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
-            plugin.getProfileManager().removeProfile(player.getUniqueId());
+            Init.getInstance().getProfileManager().removeProfile(player.getUniqueId());
             return;
         }
 
@@ -104,7 +104,7 @@ public class PlayerListener implements Listener {
         }
 
         if (profile.hasStaff()) {
-            plugin.getStaffManager().addCachedStaff(player.getUniqueId());
+            Init.getInstance().getStaffManager().addCachedStaff(player.getUniqueId());
         }
     }
 
@@ -115,11 +115,11 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
 
-        plugin.getPlayerManager().addPlayer(player);
+        Init.getInstance().getPlayerManager().addPlayer(player);
 
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
-        plugin.getStaffManager().hideVanishedStaffFromPlayer(player);
+        Init.getInstance().getStaffManager().hideVanishedStaffFromPlayer(player);
 
         Scoreboard scoreboard = player.getScoreboard();
         if (scoreboard != null) {
@@ -129,7 +129,7 @@ public class PlayerListener implements Listener {
         }
 
         if (profile.hasStaff()) {
-            plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " joined the server.");
+            Init.getInstance().getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " joined the server.");
         }
 
         Rank rank = profile.getRank();
@@ -166,16 +166,16 @@ public class PlayerListener implements Listener {
     }
 
     private void onDisconnect(Player player) {
-        plugin.getPlayerManager().removePlayer(player);
+        Init.getInstance().getPlayerManager().removePlayer(player);
 
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
         // in case disconnect is somehow called twice
         if (profile == null) {
             return;
         }
         if (profile.hasStaff()) {
-            Set<UUID> staffSet = plugin.getStaffManager().getStaffIds();
+            Set<UUID> staffSet = Init.getInstance().getStaffManager().getStaffIds();
             staffSet.forEach(uuid -> {
                 Player players = plugin.getServer().getPlayer(uuid);
                 Scoreboard playersScoreboard = players.getScoreboard();
@@ -184,12 +184,12 @@ public class PlayerListener implements Listener {
                     seeInvisStaff.removeEntry(player.getName());
                 }
             });
-            plugin.getStaffManager().removeCachedStaff(player.getUniqueId());
-            plugin.getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " left the server.");
+            Init.getInstance().getStaffManager().removeCachedStaff(player.getUniqueId());
+            Init.getInstance().getStaffManager().messageStaffWithPrefix(profile.getChatFormat() + CC.PRIMARY + " left the server.");
         }
 
         profile.save(true);
-        plugin.getProfileManager().removeProfile(player.getUniqueId());
+        Init.getInstance().getProfileManager().removeProfile(player.getUniqueId());
     }
 
     @EventHandler
@@ -209,11 +209,11 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
         String msg = event.getMessage();
 
         if (!profile.hasStaff()) {
-            if (plugin.getServerSettings().isGlobalChatMuted()) {
+            if (Init.getInstance().getServerSettings().isGlobalChatMuted()) {
                 event.setCancelled(true);
                 player.sendMessage(CC.RED + "Global chat is currently muted.");
                 return;
@@ -226,9 +226,9 @@ public class PlayerListener implements Listener {
                     player.sendMessage(CC.RED + "You're permanently muted.");
                 }
                 return;
-            } else if (plugin.getServerSettings().getSlowChatTime() != -1) {
+            } else if (Init.getInstance().getServerSettings().getSlowChatTime() != -1) {
                 long lastChatTime = profile.getLastChatTime();
-                int slowChatTime = plugin.getServerSettings().getSlowChatTime();
+                int slowChatTime = Init.getInstance().getServerSettings().getSlowChatTime();
                 long sum = lastChatTime + (slowChatTime * 1000);
 
                 if (lastChatTime != 0 && sum > System.currentTimeMillis()) {
@@ -249,11 +249,11 @@ public class PlayerListener implements Listener {
 
         } else if (profile.isInStaffChat()) {
             event.setCancelled(true);
-            plugin.getStaffManager().messageStaff(profile.getChatFormat(), msg);
+            Init.getInstance().getStaffManager().messageStaff(profile.getChatFormat(), msg);
             return;
         }
 
-        if (plugin.getFilter().isFiltered(msg)) {
+        if (Init.getInstance().getFilter().isFiltered(msg)) {
             if (profile.hasStaff()) {
                 player.sendMessage(CC.RED + "That would have been filtered.");
             } else {
@@ -261,7 +261,7 @@ public class PlayerListener implements Listener {
 
                 String formattedMessage = profile.getChatFormat() + CC.R + ": " + msg;
 
-                plugin.getStaffManager().messageStaff(CC.RED + "(Filtered) " + formattedMessage);
+                Init.getInstance().getStaffManager().messageStaff(CC.RED + "(Filtered) " + formattedMessage);
                 player.sendMessage(formattedMessage);
                 return;
             }
@@ -271,7 +271,7 @@ public class PlayerListener implements Listener {
 
         while (recipients.hasNext()) {
             Player recipient = recipients.next();
-            CoreProfile recipientProfile = plugin.getProfileManager().getProfile(recipient.getUniqueId());
+            CoreProfile recipientProfile = Init.getInstance().getProfileManager().getProfile(recipient.getUniqueId());
 
             if (recipientProfile == null) {
                 continue;
@@ -320,7 +320,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+        CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.hasStaff()) {
             return;
@@ -343,11 +343,11 @@ public class PlayerListener implements Listener {
         profile.setRank(newRank);
 
         if (profile.hasStaff()) {
-            if (!plugin.getStaffManager().isInStaffCache(player.getUniqueId())) {
-                plugin.getStaffManager().addCachedStaff(player.getUniqueId());
+            if (!Init.getInstance().getStaffManager().isInStaffCache(player.getUniqueId())) {
+                Init.getInstance().getStaffManager().addCachedStaff(player.getUniqueId());
             }
-        } else if (plugin.getStaffManager().isInStaffCache(player.getUniqueId())) {
-            plugin.getStaffManager().removeCachedStaff(player.getUniqueId());
+        } else if (Init.getInstance().getStaffManager().isInStaffCache(player.getUniqueId())) {
+            Init.getInstance().getStaffManager().removeCachedStaff(player.getUniqueId());
         }
 
         newRank.apply(player);
@@ -363,7 +363,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
-        CoreProfile profile = plugin.getProfileManager().getProfile(player);
+        CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player);
 
         profile.setLastLocation(event.getFrom());
     }

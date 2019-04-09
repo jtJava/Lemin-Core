@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class MongoRequest {
@@ -22,6 +22,6 @@ public class MongoRequest {
     }
 
     public void run() {
-        CorePlugin.getInstance().getMongoStorage().massUpdate(collectionName, documentObject, updatePairs);
+        Init.getInstance().getMongoStorage().massUpdate(collectionName, documentObject, updatePairs);
     }
 }

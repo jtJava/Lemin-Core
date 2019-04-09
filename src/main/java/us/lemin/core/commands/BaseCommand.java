@@ -3,7 +3,7 @@ package us.lemin.core.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
+import us.lemin.core.*;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
@@ -32,8 +32,8 @@ public abstract class BaseCommand extends Command {
     @Override
     public final boolean execute(CommandSender sender, String alias, String[] args) {
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-            CoreProfile profile = CorePlugin.getInstance().getProfileManager().getProfile(player.getUniqueId());
+            final Player player = (Player) sender;
+            final CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
             if (!profile.hasRank(requiredRank)) {
                 player.sendMessage(CC.RED + "You don't have the required rank to perform this command.");
@@ -52,7 +52,7 @@ public abstract class BaseCommand extends Command {
     }
 
     protected final void setUsage(String... uses) {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
         IntStream.range(0, uses.length).forEach(i -> {
             final String use = uses[i];
