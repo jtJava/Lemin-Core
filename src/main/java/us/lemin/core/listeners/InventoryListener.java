@@ -13,9 +13,7 @@ import us.lemin.core.inventory.menu.Menu;
 import us.lemin.core.inventory.menu.action.Action;
 import us.lemin.core.player.CoreProfile;
 
-@RequiredArgsConstructor
 public class InventoryListener implements Listener {
-    private final CorePlugin plugin;
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {

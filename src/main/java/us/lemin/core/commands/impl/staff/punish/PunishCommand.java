@@ -20,13 +20,11 @@ import java.util.UUID;
 
 public class PunishCommand extends BaseCommand {
 	private final PunishType type;
-	private final CorePlugin plugin;
 	private final Init init;
 
-	PunishCommand(Rank requiredRank, PunishType type, CorePlugin plugin) {
+	PunishCommand(Rank requiredRank, PunishType type) {
 		super(type.getName(), requiredRank);
 		this.type = type;
-		this.plugin = plugin;
 		init = new Init(plugin);
 		this.setUsage(CC.RED + "Usage: /" + getName() + " <player> [time] [reason] [-s]");
 	}

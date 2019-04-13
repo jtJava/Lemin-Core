@@ -7,12 +7,10 @@ import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
 public class ToggleSoundsCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public ToggleSoundsCommand(CorePlugin plugin) {
+    public ToggleSoundsCommand() {
         super("togglesounds");
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("sounds", "ts");
     }

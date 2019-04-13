@@ -10,12 +10,10 @@ import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class BackCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public BackCommand(CorePlugin plugin) {
+    public BackCommand() {
         super("back", Rank.ADMIN);
-        this.plugin = plugin;
         init = new Init(plugin);
     }
 

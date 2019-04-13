@@ -1,11 +1,9 @@
 package us.lemin.core.commands.impl.staff.punish;
 
-
-import us.lemin.core.CorePlugin;
-import us.lemin.core.player.rank.Rank;
+import us.lemin.core.player.rank.*;
 
 public class UnbanCommand extends UnpunishCommand {
-	public UnbanCommand(CorePlugin plugin) {
-		super(Rank.ADMIN, PunishType.BAN, plugin);
+	public UnbanCommand() {
+		super(Rank.ADMIN, PunishType.BAN);
 	}
 }

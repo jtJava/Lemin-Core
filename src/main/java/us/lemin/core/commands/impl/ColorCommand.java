@@ -13,12 +13,10 @@ import us.lemin.core.utils.message.CC;
 import java.util.*;
 
 public class ColorCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public ColorCommand(CorePlugin plugin) {
+    public ColorCommand() {
         super("color", Rank.PREMIUM);
-        this.plugin = plugin;
         init = new Init(plugin);
 
         final StringBuilder colors = new StringBuilder(CC.RED + "Usage: /color [primary|secondary] <color>\nValid colors are: ");

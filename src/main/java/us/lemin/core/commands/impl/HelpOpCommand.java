@@ -9,12 +9,10 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.timer.Timer;
 
 public class HelpOpCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public HelpOpCommand(CorePlugin plugin) {
+    public HelpOpCommand() {
         super("helpop");
-        this.plugin = plugin;
         init = new Init(plugin);
         setUsage(CC.RED + "/helpop <help message>");
     }

@@ -7,12 +7,10 @@ import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class SlowChatCommand extends BaseCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public SlowChatCommand(CorePlugin plugin) {
+    public SlowChatCommand() {
         super("slowchat", Rank.TRIAL_MOD);
-        this.plugin = plugin;
         init = new Init(plugin);
         setUsage(CC.RED + "Usage: /slowchat <seconds|disable>");
     }

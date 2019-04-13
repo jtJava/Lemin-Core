@@ -9,12 +9,10 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class TeleportCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public TeleportCommand(CorePlugin plugin) {
+    public TeleportCommand() {
         super("tp", Rank.TRIAL_MOD);
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("teleport");
         setUsage(CC.RED + "Usage: /teleport <player> [player]");

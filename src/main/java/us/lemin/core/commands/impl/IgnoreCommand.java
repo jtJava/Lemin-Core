@@ -8,12 +8,10 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class IgnoreCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public IgnoreCommand(CorePlugin plugin) {
+    public IgnoreCommand() {
         super("ignore");
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("unignore");
         setUsage(CC.RED + "Usage: /ignore <player>");

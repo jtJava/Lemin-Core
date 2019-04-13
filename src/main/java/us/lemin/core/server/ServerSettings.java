@@ -4,27 +4,25 @@ import com.google.common.collect.*;
 import lombok.*;
 import org.bukkit.*;
 import org.bukkit.plugin.*;
+import us.lemin.core.*;
 import us.lemin.core.storage.flatfile.*;
 import us.lemin.core.task.*;
 
 import java.util.*;
 
 @Getter
+@Setter
 public class ServerSettings {
     public static final String SERVER_DOMAIN = "lemin.us";
     private final Config coreConfig;
     private final String whitelistMessage;
-    @Setter
     private WhitelistMode serverWhitelistMode;
-    @Setter
     private ShutdownTask shutdownTask;
-    @Setter
     private boolean globalChatMuted;
-    @Setter
     private int slowChatTime = -1;
 
-    public ServerSettings(Plugin plugin) {
-        this.coreConfig = new Config(plugin, "config");
+    public ServerSettings() {
+        this.coreConfig = new Config(CorePlugin.getInstance(), "config");
 
         coreConfig.addDefaults(ImmutableMap.<String, Object>builder()
                 .put("server.motd", "Minecraft Server")

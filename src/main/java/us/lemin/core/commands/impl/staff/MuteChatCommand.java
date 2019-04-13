@@ -7,12 +7,10 @@ import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class MuteChatCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public MuteChatCommand(CorePlugin plugin) {
+    public MuteChatCommand() {
         super("mutechat", Rank.TRIAL_MOD);
-        this.plugin = plugin;
         init = new Init(plugin);
     }
 

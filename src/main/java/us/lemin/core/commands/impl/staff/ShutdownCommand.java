@@ -11,12 +11,10 @@ import us.lemin.core.utils.NumberUtil;
 import us.lemin.core.utils.message.CC;
 
 public class ShutdownCommand extends BaseCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public ShutdownCommand(CorePlugin plugin) {
+    public ShutdownCommand() {
         super("shutdown", Rank.ADMIN);
-        this.plugin = plugin;
         init = new Init(plugin);
         setUsage(CC.RED + "Usage: /shutdown <seconds|cancel>");
     }

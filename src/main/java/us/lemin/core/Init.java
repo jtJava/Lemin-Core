@@ -36,37 +36,37 @@ public class Init extends AbstractPlugin {
 
     @Override
     public void registerCommands() {
-        this.registerCommand(new BroadcastCommand(CorePlugin.getInstance()),
-                new ClearChatCommand(CorePlugin.getInstance()),
-                new IgnoreCommand(CorePlugin.getInstance()),
+        this.registerCommand(new BroadcastCommand(),
+                new ClearChatCommand(),
+                new IgnoreCommand(),
                 new ListCommand(),
-                new MessageCommand(CorePlugin.getInstance()),
-                new RankCommand(CorePlugin.getInstance()),
-                new ReplyCommand(CorePlugin.getInstance()),
-                new StaffChatCommand(CorePlugin.getInstance()),
-                new TeleportCommand(CorePlugin.getInstance()),
-                new ToggleMessagesCommand(CorePlugin.getInstance()),
-                new ToggleGlobalChat(CorePlugin.getInstance()),
-                new ToggleSoundsCommand(CorePlugin.getInstance()),
-                new ReportCommand(CorePlugin.getInstance()),
-                new HelpOpCommand(CorePlugin.getInstance()),
+                new MessageCommand(),
+                new RankCommand(),
+                new ReplyCommand(),
+                new StaffChatCommand(),
+                new TeleportCommand(),
+                new ToggleMessagesCommand(),
+                new ToggleGlobalChatCommand(),
+                new ToggleSoundsCommand(),
+                new ReportCommand(),
+                new HelpOpCommand(),
                 new PingCommand(),
-                new MuteChatCommand(CorePlugin.getInstance()),
-                new SlowChatCommand(CorePlugin.getInstance()),
+                new MuteChatCommand(),
+                new SlowChatCommand(),
                 new GameModeCommand(),
-                new ColorCommand(CorePlugin.getInstance()),
-                new ShutdownCommand(CorePlugin.getInstance()),
-                new WhitelistCommand(CorePlugin.getInstance()),
+                new ColorCommand(),
+                new ShutdownCommand(),
+                new WhitelistCommand(),
                 new LinksCommand(),
-                new BanCommand(CorePlugin.getInstance()),
-                new MuteCommand(CorePlugin.getInstance()),
-                new UnbanCommand(CorePlugin.getInstance()),
-                new UnmuteCommand(CorePlugin.getInstance()),
-                new MuteCommand(CorePlugin.getInstance()),
-                new KickCommand(CorePlugin.getInstance()),
-                new PunishmentInfoCommand(CorePlugin.getInstance()),
-                new AltsCommand(CorePlugin.getInstance()),
-                new BackCommand(CorePlugin.getInstance()),
+                new BanCommand(),
+                new MuteCommand(),
+                new UnbanCommand(),
+                new UnmuteCommand(),
+                new MuteCommand(),
+                new KickCommand(),
+                new PunishmentInfoCommand(),
+                new AltsCommand(),
+                new BackCommand(),
                 new HealCommand(),
                 new FeedCommand(),
                 new SpeedCommand(),
@@ -77,14 +77,14 @@ public class Init extends AbstractPlugin {
     @Override
     public void registerListeners() {
         this.registerListener(new PlayerListener(CorePlugin.getInstance()),
-                new MessageListener(CorePlugin.getInstance()),
-                new InventoryListener(CorePlugin.getInstance()),
+                new MessageListener(),
+                new InventoryListener(),
                 new ServerListener(serverSettings.getCoreConfig()));
     }
 
     @Override
     public void registerInstances() {
-        serverSettings = new ServerSettings(CorePlugin.getInstance());
+        serverSettings = new ServerSettings();
         filter = new Filter();
 
         mongoStorage = new MongoStorage();

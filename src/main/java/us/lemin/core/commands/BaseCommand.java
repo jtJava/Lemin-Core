@@ -15,6 +15,7 @@ import java.util.stream.*;
 public abstract class BaseCommand extends Command {
     private static final String LINE_SEPARATOR = System.lineSeparator();
     private final Rank requiredRank;
+    public CorePlugin plugin = CorePlugin.getInstance();
 
     protected BaseCommand(String name, Rank requiredRank) {
         super(name);

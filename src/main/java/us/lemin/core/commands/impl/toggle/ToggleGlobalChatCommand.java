@@ -6,13 +6,11 @@ import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
-public class ToggleGlobalChat extends PlayerCommand {
-    private final CorePlugin plugin;
+public class ToggleGlobalChatCommand extends PlayerCommand {
     private final Init init;
 
-    public ToggleGlobalChat(CorePlugin plugin) {
+    public ToggleGlobalChatCommand() {
         super("toggleglobalchat");
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("togglechat", "tgc");
     }

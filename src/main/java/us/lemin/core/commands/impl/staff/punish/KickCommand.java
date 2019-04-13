@@ -12,12 +12,10 @@ import us.lemin.core.utils.message.Messages;
 
 public class KickCommand extends BaseCommand {
 
-	private final Plugin plugin;
-	private Init init;
+	private final Init init;
 
-	public KickCommand(final CorePlugin plugin) {
+	public KickCommand() {
 		super("kick", Rank.TRIAL_MOD);
-		this.plugin = plugin;
 		init = new Init(plugin);
 		this.setUsage(CC.RED + "/kick <player> [reason] [-s]");
 	}

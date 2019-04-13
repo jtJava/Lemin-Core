@@ -13,12 +13,10 @@ import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.profile.ProfileUtil;
 
 public class RankCommand extends BaseCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public RankCommand(CorePlugin plugin) {
+    public RankCommand() {
         super("rank", Rank.ADMIN);
-        this.plugin = plugin;
         init = new Init(plugin);
         setUsage(CC.RED + "Usage: /rank <player> <rank>");
     }

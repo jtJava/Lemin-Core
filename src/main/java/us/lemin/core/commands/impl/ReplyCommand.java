@@ -9,12 +9,10 @@ import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 
 public class ReplyCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public ReplyCommand(CorePlugin plugin) {
+    public ReplyCommand() {
         super("reply");
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("r");
         setUsage(CC.RED + "Usage: /reply <message>");

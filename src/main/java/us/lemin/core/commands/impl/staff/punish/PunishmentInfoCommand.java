@@ -19,12 +19,10 @@ import static us.lemin.core.utils.StringUtil.IP_REGEX;
 // TODO: cleanup
 public class PunishmentInfoCommand extends BaseCommand {
 
-	private final CorePlugin plugin;
 	private final Init init;
 
-	public PunishmentInfoCommand(CorePlugin plugin) {
+	public PunishmentInfoCommand() {
 		super("punishmentinfo", Rank.ADMIN);
-		this.plugin = plugin;
 		init = new Init(plugin);
 		this.setAliases("baninfo", "muteinfo", "playerinfo", "checkban", "checkmute");
 		this.setUsage(CC.RED + "/punishmentinfo <player|ip>");

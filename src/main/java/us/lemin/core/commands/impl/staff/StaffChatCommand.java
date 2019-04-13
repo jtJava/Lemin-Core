@@ -9,12 +9,10 @@ import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 
 public class StaffChatCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public StaffChatCommand(CorePlugin plugin) {
+    public StaffChatCommand() {
         super("staffchat", Rank.TRIAL_MOD);
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("sc");
     }

@@ -1,11 +1,9 @@
 package us.lemin.core.commands.impl.staff.punish;
 
-
-import us.lemin.core.CorePlugin;
-import us.lemin.core.player.rank.Rank;
+import us.lemin.core.player.rank.*;
 
 public class UnmuteCommand extends UnpunishCommand {
-	public UnmuteCommand(CorePlugin plugin) {
-		super(Rank.MOD, PunishType.MUTE, plugin);
+	public UnmuteCommand() {
+		super(Rank.MOD, PunishType.MUTE);
 	}
 }

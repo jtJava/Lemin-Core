@@ -21,13 +21,11 @@ import static us.lemin.core.utils.StringUtil.IP_REGEX;
 // TODO: cleanup
 public class UnpunishCommand extends BaseCommand {
 	private final PunishType type;
-	private final CorePlugin plugin;
 	private final Init init;
 
-	UnpunishCommand(Rank requiredRank, PunishType type, CorePlugin plugin) {
+	UnpunishCommand(Rank requiredRank, PunishType type) {
 		super("un" + type.getName(), requiredRank);
 		this.type = type;
-		this.plugin = plugin;
 		init = new Init(plugin);
 		setUsage(CC.RED + "Usage: /" + getName() + ": <player|ip>");
 	}

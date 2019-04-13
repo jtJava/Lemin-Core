@@ -11,12 +11,10 @@ import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.timer.Timer;
 
 public class ReportCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public ReportCommand(CorePlugin plugin) {
+    public ReportCommand() {
         super("report");
-        this.plugin = plugin;
         init = new Init(plugin);
         setUsage(CC.RED + "Usage: /report <player> <reason>");
     }

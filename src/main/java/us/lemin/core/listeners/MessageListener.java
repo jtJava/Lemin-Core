@@ -10,9 +10,7 @@ import us.lemin.core.event.player.PlayerMessageEvent;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
-@RequiredArgsConstructor
 public class MessageListener implements Listener {
-    private final CorePlugin plugin;
 
     private static void sendMessage(CoreProfile sender, CoreProfile receiver, Player player, String msg) {
         receiver.setConverser(sender.getId());

@@ -18,12 +18,10 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class AltsCommand extends BaseCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public AltsCommand(CorePlugin plugin) {
+    public AltsCommand() {
         super("alts", Rank.ADMIN);
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("dupeip");
         setUsage(CC.RED + "Usage: /alts <name:ip>");

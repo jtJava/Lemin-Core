@@ -9,11 +9,9 @@ import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 
 public class BroadcastCommand extends BaseCommand {
-    private final CorePlugin plugin;
 
-    public BroadcastCommand(CorePlugin plugin) {
+    public BroadcastCommand() {
         super("broadcast", Rank.ADMIN);
-        this.plugin = plugin;
         setAliases("bc");
         setUsage(CC.RED + "Usage: /broadcast <message> [-god]");
     }

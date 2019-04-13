@@ -10,12 +10,10 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class MessageCommand extends PlayerCommand {
-    private final CorePlugin plugin;
     private final Init init;
 
-    public MessageCommand(CorePlugin plugin) {
+    public MessageCommand() {
         super("message");
-        this.plugin = plugin;
         init = new Init(plugin);
         setAliases("msg", "m", "whisper", "w", "tell", "t");
         setUsage(CC.RED + "Usage: /message <player> <message>");
