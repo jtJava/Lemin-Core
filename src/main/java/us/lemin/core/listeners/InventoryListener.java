@@ -8,12 +8,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import us.lemin.core.*;
+import us.lemin.core.CorePlugin;
 import us.lemin.core.inventory.menu.Menu;
 import us.lemin.core.inventory.menu.action.Action;
 import us.lemin.core.player.CoreProfile;
 
+@RequiredArgsConstructor
 public class InventoryListener implements Listener {
+
+
+    private final CorePlugin plugin;
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
@@ -25,7 +29,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        Menu menu = Init.getInstance().getMenuManager().getMatchingMenu(event.getClickedInventory());
+        Menu menu = plugin.getMenuManager().getMatchingMenu(event.getClickedInventory());
 
         if (menu != null) {
             Action action = menu.getAction(event.getSlot());
@@ -40,7 +44,7 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
+        CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile != null && profile.getReportingPlayerName() != null) {
             profile.setReportingPlayerName(null);

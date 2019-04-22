@@ -7,17 +7,17 @@ import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
 public class ToggleMessagesCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public ToggleMessagesCommand() {
+    public ToggleMessagesCommand(CorePlugin plugin) {
         super("togglemessages");
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("tpm");
     }
 
     @Override
     public void execute(Player player, String[] args) {
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
         final boolean messaging = !profile.isMessaging();
 
         profile.setMessaging(messaging);

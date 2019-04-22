@@ -6,18 +6,18 @@ import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
-public class ToggleGlobalChatCommand extends PlayerCommand {
-    private final Init init;
+public class ToggleGlobalChat extends PlayerCommand {
+    private final CorePlugin plugin;
 
-    public ToggleGlobalChatCommand() {
+    public ToggleGlobalChat(CorePlugin plugin) {
         super("toggleglobalchat");
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("togglechat", "tgc");
     }
 
     @Override
     public void execute(Player player, String[] args) {
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
         final boolean enabled = !profile.isGlobalChatEnabled();
 
         profile.setGlobalChatEnabled(enabled);

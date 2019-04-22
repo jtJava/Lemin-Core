@@ -21,12 +21,12 @@ import static us.lemin.core.utils.StringUtil.IP_REGEX;
 // TODO: cleanup
 public class UnpunishCommand extends BaseCommand {
 	private final PunishType type;
-	private final Init init;
+	private final CorePlugin plugin;
 
-	UnpunishCommand(Rank requiredRank, PunishType type) {
+	UnpunishCommand(Rank requiredRank, PunishType type, CorePlugin plugin) {
 		super("un" + type.getName(), requiredRank);
 		this.type = type;
-		init = new Init(plugin);
+		this.plugin = plugin;
 		setUsage(CC.RED + "Usage: /" + getName() + ": <player|ip>");
 	}
 
@@ -41,7 +41,7 @@ public class UnpunishCommand extends BaseCommand {
 
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
 			if (IP_REGEX.matcher(arg).matches()) {
-				final Document document = init.getMongoStorage().getDocument("punished_addresses", arg);
+				final Document document = plugin.getMongoStorage().getDocument("punished_addresses", arg);
 
 				if (document == null) {
 					sender.sendMessage(CC.RED + "IP not found.");
@@ -73,7 +73,7 @@ public class UnpunishCommand extends BaseCommand {
 					targetName = targetPlayer.getName();
 
 					if (type == PunishType.MUTE) {
-						final CoreProfile targetProfile = init.getProfileManager().getProfile(targetId);
+						final CoreProfile targetProfile = plugin.getProfileManager().getProfile(targetId);
 						targetProfile.setMuteExpiryTime(-2);
 					}
 				}
@@ -88,13 +88,13 @@ public class UnpunishCommand extends BaseCommand {
 	private void sendUnpunishMessage(CommandSender sender, String arg) {
 		final String msg = CC.GRAY + "[Silent] " + CC.GREEN + arg + " was un" + type.getPastTense() + " by " + getSenderName(sender) + ".";
 
-		init.getStaffManager().messageStaff(msg);
+		plugin.getStaffManager().messageStaff(msg);
 		plugin.getLogger().info(msg);
 	}
 
 	@SuppressWarnings("unchecked")
 	private boolean unpunishSucceeded(CommandSender punisher, UUID punished) {
-		Document document = init.getMongoStorage().getDocument("punished_ids", punished);
+		Document document = plugin.getMongoStorage().getDocument("punished_ids", punished);
 
 		if (document == null || !document.getBoolean(type.getPastTense())) {
 			punisher.sendMessage(CC.RED + "Player is not " + type.getPastTense() + "!");
@@ -105,13 +105,13 @@ public class UnpunishCommand extends BaseCommand {
 				.put(type.getPastTense(), false)
 				.run();
 
-		document = init.getMongoStorage().getDocument("players", punished);
+		document = plugin.getMongoStorage().getDocument("players", punished);
 
 		if (document != null) {
 			final List<String> knownAddresses = (List<String>) document.get("known_addresses");
 
 			if (knownAddresses != null) {
-				knownAddresses.forEach(address -> init.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
+				knownAddresses.forEach(address -> plugin.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
 						MongoRequest.newRequest("punished_addresses", address)
 								.put(type.getPastTense(), false)
 								.run()));

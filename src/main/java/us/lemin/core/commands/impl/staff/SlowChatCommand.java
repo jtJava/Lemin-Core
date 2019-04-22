@@ -7,11 +7,11 @@ import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class SlowChatCommand extends BaseCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public SlowChatCommand() {
+    public SlowChatCommand(CorePlugin plugin) {
         super("slowchat", Rank.TRIAL_MOD);
-        init = new Init(plugin);
+        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /slowchat <seconds|disable>");
     }
 
@@ -42,12 +42,12 @@ public class SlowChatCommand extends BaseCommand {
             case "off":
             case "toggle":
             case "disable":
-                final int slowChatTime = init.getServerSettings().getSlowChatTime();
+                final int slowChatTime = plugin.getServerSettings().getSlowChatTime();
 
                 if (slowChatTime == -1) {
                     sender.sendMessage(CC.RED + "Slow chat is already disabled!");
                 } else {
-                    init.getServerSettings().setSlowChatTime(-1);
+                    plugin.getServerSettings().setSlowChatTime(-1);
                     plugin.getServer().broadcastMessage(CC.RED + "Slow chat has been disabled by " + sender.getName() + ".");
                 }
                 break;
@@ -57,7 +57,7 @@ public class SlowChatCommand extends BaseCommand {
                 if (time == null) {
                     sender.sendMessage(CC.RED + "You must enter a valid time between 4 and 60 seconds.");
                 } else {
-                    init.getServerSettings().setSlowChatTime(time);
+                    plugin.getServerSettings().setSlowChatTime(time);
                     plugin.getServer().broadcastMessage(CC.YELLOW + "Slow chat has been enabled and set to " + time
                             + " seconds by " + sender.getName() + ".");
                 }

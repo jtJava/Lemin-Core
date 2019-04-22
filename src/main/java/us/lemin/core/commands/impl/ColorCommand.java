@@ -13,11 +13,11 @@ import us.lemin.core.utils.message.CC;
 import java.util.*;
 
 public class ColorCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public ColorCommand() {
+    public ColorCommand(CorePlugin plugin) {
         super("color", Rank.PREMIUM);
-        init = new Init(plugin);
+        this.plugin = plugin;
 
         final StringBuilder colors = new StringBuilder(CC.RED + "Usage: /color [primary|secondary] <color>\nValid colors are: ");
 
@@ -62,7 +62,7 @@ public class ColorCommand extends PlayerCommand {
         }
 
         final String arg = args[0].toLowerCase();
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (arg.equals("reset")) {
             profile.setColorPair(new CustomColorPair());

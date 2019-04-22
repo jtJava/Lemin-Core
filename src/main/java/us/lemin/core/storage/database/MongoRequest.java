@@ -1,10 +1,11 @@
 package us.lemin.core.storage.database;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import us.lemin.core.*;
+import us.lemin.core.CorePlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class MongoRequest {
@@ -22,6 +23,6 @@ public class MongoRequest {
     }
 
     public void run() {
-        Init.getInstance().getMongoStorage().massUpdate(collectionName, documentObject, updatePairs);
+        CorePlugin.getInstance().getMongoStorage().massUpdate(collectionName, documentObject, updatePairs);
     }
 }

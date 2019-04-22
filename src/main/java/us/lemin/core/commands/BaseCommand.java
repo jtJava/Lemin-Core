@@ -3,14 +3,14 @@ package us.lemin.core.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
+import us.lemin.core.CorePlugin;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.*;
+import java.util.stream.IntStream;
 
 public abstract class BaseCommand extends Command {
     private static final String LINE_SEPARATOR = System.lineSeparator();
@@ -34,7 +34,7 @@ public abstract class BaseCommand extends Command {
     public final boolean execute(CommandSender sender, String alias, String[] args) {
         if (sender instanceof Player) {
             final Player player = (Player) sender;
-            final CoreProfile profile = Init.getInstance().getProfileManager().getProfile(player.getUniqueId());
+            final CoreProfile profile = CorePlugin.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
             if (!profile.hasRank(requiredRank)) {
                 player.sendMessage(CC.RED + "You don't have the required rank to perform this command.");

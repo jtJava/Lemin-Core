@@ -2,8 +2,7 @@ package us.lemin.core.commands.impl.staff.punish;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.*;
-import us.lemin.core.*;
+import us.lemin.core.CorePlugin;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.StringUtil;
@@ -12,11 +11,11 @@ import us.lemin.core.utils.message.Messages;
 
 public class KickCommand extends BaseCommand {
 
-	private final Init init;
+	private final CorePlugin plugin;
 
-	public KickCommand() {
+	public KickCommand(final CorePlugin plugin) {
 		super("kick", Rank.TRIAL_MOD);
-		init = new Init(plugin);
+		this.plugin = plugin;
 		this.setUsage(CC.RED + "/kick <player> [reason] [-s]");
 	}
 
@@ -58,7 +57,7 @@ public class KickCommand extends BaseCommand {
 		if (silent) {
 			final String silentMsg = CC.GRAY + "(Silent) " + msg;
 
-			init.getStaffManager().messageStaff(silentMsg);
+			plugin.getStaffManager().messageStaff(silentMsg);
 			plugin.getLogger().info(silentMsg);
 		} else {
 			plugin.getServer().broadcastMessage(msg);

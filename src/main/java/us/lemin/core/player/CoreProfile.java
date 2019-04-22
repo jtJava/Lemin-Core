@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import us.lemin.core.*;
+import us.lemin.core.CorePlugin;
 import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.storage.database.MongoRequest;
@@ -95,16 +95,16 @@ public class CoreProfile extends PlayerProfile {
             this.notes.addAll(notes);
         }
 
-        Document punishDoc = Init.getInstance().getMongoStorage().getDocument("punished_ids", id);
+        Document punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_ids", id);
 
         if (!loadMuteData(punishDoc)) {
             for (final String knownAddress : Objects.requireNonNull(knownAddresses)) {
-                punishDoc = Init.getInstance().getMongoStorage().getDocument("punished_addresses", knownAddress);
+                punishDoc = CorePlugin.getInstance().getMongoStorage().getDocument("punished_addresses", knownAddress);
                 loadMuteData(punishDoc);
             }
         }
 
-        Init.getInstance().getMongoStorage().getOrCreateDocument("alts", currentAddress, (doc, exists) -> {
+        CorePlugin.getInstance().getMongoStorage().getOrCreateDocument("alts", currentAddress, (doc, exists) -> {
                 final List<String> knownPlayers = doc.get("known_players", Arrays.asList(name));
                 if (!knownPlayers.contains(name)) knownPlayers.add(name);
                 final MongoRequest request = MongoRequest.newRequest("alts", currentAddress);

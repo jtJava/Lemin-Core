@@ -9,11 +9,11 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class TeleportCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public TeleportCommand() {
+    public TeleportCommand(CorePlugin plugin) {
         super("tp", Rank.TRIAL_MOD);
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("teleport");
         setUsage(CC.RED + "Usage: /teleport <player> [player]");
     }
@@ -31,7 +31,7 @@ public class TeleportCommand extends PlayerCommand {
         to.teleport(from);
         to.sendMessage(CC.GREEN + "You have been teleported to " + from.getName() + ".");
 
-        final CoreProfile fromProfile = init.getProfileManager().getProfile(from.getUniqueId());
+        final CoreProfile fromProfile = plugin.getProfileManager().getProfile(from.getUniqueId());
 
         if (fromProfile.hasStaff()) {
             from.sendMessage(CC.GREEN + to.getName() + " has been teleported to you.");

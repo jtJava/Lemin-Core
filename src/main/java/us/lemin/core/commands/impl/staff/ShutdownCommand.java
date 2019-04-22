@@ -11,11 +11,11 @@ import us.lemin.core.utils.NumberUtil;
 import us.lemin.core.utils.message.CC;
 
 public class ShutdownCommand extends BaseCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public ShutdownCommand() {
+    public ShutdownCommand(CorePlugin plugin) {
         super("shutdown", Rank.ADMIN);
-        init = new Init(plugin);
+        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /shutdown <seconds|cancel>");
     }
 
@@ -29,7 +29,7 @@ public class ShutdownCommand extends BaseCommand {
         final String arg = args[0];
 
         if (arg.equals("cancel")) {
-            final ShutdownTask task = init.getServerSettings().getShutdownTask();
+            final ShutdownTask task = plugin.getServerSettings().getShutdownTask();
 
             if (task == null) {
                 sender.sendMessage(CC.RED + "There is no shutdown in progress.");
@@ -38,7 +38,7 @@ public class ShutdownCommand extends BaseCommand {
 
                 task.cancel();
 
-                init.getServerSettings().setShutdownTask(null);
+                plugin.getServerSettings().setShutdownTask(null);
                 plugin.getServer().broadcastMessage(CC.GREEN + "The shutdown in progress has been cancelled by " + sender.getName() + ".");
             }
             return;
@@ -54,7 +54,7 @@ public class ShutdownCommand extends BaseCommand {
 
                 final ShutdownTask task = new ShutdownTask(seconds);
 
-                init.getServerSettings().setShutdownTask(task);
+                plugin.getServerSettings().setShutdownTask(task);
                 task.runTaskTimer(plugin, 0L, 20L);
             } else {
                 sender.sendMessage(CC.RED + "Please enter a time between 5 and 300 seconds.");

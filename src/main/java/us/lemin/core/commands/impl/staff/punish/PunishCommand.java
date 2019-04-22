@@ -20,12 +20,12 @@ import java.util.UUID;
 
 public class PunishCommand extends BaseCommand {
 	private final PunishType type;
-	private final Init init;
+	private final CorePlugin plugin;
 
-	PunishCommand(Rank requiredRank, PunishType type) {
+	PunishCommand(Rank requiredRank, PunishType type, CorePlugin plugin) {
 		super(type.getName(), requiredRank);
 		this.type = type;
-		init = new Init(plugin);
+		this.plugin = plugin;
 		this.setUsage(CC.RED + "Usage: /" + getName() + " <player> [time] [reason] [-s]");
 	}
 
@@ -84,7 +84,7 @@ public class PunishCommand extends BaseCommand {
 			} else {
 				targetId = targetPlayer.getUniqueId();
 				targetName = targetPlayer.getName();
-				targetProfile = init.getProfileManager().getProfile(targetId);
+				targetProfile = plugin.getProfileManager().getProfile(targetId);
 
 				if (type == PunishType.MUTE) {
 					targetProfile.setMuteExpiryTime(expiryTime);
@@ -93,7 +93,7 @@ public class PunishCommand extends BaseCommand {
 
 			if (sender instanceof Player && targetProfile != null) {
 				final Player player = (Player) sender;
-				final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+				final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
 				if (!profile.hasRank(targetProfile.getRank())) {
 					player.sendMessage(CC.RED + "You can't punish someone with a higher rank than your own.");
@@ -121,7 +121,7 @@ public class PunishCommand extends BaseCommand {
 			if (silent) {
 				final String silentMsg = CC.GRAY + "(Silent) " + msg;
 
-				init.getStaffManager().messageStaff(silentMsg);
+				plugin.getStaffManager().messageStaff(silentMsg);
 				plugin.getLogger().info(silentMsg);
 			} else {
 				plugin.getServer().broadcastMessage(msg);
@@ -137,13 +137,13 @@ public class PunishCommand extends BaseCommand {
 
 	@SuppressWarnings("unchecked")
 	private void punish(String punisher, UUID punished, String reason, long expiry) {
-		final Document document = init.getMongoStorage().getDocument("players", punished);
+		final Document document = plugin.getMongoStorage().getDocument("players", punished);
 
 		if (document != null) {
 			final List<String> knownAddresses = (List<String>) document.get("known_addresses");
 
 			if (knownAddresses != null) {
-				knownAddresses.forEach(address -> init.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
+				knownAddresses.forEach(address -> plugin.getMongoStorage().getOrCreateDocument("punished_addresses", address, (doc, found) ->
 						MongoRequest.newRequest("punished_addresses", address)
 								.put(type.getPastTense(), true)
 								.put(type.getName() + "_expiry", expiry)
@@ -153,7 +153,7 @@ public class PunishCommand extends BaseCommand {
 			}
 		}
 
-		init.getMongoStorage().getOrCreateDocument("punished_ids", punished, (doc, found) ->
+		plugin.getMongoStorage().getOrCreateDocument("punished_ids", punished, (doc, found) ->
 				MongoRequest.newRequest("punished_ids", punished)
 						.put(type.getPastTense(), true)
 						.put(type.getName() + "_expiry", expiry)

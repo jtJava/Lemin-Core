@@ -9,11 +9,11 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.timer.Timer;
 
 public class HelpOpCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public HelpOpCommand() {
+    public HelpOpCommand(CorePlugin plugin) {
         super("helpop");
-        init = new Init(plugin);
+        this.plugin = plugin;
         setUsage(CC.RED + "/helpop <help message>");
     }
 
@@ -24,7 +24,7 @@ public class HelpOpCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
         final Timer cooldownTimer = profile.getReportCooldownTimer();
 
         if (cooldownTimer.isActive()) {
@@ -34,7 +34,7 @@ public class HelpOpCommand extends PlayerCommand {
 
         final String request = StringUtil.buildString(args, 0);
 
-        init.getStaffManager().messageStaff(CC.RED + "\n(HelpOp) " + CC.SECONDARY + player.getName()
+        plugin.getStaffManager().messageStaff(CC.RED + "\n(HelpOp) " + CC.SECONDARY + player.getName()
                 + CC.PRIMARY + " requested assistance: " + CC.SECONDARY + request + CC.PRIMARY + ".\n ");
 
         player.sendMessage(CC.GREEN + "Request sent: " + CC.R + request);

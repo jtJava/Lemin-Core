@@ -8,11 +8,11 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class IgnoreCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public IgnoreCommand() {
+    public IgnoreCommand(CorePlugin plugin) {
         super("ignore");
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("unignore");
         setUsage(CC.RED + "Usage: /ignore <player>");
     }
@@ -36,7 +36,7 @@ public class IgnoreCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
+        final CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
 
         if (targetProfile.hasStaff()) {
             player.sendMessage(CC.RED + "You can't ignore a staff member. If this staff member is harrassing you " +
@@ -44,7 +44,7 @@ public class IgnoreCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.hasPlayerIgnored(target.getUniqueId())) {
             profile.unignore(target.getUniqueId());

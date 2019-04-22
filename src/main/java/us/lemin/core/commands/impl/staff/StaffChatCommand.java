@@ -9,17 +9,17 @@ import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 
 public class StaffChatCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public StaffChatCommand() {
+    public StaffChatCommand(CorePlugin plugin) {
         super("staffchat", Rank.TRIAL_MOD);
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("sc");
     }
 
     @Override
     public void execute(Player player, String[] args) {
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (args.length == 0) {
             final boolean inStaffChat = !profile.isInStaffChat();
@@ -30,7 +30,7 @@ public class StaffChatCommand extends PlayerCommand {
         } else {
             final String message = StringUtil.buildString(args, 0);
 
-            init.getStaffManager().messageStaff(profile.getChatFormat(), message);
+            plugin.getStaffManager().messageStaff(profile.getChatFormat(), message);
         }
     }
 }

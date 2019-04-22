@@ -4,8 +4,7 @@ import com.mongodb.client.FindIterable;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.*;
-import us.lemin.core.*;
+import us.lemin.core.CorePlugin;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
@@ -18,11 +17,12 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class AltsCommand extends BaseCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public AltsCommand() {
+    public AltsCommand(CorePlugin plugin) {
         super("alts", Rank.ADMIN);
-        init = new Init(plugin);
+        this.plugin = plugin;
+
         setAliases("dupeip");
         setUsage(CC.RED + "Usage: /alts <name:ip>");
     }
@@ -50,7 +50,7 @@ public class AltsCommand extends BaseCommand {
             } else {
                 targetId = targetPlayer.getUniqueId();
                 targetName = targetPlayer.getName();
-                targetProfile = init.getProfileManager().getProfile(targetId);
+                targetProfile = plugin.getProfileManager().getProfile(targetId);
             }
 
             final LinkedHashSet<String> alts = retrieveAlts(targetProfile);
@@ -76,7 +76,7 @@ public class AltsCommand extends BaseCommand {
 
 
         knownAddresses.forEach(knownAddress -> {
-            final FindIterable<Document> foundDocuments = init.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
+            final FindIterable<Document> foundDocuments = plugin.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
             foundDocuments.forEach((Consumer<? super Document>) document -> alts.addAll((List<String>) document.get("known_players")));
 
         });
@@ -95,12 +95,12 @@ public class AltsCommand extends BaseCommand {
 
         while (iterator.hasNext()) {
             final String knownAddress = iterator.next();
-            final FindIterable<Document> foundDocuments = init.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
+            final FindIterable<Document> foundDocuments = plugin.getMongoStorage().getDocumentsByFilter("alts", knownAddresses);
             foundDocuments.forEach((Consumer<? super Document>) document -> {
                 final List<String> altsOfInitialAddress = (List<String>) document.get("known_players");
                 alts.addAll(altsOfInitialAddress);
                 altsOfInitialAddress.forEach(altPlayer -> {
-                    final Document altDocument = init.getMongoStorage().getDocumentByFilter("players", "name", altPlayer);
+                    final Document altDocument = plugin.getMongoStorage().getDocumentByFilter("players", "name", altPlayer);
                     final List<String> altsKnownAddresses = (List<String>) altDocument.get("known_addresses");
                     altsKnownAddresses.forEach(iterator::add);
                 });

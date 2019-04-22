@@ -11,11 +11,11 @@ import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.timer.Timer;
 
 public class ReportCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public ReportCommand() {
+    public ReportCommand(CorePlugin plugin) {
         super("report");
-        init = new Init(plugin);
+        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /report <player> <reason>");
     }
 
@@ -38,7 +38,7 @@ public class ReportCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
+        final CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
 
         if (targetProfile.hasStaff()) {
             player.sendMessage(CC.RED + "You can't report a staff member. If this staff member is harassing you or" +
@@ -46,11 +46,11 @@ public class ReportCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.isMuted()) {
             profile.setReportingPlayerName(target.getName());
-            init.getMenuManager().getMenu(ReportMenu.class).open(player);
+            plugin.getMenuManager().getMenu(ReportMenu.class).open(player);
         } else {
             final Timer cooldownTimer = profile.getReportCooldownTimer();
 
@@ -61,10 +61,10 @@ public class ReportCommand extends PlayerCommand {
 
             final String report = StringUtil.buildString(args, 1);
 
-            init.getStaffManager().messageStaff("");
-            init.getStaffManager().messageStaff(CC.RED + "(Report) " + CC.SECONDARY + player.getName() + CC.PRIMARY
+            plugin.getStaffManager().messageStaff("");
+            plugin.getStaffManager().messageStaff(CC.RED + "(Report) " + CC.SECONDARY + player.getName() + CC.PRIMARY
                     + " reported " + CC.SECONDARY + target.getName() + CC.PRIMARY + " for " + CC.SECONDARY + report + CC.PRIMARY + ".");
-            init.getStaffManager().messageStaff("");
+            plugin.getStaffManager().messageStaff("");
 
             player.sendMessage(CC.GREEN + "Report sent for " + target.getDisplayName() + CC.GREEN + ": " + CC.R + report);
         }

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import us.lemin.core.*;
+import us.lemin.core.CorePlugin;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class StaffManager {
     @Getter
     private final Set<UUID> staffIds = new HashSet<>();
-    private final Init plugin;
+    private final CorePlugin plugin;
 
     public void addCachedStaff(UUID id) {
         staffIds.add(id);
@@ -61,7 +61,7 @@ public class StaffManager {
                     return;
                 }
                 if (profile.isVanished()) {
-                    Player loopPlayer = CorePlugin.getInstance().getServer().getPlayer(profile.getId());
+                    Player loopPlayer = plugin.getServer().getPlayer(profile.getId());
                     if (loopPlayer != null && loopPlayer.isOnline()) {
                         player.hidePlayer(loopPlayer);
                     }

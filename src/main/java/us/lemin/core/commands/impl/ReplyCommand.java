@@ -9,11 +9,11 @@ import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 
 public class ReplyCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public ReplyCommand() {
+    public ReplyCommand(CorePlugin plugin) {
         super("reply");
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("r");
         setUsage(CC.RED + "Usage: /reply <message>");
     }
@@ -25,7 +25,7 @@ public class ReplyCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.isMuted()) {
             if (profile.isTemporarilyMuted()) {
@@ -43,7 +43,7 @@ public class ReplyCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
+        final CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
 
         if (targetProfile.hasPlayerIgnored(player.getUniqueId())) {
             player.sendMessage(CC.RED + "That player is ignoring you!");

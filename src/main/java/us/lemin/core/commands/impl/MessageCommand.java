@@ -10,11 +10,11 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class MessageCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public MessageCommand() {
+    public MessageCommand(CorePlugin plugin) {
         super("message");
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("msg", "m", "whisper", "w", "tell", "t");
         setUsage(CC.RED + "Usage: /message <player> <message>");
     }
@@ -26,7 +26,7 @@ public class MessageCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.isMuted()) {
             if (profile.isTemporarilyMuted()) {
@@ -44,7 +44,7 @@ public class MessageCommand extends PlayerCommand {
             return;
         }
 
-        final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
+        final CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
 
         if (targetProfile.hasPlayerIgnored(player.getUniqueId())) {
             player.sendMessage(CC.RED + "That player is ignoring you!");

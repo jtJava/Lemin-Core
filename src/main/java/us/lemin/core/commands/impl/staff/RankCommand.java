@@ -13,11 +13,11 @@ import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.profile.ProfileUtil;
 
 public class RankCommand extends BaseCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public RankCommand() {
+    public RankCommand(CorePlugin plugin) {
         super("rank", Rank.ADMIN);
-        init = new Init(plugin);
+        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /rank <player> <rank>");
     }
 
@@ -36,7 +36,7 @@ public class RankCommand extends BaseCommand {
         }
 
         if (sender instanceof Player) {
-            final CoreProfile playerProfile = init.getProfileManager().getProfile(((Player) sender).getUniqueId());
+            final CoreProfile playerProfile = plugin.getProfileManager().getProfile(((Player) sender).getUniqueId());
 
             if (!playerProfile.hasRank(rank)) {
                 sender.sendMessage(CC.RED + "You can't give ranks higher than your own.");
@@ -50,7 +50,7 @@ public class RankCommand extends BaseCommand {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 final ProfileUtil.MojangProfile profile = ProfileUtil.lookupProfile(args[0]);
 
-                if (profile != null && init.getMongoStorage().getDocument("players", profile.getId()) != null) {
+                if (profile != null && plugin.getMongoStorage().getDocument("players", profile.getId()) != null) {
                     MongoRequest.newRequest("players", profile.getId())
                             .put("rank_name", rank.getName())
                             .run();
@@ -62,7 +62,7 @@ public class RankCommand extends BaseCommand {
                 }
             });
         } else {
-            final CoreProfile targetProfile = init.getProfileManager().getProfile(target.getUniqueId());
+            final CoreProfile targetProfile = plugin.getProfileManager().getProfile(target.getUniqueId());
 
             plugin.getServer().getPluginManager().callEvent(new PlayerRankChangeEvent(target, targetProfile, rank));
             sender.sendMessage(CC.GREEN + "Set " + target.getName() + "'s rank to "

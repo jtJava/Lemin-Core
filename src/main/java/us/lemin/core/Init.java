@@ -1,4 +1,4 @@
-package us.lemin.core;
+/*package us.lemin.core;
 
 import lombok.*;
 import org.bukkit.plugin.*;
@@ -95,3 +95,4 @@ public class Init extends AbstractPlugin {
         menuManager = new MenuManager(CorePlugin.getInstance());
     }
 }
+*/

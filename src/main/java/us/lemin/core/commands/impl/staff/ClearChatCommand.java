@@ -2,7 +2,6 @@ package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.*;
 import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.CoreProfile;
@@ -13,18 +12,18 @@ import java.util.Collections;
 
 public class ClearChatCommand extends BaseCommand {
     private static final String BLANK_MESSAGE = String.join("", Collections.nCopies(300, "§8 §8 §1 §3 §3 §7 §8 §r\n"));
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public ClearChatCommand() {
+    public ClearChatCommand(CorePlugin plugin) {
         super("clearchat", Rank.TRIAL_MOD);
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("cc");
     }
 
     @Override
     protected void execute(CommandSender sender, String[] args) {
         plugin.getServer().getOnlinePlayers().forEach(player -> {
-            final CoreProfile profile = init.getProfileManager().getProfile(player.getUniqueId());
+            final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
             if (!profile.hasStaff()) {
                 player.sendMessage(BLANK_MESSAGE);
             }

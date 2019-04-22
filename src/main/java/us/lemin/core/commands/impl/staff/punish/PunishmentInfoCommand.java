@@ -19,11 +19,11 @@ import static us.lemin.core.utils.StringUtil.IP_REGEX;
 // TODO: cleanup
 public class PunishmentInfoCommand extends BaseCommand {
 
-	private final Init init;
+	private final CorePlugin plugin;
 
-	public PunishmentInfoCommand() {
+	public PunishmentInfoCommand(CorePlugin plugin) {
 		super("punishmentinfo", Rank.ADMIN);
-		init = new Init(plugin);
+		this.plugin = plugin;
 		this.setAliases("baninfo", "muteinfo", "playerinfo", "checkban", "checkmute");
 		this.setUsage(CC.RED + "/punishmentinfo <player|ip>");
 	}
@@ -40,7 +40,7 @@ public class PunishmentInfoCommand extends BaseCommand {
 			final Document document;
 
 			if (IP_REGEX.matcher(arg).matches()) {
-				document = init.getMongoStorage().getDocument("punished_addresses", arg);
+				document = plugin.getMongoStorage().getDocument("punished_addresses", arg);
 			} else {
 				final UUID id;
 				final String name;
@@ -62,7 +62,7 @@ public class PunishmentInfoCommand extends BaseCommand {
 				}
 
 				arg = name;
-				document = init.getMongoStorage().getDocument("punished_ids", id);
+				document = plugin.getMongoStorage().getDocument("punished_ids", id);
 			}
 
 			if (document == null) {

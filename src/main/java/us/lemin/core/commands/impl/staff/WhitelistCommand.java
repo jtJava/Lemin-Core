@@ -10,11 +10,11 @@ import us.lemin.core.server.WhitelistMode;
 import us.lemin.core.utils.message.CC;
 
 public class WhitelistCommand extends BaseCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public WhitelistCommand() {
+    public WhitelistCommand(CorePlugin plugin) {
         super("whitelist", Rank.ADMIN);
-        init = new Init(plugin);
+        this.plugin = plugin;
         setAliases("wl");
         setUsage(CC.RED + "Usage: /whitelist <none|ranks|staff>");
     }
@@ -26,7 +26,7 @@ public class WhitelistCommand extends BaseCommand {
             return;
         }
 
-        final ServerSettings settings = init.getServerSettings();
+        final ServerSettings settings = plugin.getServerSettings();
 
         switch (args[0].toLowerCase()) {
             case "none":

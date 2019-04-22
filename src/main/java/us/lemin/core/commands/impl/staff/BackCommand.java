@@ -10,16 +10,16 @@ import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class BackCommand extends PlayerCommand {
-    private final Init init;
+    private final CorePlugin plugin;
 
-    public BackCommand() {
+    public BackCommand(CorePlugin plugin) {
         super("back", Rank.ADMIN);
-        init = new Init(plugin);
+        this.plugin = plugin;
     }
 
     @Override
     public void execute(Player player, String[] args) {
-        final CoreProfile profile = init.getProfileManager().getProfile(player);
+        final CoreProfile profile = plugin.getProfileManager().getProfile(player);
         final Location last = profile.getLastLocation();
 
         if (last != null) {
