@@ -1,17 +1,14 @@
 package us.lemin.core.commands.impl.toggle;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
 public class ToggleMessagesCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public ToggleMessagesCommand(CorePlugin plugin) {
+    public ToggleMessagesCommand() {
         super("togglemessages");
-        this.plugin = plugin;
         setAliases("tpm");
     }
 

@@ -1,18 +1,15 @@
 package us.lemin.core.commands.impl;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class IgnoreCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public IgnoreCommand(CorePlugin plugin) {
+    public IgnoreCommand() {
         super("ignore");
-        this.plugin = plugin;
         setAliases("unignore");
         setUsage(CC.RED + "Usage: /ignore <player>");
     }

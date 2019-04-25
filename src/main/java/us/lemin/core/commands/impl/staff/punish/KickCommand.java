@@ -2,7 +2,6 @@ package us.lemin.core.commands.impl.staff.punish;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.CorePlugin;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.StringUtil;
@@ -11,11 +10,9 @@ import us.lemin.core.utils.message.Messages;
 
 public class KickCommand extends BaseCommand {
 
-	private final CorePlugin plugin;
 
-	public KickCommand(final CorePlugin plugin) {
+	public KickCommand() {
 		super("kick", Rank.TRIAL_MOD);
-		this.plugin = plugin;
 		this.setUsage(CC.RED + "/kick <player> [reason] [-s]");
 	}
 

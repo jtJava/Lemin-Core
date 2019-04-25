@@ -2,7 +2,6 @@ package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.server.ServerSettings;
@@ -10,11 +9,9 @@ import us.lemin.core.server.WhitelistMode;
 import us.lemin.core.utils.message.CC;
 
 public class WhitelistCommand extends BaseCommand {
-    private final CorePlugin plugin;
 
-    public WhitelistCommand(CorePlugin plugin) {
+    public WhitelistCommand() {
         super("whitelist", Rank.ADMIN);
-        this.plugin = plugin;
         setAliases("wl");
         setUsage(CC.RED + "Usage: /whitelist <none|ranks|staff>");
     }

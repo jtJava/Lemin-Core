@@ -66,7 +66,7 @@ public class ScoreboardUpdateEvent extends PlayerEvent {
             throw new IllegalStateException("Cannot write anymore lines.");
         }
 
-        lines.add(new ScoreboardLine(text));
+        lines.add(new ScoreboardLine(ChatColor.translateAlternateColorCodes('&', text)));
     }
 
     public void setLine(int position, String text) {
@@ -74,7 +74,7 @@ public class ScoreboardUpdateEvent extends PlayerEvent {
             throw new IllegalStateException("Cannot write anymore lines.");
         }
 
-        lines.add(position, new ScoreboardLine(text));
+        lines.add(position, new ScoreboardLine(ChatColor.translateAlternateColorCodes('&', text)));
     }
 
     public ScoreboardLine getLine(int index) {

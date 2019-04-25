@@ -2,7 +2,6 @@ package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.event.player.PlayerRankChangeEvent;
 import us.lemin.core.player.CoreProfile;
@@ -13,11 +12,9 @@ import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.profile.ProfileUtil;
 
 public class RankCommand extends BaseCommand {
-    private final CorePlugin plugin;
 
-    public RankCommand(CorePlugin plugin) {
+    public RankCommand() {
         super("rank", Rank.ADMIN);
-        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /rank <player> <rank>");
     }
 

@@ -1,7 +1,6 @@
 package us.lemin.core.commands.impl;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.event.player.PlayerMessageEvent;
 import us.lemin.core.player.CoreProfile;
@@ -10,11 +9,9 @@ import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
 
 public class MessageCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public MessageCommand(CorePlugin plugin) {
+    public MessageCommand() {
         super("message");
-        this.plugin = plugin;
         setAliases("msg", "m", "whisper", "w", "tell", "t");
         setUsage(CC.RED + "Usage: /message <player> <message>");
     }

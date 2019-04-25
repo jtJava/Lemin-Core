@@ -3,18 +3,15 @@ package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class BackCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public BackCommand(CorePlugin plugin) {
+    public BackCommand() {
         super("back", Rank.ADMIN);
-        this.plugin = plugin;
     }
 
     @Override

@@ -2,7 +2,6 @@ package us.lemin.core.commands.impl;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.ColorPair;
 import us.lemin.core.player.CoreProfile;
@@ -10,14 +9,12 @@ import us.lemin.core.player.rank.CustomColorPair;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class ColorCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public ColorCommand(CorePlugin plugin) {
+    public ColorCommand() {
         super("color", Rank.PREMIUM);
-        this.plugin = plugin;
 
         final StringBuilder colors = new StringBuilder(CC.RED + "Usage: /color [primary|secondary] <color>\nValid colors are: ");
 

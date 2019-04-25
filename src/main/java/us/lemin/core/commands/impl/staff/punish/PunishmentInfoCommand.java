@@ -4,7 +4,6 @@ package us.lemin.core.commands.impl.staff.punish;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
@@ -19,16 +18,15 @@ import static us.lemin.core.utils.StringUtil.IP_REGEX;
 // TODO: cleanup
 public class PunishmentInfoCommand extends BaseCommand {
 
-	private final CorePlugin plugin;
 
-	public PunishmentInfoCommand(CorePlugin plugin) {
+	public PunishmentInfoCommand() {
 		super("punishmentinfo", Rank.ADMIN);
-		this.plugin = plugin;
 		this.setAliases("baninfo", "muteinfo", "playerinfo", "checkban", "checkmute");
 		this.setUsage(CC.RED + "/punishmentinfo <player|ip>");
 	}
 
-	@Override
+
+    @Override
 	protected void execute(CommandSender sender, String[] args) {
 		if (args.length < 1) {
 			sender.sendMessage(usageMessage);

@@ -3,7 +3,6 @@ package us.lemin.core.commands.impl.staff.punish;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.event.BanEvent;
 import us.lemin.core.player.CoreProfile;
@@ -20,12 +19,10 @@ import java.util.UUID;
 
 public class PunishCommand extends BaseCommand {
 	private final PunishType type;
-	private final CorePlugin plugin;
 
-	PunishCommand(Rank requiredRank, PunishType type, CorePlugin plugin) {
+	PunishCommand(Rank requiredRank, PunishType type) {
 		super(type.getName(), requiredRank);
 		this.type = type;
-		this.plugin = plugin;
 		this.setUsage(CC.RED + "Usage: /" + getName() + " <player> [time] [reason] [-s]");
 	}
 

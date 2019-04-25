@@ -1,17 +1,14 @@
 package us.lemin.core.commands.impl.toggle;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.utils.message.CC;
 
 public class ToggleSoundsCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public ToggleSoundsCommand(CorePlugin plugin) {
+    public ToggleSoundsCommand() {
         super("togglesounds");
-        this.plugin = plugin;
         setAliases("sounds", "ts");
     }
 

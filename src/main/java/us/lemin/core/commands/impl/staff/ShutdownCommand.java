@@ -1,7 +1,6 @@
 package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.command.CommandSender;
-import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.event.server.ServerShutdownCancelEvent;
 import us.lemin.core.event.server.ServerShutdownScheduleEvent;
@@ -11,11 +10,9 @@ import us.lemin.core.utils.NumberUtil;
 import us.lemin.core.utils.message.CC;
 
 public class ShutdownCommand extends BaseCommand {
-    private final CorePlugin plugin;
 
-    public ShutdownCommand(CorePlugin plugin) {
+    public ShutdownCommand() {
         super("shutdown", Rank.ADMIN);
-        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /shutdown <seconds|cancel>");
     }
 

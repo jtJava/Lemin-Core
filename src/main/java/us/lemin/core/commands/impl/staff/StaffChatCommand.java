@@ -1,7 +1,6 @@
 package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
@@ -9,11 +8,9 @@ import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 
 public class StaffChatCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public StaffChatCommand(CorePlugin plugin) {
+    public StaffChatCommand() {
         super("staffchat", Rank.TRIAL_MOD);
-        this.plugin = plugin;
         setAliases("sc");
     }
 

@@ -1,17 +1,14 @@
 package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.command.CommandSender;
-import us.lemin.core.*;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.utils.message.CC;
 
 public class SlowChatCommand extends BaseCommand {
-    private final CorePlugin plugin;
 
-    public SlowChatCommand(CorePlugin plugin) {
+    public SlowChatCommand() {
         super("slowchat", Rank.TRIAL_MOD);
-        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /slowchat <seconds|disable>");
     }
 

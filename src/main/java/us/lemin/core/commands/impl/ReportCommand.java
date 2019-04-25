@@ -1,7 +1,6 @@
 package us.lemin.core.commands.impl;
 
 import org.bukkit.entity.Player;
-import us.lemin.core.*;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.inventory.menu.impl.ReportMenu;
 import us.lemin.core.player.CoreProfile;
@@ -11,11 +10,9 @@ import us.lemin.core.utils.message.Messages;
 import us.lemin.core.utils.timer.Timer;
 
 public class ReportCommand extends PlayerCommand {
-    private final CorePlugin plugin;
 
-    public ReportCommand(CorePlugin plugin) {
+    public ReportCommand() {
         super("report");
-        this.plugin = plugin;
         setUsage(CC.RED + "Usage: /report <player> <reason>");
     }
 
