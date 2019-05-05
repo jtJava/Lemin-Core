@@ -13,7 +13,7 @@ import us.lemin.core.utils.time.TimeUtil;
 
 import java.util.UUID;
 
-import static us.lemin.core.utils.StringUtil.IP_REGEX;
+import static us.lemin.core.utils.misc.StringUtil.IP_REGEX;
 
 // TODO: cleanup
 public class PunishmentInfoCommand extends BaseCommand {

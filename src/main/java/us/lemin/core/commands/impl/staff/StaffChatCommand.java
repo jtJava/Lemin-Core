@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
-import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
+import us.lemin.core.utils.misc.StringUtil;
 
 public class StaffChatCommand extends PlayerCommand {
 

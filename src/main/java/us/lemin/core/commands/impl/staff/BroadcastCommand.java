@@ -2,11 +2,10 @@ package us.lemin.core.commands.impl.staff;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import us.lemin.core.CorePlugin;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
-import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
+import us.lemin.core.utils.misc.StringUtil;
 
 public class BroadcastCommand extends BaseCommand {
 

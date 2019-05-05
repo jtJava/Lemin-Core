@@ -1,4 +1,4 @@
-package us.lemin.core.utils;
+package us.lemin.core.utils.plugin;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.plugin.Plugin;

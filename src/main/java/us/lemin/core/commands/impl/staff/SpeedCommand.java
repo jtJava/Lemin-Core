@@ -5,8 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import us.lemin.core.commands.PlayerCommand;
 import us.lemin.core.player.rank.Rank;
-import us.lemin.core.utils.NumberUtil;
 import us.lemin.core.utils.message.CC;
+import us.lemin.core.utils.misc.NumberUtil;
 
 public class SpeedCommand extends PlayerCommand {
     public SpeedCommand() {

@@ -15,7 +15,6 @@ public class ColorCommand extends PlayerCommand {
 
     public ColorCommand() {
         super("color", Rank.PREMIUM);
-
         final StringBuilder colors = new StringBuilder(CC.RED + "Usage: /color [primary|secondary] <color>\nValid colors are: ");
 
         int colorCount = ColorPair.values().length;

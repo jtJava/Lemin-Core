@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.bson.Document;
 import us.lemin.core.CorePlugin;
 import us.lemin.core.storage.database.MongoRequest;
-import us.lemin.core.utils.TaskUtil;
+import us.lemin.core.utils.plugin.TaskUtil;
 
 import java.util.UUID;
 

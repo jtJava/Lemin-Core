@@ -8,9 +8,9 @@ import us.lemin.core.event.BanEvent;
 import us.lemin.core.player.CoreProfile;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.storage.database.MongoRequest;
-import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
+import us.lemin.core.utils.misc.StringUtil;
 import us.lemin.core.utils.profile.ProfileUtil;
 import us.lemin.core.utils.time.TimeUtil;
 

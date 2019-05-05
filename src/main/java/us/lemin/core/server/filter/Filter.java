@@ -1,15 +1,16 @@
 package us.lemin.core.server.filter;
 
 import com.google.common.collect.ImmutableList;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.stream.*;
-
 import us.lemin.core.server.ServerSettings;
 
-import static us.lemin.core.utils.StringUtil.IP_REGEX;
-import static us.lemin.core.utils.StringUtil.URL_REGEX;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.stream.Collectors;
+
+import static us.lemin.core.utils.misc.StringUtil.IP_REGEX;
+import static us.lemin.core.utils.misc.StringUtil.URL_REGEX;
 
 public class Filter {
     private static final List<String> FILTERED_PHRASES = ImmutableList.of(

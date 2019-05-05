@@ -1,4 +1,4 @@
-package us.lemin.core.utils;
+package us.lemin.core.utils.misc;
 
 import lombok.experimental.UtilityClass;
 

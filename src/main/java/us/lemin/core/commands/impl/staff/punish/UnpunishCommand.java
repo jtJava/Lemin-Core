@@ -15,7 +15,7 @@ import us.lemin.core.utils.profile.ProfileUtil;
 import java.util.List;
 import java.util.UUID;
 
-import static us.lemin.core.utils.StringUtil.IP_REGEX;
+import static us.lemin.core.utils.misc.StringUtil.IP_REGEX;
 
 // TODO: cleanup
 public class UnpunishCommand extends BaseCommand {

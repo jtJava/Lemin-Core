@@ -6,8 +6,8 @@ import us.lemin.core.event.server.ServerShutdownCancelEvent;
 import us.lemin.core.event.server.ServerShutdownScheduleEvent;
 import us.lemin.core.player.rank.Rank;
 import us.lemin.core.task.ShutdownTask;
-import us.lemin.core.utils.NumberUtil;
 import us.lemin.core.utils.message.CC;
+import us.lemin.core.utils.misc.NumberUtil;
 
 public class ShutdownCommand extends BaseCommand {
 

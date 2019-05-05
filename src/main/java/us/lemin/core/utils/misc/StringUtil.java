@@ -1,4 +1,4 @@
-package us.lemin.core.utils;
+package us.lemin.core.utils.misc;
 
 import com.google.common.base.Joiner;
 import lombok.experimental.UtilityClass;

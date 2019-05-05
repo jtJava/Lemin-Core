@@ -4,9 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import us.lemin.core.commands.BaseCommand;
 import us.lemin.core.player.rank.Rank;
-import us.lemin.core.utils.StringUtil;
 import us.lemin.core.utils.message.CC;
 import us.lemin.core.utils.message.Messages;
+import us.lemin.core.utils.misc.StringUtil;
 
 public class KickCommand extends BaseCommand {
 
