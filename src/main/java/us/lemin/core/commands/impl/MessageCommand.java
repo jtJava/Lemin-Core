@@ -36,7 +36,7 @@ public class MessageCommand extends PlayerCommand {
 
         final Player target = plugin.getServer().getPlayer(args[0]);
 
-        if (target == null) {
+        if (target == null || !player.canSee(target)) {
             player.sendMessage(Messages.PLAYER_NOT_FOUND);
             return;
         }

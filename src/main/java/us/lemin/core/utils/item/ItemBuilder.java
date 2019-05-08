@@ -9,7 +9,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class ItemBuilder {
@@ -47,6 +49,23 @@ public class ItemBuilder {
     public ItemBuilder lore(String... lore) {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(Arrays.asList(lore));
+        item.setItemMeta(meta);
+        return this;
+    }
+
+    /**
+     * Adds a line to the lore of this builder at a specific position.
+     *
+     * @param line the line to add
+     * @return this instance
+     */
+    public ItemBuilder loreLine(String line) {
+        ItemMeta meta = item.getItemMeta();
+
+        boolean hasLore = meta.hasLore();
+        List<String> lore = hasLore ? meta.getLore() : new ArrayList<>();
+        lore.add(hasLore ? lore.size() : 0, line);
+
         item.setItemMeta(meta);
         return this;
     }

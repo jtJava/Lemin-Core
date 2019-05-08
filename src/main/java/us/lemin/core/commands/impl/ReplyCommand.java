@@ -35,7 +35,7 @@ public class ReplyCommand extends PlayerCommand {
 
         final Player target = plugin.getServer().getPlayer(profile.getConverser());
 
-        if (target == null) {
+        if (target == null || !player.canSee(target)) {
             player.sendMessage(CC.RED + "You are not in a conversation.");
             return;
         }
