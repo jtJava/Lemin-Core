@@ -222,7 +222,6 @@ public class PlayerListener implements Listener {
                 return;
             } else if (profile.isMuted()) {
                 event.setCancelled(true);
-
                 if (profile.isTemporarilyMuted()) {
                     player.sendMessage(CC.RED + "You're muted for another " + profile.getTimeMuted() + ".");
                 } else if (profile.isPermanentlyMuted()) {

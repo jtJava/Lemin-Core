@@ -15,6 +15,8 @@ public abstract class SubCommand {
 	protected final Rank requiredRank;
 	protected final String name;
 	protected final String description;
+	protected String permission = null;
+	protected String[] aliases = null;
 
 	public SubCommand(String name) {
 		this(name, "No description has been set for this subcommand.", Rank.MEMBER);
@@ -36,10 +38,13 @@ public abstract class SubCommand {
 
 	protected void command(CommandSender commandSender, Player target, String[] args, String label) {
 		if (commandSender instanceof Player) {
-			if (CorePlugin.getInstance().getProfileManager().getProfile((Player) commandSender).hasRank(requiredRank)) {
-				execute(commandSender, target, args, label);
-			} else {
+			if (!CorePlugin.getInstance().getProfileManager().getProfile((Player) commandSender).hasRank(requiredRank)) {
 				commandSender.sendMessage(CC.RED + "You don't have the required rank to perform this subcommand.");
+				return;
+			}
+			if (permission != null && !commandSender.hasPermission(permission)) {
+				commandSender.sendMessage(CC.RED + "You don't have the required permission to perform this subcommand.");
+				return;
 			}
 		}
 		execute(commandSender, target, args, label);

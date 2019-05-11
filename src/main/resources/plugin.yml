@@ -1,4 +1,5 @@
 name: ${project.name}
 version: ${full.version}
-author: Coords
+author: Iowa and babyboy1
 main: us.lemin.core.CorePlugin
+depend: [ProtocolLib, ProtocolSupport]

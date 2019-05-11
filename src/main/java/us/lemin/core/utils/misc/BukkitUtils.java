@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.list.TCharList;
 import gnu.trove.list.array.TCharArrayList;
+import lombok.experimental.UtilityClass;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -29,13 +30,39 @@ import java.util.stream.Collectors;
 /**
  * Utility class for simplifying tasks in the Bukkit API.
  */
-public final class BukkitUtils {
+@UtilityClass
+public class BukkitUtils {
 
-    private BukkitUtils() {
-    }
 
-    private static final ImmutableMap<ChatColor, DyeColor> CHAT_DYE_COLOUR_MAP;
-    private static final ImmutableSet<PotionEffectType> DEBUFF_TYPES;
+    private static final ImmutableMap<ChatColor, DyeColor> CHAT_DYE_COLOUR_MAP = /*TODO:Maps.immutableEnumMap*/(ImmutableMap.<ChatColor, DyeColor>builder().
+            put(ChatColor.AQUA, DyeColor.LIGHT_BLUE).
+            put(ChatColor.BLACK, DyeColor.BLACK).
+            put(ChatColor.BLUE, DyeColor.LIGHT_BLUE).
+            put(ChatColor.DARK_AQUA, DyeColor.CYAN).
+            put(ChatColor.DARK_BLUE, DyeColor.BLUE).
+            put(ChatColor.DARK_GRAY, DyeColor.GRAY).
+            put(ChatColor.DARK_GREEN, DyeColor.GREEN).
+            put(ChatColor.DARK_PURPLE, DyeColor.PURPLE).
+            put(ChatColor.DARK_RED, DyeColor.RED).
+            put(ChatColor.GOLD, DyeColor.ORANGE).
+            put(ChatColor.GRAY, DyeColor.SILVER).
+            put(ChatColor.GREEN, DyeColor.LIME).
+            put(ChatColor.LIGHT_PURPLE, DyeColor.MAGENTA).
+            put(ChatColor.RED, DyeColor.RED).
+            put(ChatColor.WHITE, DyeColor.WHITE).
+            put(ChatColor.YELLOW, DyeColor.YELLOW).build());
+
+    private static final ImmutableSet<PotionEffectType> DEBUFF_TYPES = ImmutableSet.<PotionEffectType>builder().
+            add(PotionEffectType.BLINDNESS).
+            add(PotionEffectType.CONFUSION).
+            add(PotionEffectType.HARM).
+            add(PotionEffectType.HUNGER).
+            add(PotionEffectType.POISON).
+            add(PotionEffectType.SATURATION).
+            add(PotionEffectType.SLOW).
+            add(PotionEffectType.SLOW_DIGGING).
+            add(PotionEffectType.WEAKNESS).
+            add(PotionEffectType.WITHER).build();
 
     /**
      * The default amount of tab completion entries to limit to.
@@ -45,47 +72,13 @@ public final class BukkitUtils {
     /**
      * Internal use only
      */
-    private static final String STRAIGHT_LINE_TEMPLATE;
+    private static final String STRAIGHT_LINE_TEMPLATE = ChatColor.STRIKETHROUGH.toString() + Strings.repeat("-", 256);
+
 
     /**
      * The default straight line string wrapped across the Minecraft font width.
      */
-    public static final String STRAIGHT_LINE_DEFAULT;
-
-    static {
-        STRAIGHT_LINE_TEMPLATE = ChatColor.STRIKETHROUGH.toString() + Strings.repeat("-", 256);
-        STRAIGHT_LINE_DEFAULT = STRAIGHT_LINE_TEMPLATE.substring(0, ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH);
-
-        CHAT_DYE_COLOUR_MAP = /*TODO:Maps.immutableEnumMap*/(ImmutableMap.<ChatColor, DyeColor>builder().
-                put(ChatColor.AQUA, DyeColor.LIGHT_BLUE).
-                put(ChatColor.BLACK, DyeColor.BLACK).
-                put(ChatColor.BLUE, DyeColor.LIGHT_BLUE).
-                put(ChatColor.DARK_AQUA, DyeColor.CYAN).
-                put(ChatColor.DARK_BLUE, DyeColor.BLUE).
-                put(ChatColor.DARK_GRAY, DyeColor.GRAY).
-                put(ChatColor.DARK_GREEN, DyeColor.GREEN).
-                put(ChatColor.DARK_PURPLE, DyeColor.PURPLE).
-                put(ChatColor.DARK_RED, DyeColor.RED).
-                put(ChatColor.GOLD, DyeColor.ORANGE).
-                put(ChatColor.GRAY, DyeColor.SILVER).
-                put(ChatColor.GREEN, DyeColor.LIME).
-                put(ChatColor.LIGHT_PURPLE, DyeColor.MAGENTA).
-                put(ChatColor.RED, DyeColor.RED).
-                put(ChatColor.WHITE, DyeColor.WHITE).
-                put(ChatColor.YELLOW, DyeColor.YELLOW).build());
-
-        DEBUFF_TYPES = ImmutableSet.<PotionEffectType>builder().
-                add(PotionEffectType.BLINDNESS).
-                add(PotionEffectType.CONFUSION).
-                add(PotionEffectType.HARM).
-                add(PotionEffectType.HUNGER).
-                add(PotionEffectType.POISON).
-                add(PotionEffectType.SATURATION).
-                add(PotionEffectType.SLOW).
-                add(PotionEffectType.SLOW_DIGGING).
-                add(PotionEffectType.WEAKNESS).
-                add(PotionEffectType.WITHER).build();
-    }
+    public static final String STRAIGHT_LINE_DEFAULT = STRAIGHT_LINE_TEMPLATE.substring(0, ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH);
 
     private static final TCharList COLOUR_CHARACTER_LIST;
 

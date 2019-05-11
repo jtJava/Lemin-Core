@@ -58,7 +58,7 @@ public class ScoreboardUpdateEvent extends PlayerEvent {
             title = title.substring(0, 32);
         }
 
-        this.title = title;
+        this.title = ChatColor.translateAlternateColorCodes('&', title);
     }
 
     public void addLine(String text) {

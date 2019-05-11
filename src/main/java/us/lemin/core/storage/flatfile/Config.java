@@ -1,16 +1,16 @@
 package us.lemin.core.storage.flatfile;
 
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.*;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config {
     private final File file;
@@ -110,5 +110,9 @@ public class Config {
 
     public Set<String> getKeys() {
         return delegate.getKeys(false);
+    }
+
+    public YamlConfiguration getDelegate() {
+        return delegate;
     }
 }
