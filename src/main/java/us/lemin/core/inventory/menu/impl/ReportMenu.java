@@ -18,6 +18,7 @@ public class ReportMenu extends Menu {
     }
 
     private Action getAction(String reason) {
+
         return player -> {
             final CoreProfile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
             final Timer cooldownTimer = profile.getReportCooldownTimer();
