@@ -66,6 +66,8 @@ public class ItemBuilder {
         List<String> lore = hasLore ? meta.getLore() : new ArrayList<>();
         lore.add(hasLore ? lore.size() : 0, line);
 
+        meta.setLore(lore);
+
         item.setItemMeta(meta);
         return this;
     }
